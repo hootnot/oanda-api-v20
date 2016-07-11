@@ -1,11 +1,10 @@
 import unittest
-import sys
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
 
 try:
-    from nose_parameterized import parameterized, param
+    from nose_parameterized import parameterized
 except:
     print("*** Please install 'nose_parameterized' to run these tests ***")
     exit(0)
@@ -35,7 +34,7 @@ class TestAccounts(unittest.TestCase):
             exit(0)
 
         api = oandapy.API(environment=environment, access_token=access_token,
-                          headers={ "Content-Type": "application/json"})
+                          headers={"Content-Type": "application/json"})
 
     def test__get_accounts(self):
         """ get all accounts
@@ -77,8 +76,7 @@ class TestAccounts(unittest.TestCase):
         else:
             result = api.request(r)
             self.assertTrue(result["account"]["id"] == account_id and
-                        result["account"]["currency"] == account_cur
-                       )
+                            result["account"]["currency"] == account_cur)
 
     @parameterized.expand([
                        (None, "gt", 0),
@@ -92,8 +90,8 @@ class TestAccounts(unittest.TestCase):
         r = accounts.Accounts(account_id=account_id, subject="instruments")
         params = None
         if instr:
-            params = { "instruments": instr }
-       
+            params = {"instruments": instr}
+
         result = None
         if fail:
             # The test should raise an exception with code == fail
@@ -110,9 +108,9 @@ class TestAccounts(unittest.TestCase):
                 result = api.request(r)
 
             if f == "gt":
-                self.assertTrue( len(result["instruments"]) > cnt)
+                self.assertTrue(len(result["instruments"]) > cnt)
             elif f == "eq":
-                self.assertTrue( len(result["instruments"]) == cnt)
+                self.assertTrue(len(result["instruments"]) == cnt)
 
     @parameterized.expand([
                        (None, "1.0"),
@@ -125,11 +123,11 @@ class TestAccounts(unittest.TestCase):
         if not accID:
             accID = account_id
 
-        config = { "marginRate": marginRate }
+        config = {"marginRate": marginRate}
         r = accounts.Accounts(account_id=accID,
                               subject="configuration",
                               configuration=config)
-       
+
         result = None
         if fail:
             # The test should raise an exception with code == fail
@@ -141,17 +139,9 @@ class TestAccounts(unittest.TestCase):
 
         else:
             result = api.request(r)
-            self.assertTrue(result["clientConfigureTransaction"]["marginRate"] == marginRate)
+            newRate = result["clientConfigureTransaction"]["marginRate"]
+            self.assertTrue(newRate == marginRate)
 
 if __name__ == "__main__":
 
     unittest.main()
-
-
-#     r = accounts.Details("101-004-1435156-001", subject="changes")
-#     print("R:{}".format(r))
-#     params = { "sinceTransactionID": 3 }
-#     rv = api.request(r, params=params)
-#     print("========================\nRESP: {} ".format(r._response))
-# 
-# 

@@ -20,7 +20,7 @@ account_cur = None
 api = None
 
 
-class TestAccounts(unittest.TestCase):
+class TestPricing(unittest.TestCase):
 
     def setUp(self):
         global access_token

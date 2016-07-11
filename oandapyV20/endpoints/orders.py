@@ -48,7 +48,7 @@ class Orders(APIRequest):
             configuration details for the order in case of a request
             to create or modify an order.
         """
-        endpoint = self.ENDPOINT
+        endpoint = self.ENDPOINT.format(account_id)
         if orderID:
             endpoint = '{}/{}'.format(endpoint, orderID)
 

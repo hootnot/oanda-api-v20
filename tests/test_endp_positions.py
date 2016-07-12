@@ -1,7 +1,6 @@
 import unittest
 from . import unittestsetup
 from .unittestsetup import environment as environment
-
 try:
     from nose_parameterized import parameterized
 except:
@@ -12,6 +11,8 @@ import oandapyV20 as oandapy
 from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.positions as positions
 import oandapyV20.endpoints.orders as orders
+
+from . import helper
 
 access_token = None
 account_id = None
@@ -38,44 +39,17 @@ class TestPositions(unittest.TestCase):
         api = oandapy.API(environment=environment, access_token=access_token,
                           headers={"Content-Type": "application/json"})
 
-    def close_pos(self, instrument, side):
-        try:
-            r = positions.Positions(
-                           account_id,
-                           instrument=instrument,
-                           subject="close",
-                           configuration={"{}Units".format(side): "ALL"})
-            api.request(r)
-        except V20Error as e:
-            # if there is no position an error response is returned
-            if verbose:
-                print(e)
-
-    def create_pos(self, instrument, side, units):
-        units = units if side == "long" else -units
-        orderSpec = {
-          "order": {
-            "units": str(units),
-            "instrument": instrument,
-            "timeInForce": "FOK",
-            "type": "MARKET",
-            "positionFill": "DEFAULT"
-          }
-        }
-        r = orders.Orders(account_id, configuration=orderSpec)
-        return api.request(r)
-
     @parameterized.expand([
                            ("EUR_USD", "long", [100, 1000]),
                            ("DE30_EUR", "short", [10, 10]),
                           ])
     def test__openpositions(self, instrument, side, units):
         """ get open positions."""
-        self.close_pos(instrument, side)  # if any ... close
+        helper.close_pos(api, account_id, instrument, side)  # if any ... close
         # create a position by creating orders equivalent to units
         verify = 0
         for U in units:
-            rv = self.create_pos(instrument, side, U)
+            rv = helper.create_pos(api, account_id, instrument, side, U)
             verify += int(rv["orderCreateTransaction"]["units"])
 
         # fetch pos
@@ -101,8 +75,8 @@ class TestPositions(unittest.TestCase):
         # make sure we have no open positions left for those instruments
         for P in rv["positions"]:
             instr = P["instrument"]
-            self.close_pos(instr, "long")
-            self.close_pos(instr, "short")
+            helper.close_pos(api, account_id, instr, "long")
+            helper.close_pos(api, account_id, instr, "short")
 
         # all positions are now reset to 0 units
 
@@ -110,7 +84,7 @@ class TestPositions(unittest.TestCase):
         # the units should be equal to those in Positions
         verify = 0
         for U in units:
-            rv = self.create_pos(instrument, side, U)
+            rv = helper.create_pos(api, account_id, instrument, side, U)
             verify += int(rv["orderCreateTransaction"]["units"])
 
         r = positions.Positions(account_id)

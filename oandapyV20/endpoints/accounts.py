@@ -278,7 +278,7 @@ class Accounts(APIRequest):
                   ACCOUNT_CONFIGURATION, ACCOUNT_CHANGES]:
             endpoint = "{}/{{accountID}}".format(endpoint)
 
-        if op and path_comp:
+        if path_comp:
             endpoint = "{}/{}".format(endpoint, path_comp)
 
         endpoint = endpoint.format(accountID=accountID)

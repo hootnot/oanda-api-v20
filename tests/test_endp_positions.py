@@ -8,14 +8,12 @@ except:
     exit(0)
 
 import oandapyV20 as oandapy
-from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.positions as positions
-import oandapyV20.endpoints.orders as orders
 
 from . import helper
 
 access_token = None
-account_id = None
+accountID = None
 account_cur = None
 api = None
 verbose = False
@@ -25,13 +23,13 @@ class TestPositions(unittest.TestCase):
 
     def setUp(self):
         global access_token
-        global account_id
+        global accountID
         global account_cur
         global api
         global verbose
         # self.maxDiff = None
         try:
-            account_id, account_cur, access_token = unittestsetup.auth()
+            accountID, account_cur, access_token = unittestsetup.auth()
         except Exception as e:
             print("{}".format(e))
             exit(0)
@@ -44,16 +42,16 @@ class TestPositions(unittest.TestCase):
                            ("DE30_EUR", "short", [10, 10]),
                           ])
     def test__openpositions(self, instrument, side, units):
-        """ get open positions."""
-        helper.close_pos(api, account_id, instrument, side)  # if any ... close
+        """get open positions."""
+        helper.close_pos(api, accountID, instrument, side)  # if any ... close
         # create a position by creating orders equivalent to units
         verify = 0
         for U in units:
-            rv = helper.create_pos(api, account_id, instrument, side, U)
+            rv = helper.create_pos(api, accountID, instrument, side, U)
             verify += int(rv["orderCreateTransaction"]["units"])
 
         # fetch pos
-        r = positions.OpenPositions(account_id)
+        r = positions.OpenPositions(accountID)
         rv = api.request(r)
 
         posUnits = None
@@ -70,13 +68,13 @@ class TestPositions(unittest.TestCase):
                           ])
     def test__positions(self, instrument, side, units):
         # GET	/v3/accounts/{accountID}/positions
-        r = positions.OpenPositions(account_id)
+        r = positions.OpenPositions(accountID)
         rv = api.request(r)
         # make sure we have no open positions left for those instruments
         for P in rv["positions"]:
             instr = P["instrument"]
-            helper.close_pos(api, account_id, instr, "long")
-            helper.close_pos(api, account_id, instr, "short")
+            helper.close_pos(api, accountID, instr, "long")
+            helper.close_pos(api, accountID, instr, "short")
 
         # all positions are now reset to 0 units
 
@@ -84,10 +82,10 @@ class TestPositions(unittest.TestCase):
         # the units should be equal to those in Positions
         verify = 0
         for U in units:
-            rv = helper.create_pos(api, account_id, instrument, side, U)
+            rv = helper.create_pos(api, accountID, instrument, side, U)
             verify += int(rv["orderCreateTransaction"]["units"])
 
-        r = positions.Positions(account_id)
+        r = positions.Positions(accountID, op=positions.POSITION_LIST)
         rv = api.request(r)
         # lookup the instrument in the positions array
         posUnits = None

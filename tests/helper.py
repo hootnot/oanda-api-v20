@@ -8,10 +8,10 @@ def close_pos(api, account_id, instrument, side, verbose=False):
     """close_pos: close a position by instrument."""
     try:
         r = positions.Positions(
-                       account_id,
+                       accountID=account_id,
                        instrument=instrument,
-                       subject="close",
-                       configuration={"{}Units".format(side): "ALL"})
+                       op=positions.POSITION_CLOSE,
+                       data={"{}Units".format(side): "ALL"})
         api.request(r)
     except V20Error as e:
         # if there is no position an error response is returned
@@ -31,5 +31,5 @@ def create_pos(api, account_id, instrument, side, units):
         "positionFill": "DEFAULT"
       }
     }
-    r = orders.Orders(account_id, configuration=orderSpec)
+    r = orders.Orders(account_id, data=orderSpec, op=orders.ORDER_CREATE)
     return api.request(r)

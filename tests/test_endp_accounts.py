@@ -14,7 +14,7 @@ from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.accounts as accounts
 
 access_token = None
-account_id = None
+accountID = None
 account_cur = None
 api = None
 
@@ -23,12 +23,12 @@ class TestAccounts(unittest.TestCase):
 
     def setUp(self):
         global access_token
-        global account_id
+        global accountID
         global account_cur
         global api
         # self.maxDiff = None
         try:
-            account_id, account_cur, access_token = unittestsetup.auth()
+            accountID, account_cur, access_token = unittestsetup.auth()
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -40,7 +40,7 @@ class TestAccounts(unittest.TestCase):
         """ get all accounts
             normally a user has at least one account
         """
-        r = accounts.Accounts()
+        r = accounts.Accounts(op=accounts.ACCOUNT_LIST)
         result = api.request(r)
         count = len(result['accounts'])
         self.assertGreaterEqual(count, 1)
@@ -49,10 +49,10 @@ class TestAccounts(unittest.TestCase):
         """ get account
             the details of specified account
         """
-        r = accounts.Accounts(account_id=account_id)
+        r = accounts.Accounts(accountID=accountID, op=accounts.ACCOUNT_DETAILS)
         result = api.request(r)
         s_result = json.dumps(result)
-        self.assertTrue(account_id in s_result)
+        self.assertTrue(accountID in s_result)
 
     @parameterized.expand([
                        (None, ),
@@ -63,9 +63,9 @@ class TestAccounts(unittest.TestCase):
             the summary of specified account
         """
         if not accID:
-            # hack to use the global account_id
-            accID = account_id
-        r = accounts.Accounts(account_id=accID, subject="summary")
+            # hack to use the global accountID
+            accID = accountID
+        r = accounts.Accounts(accountID=accID, op=accounts.ACCOUNT_SUMMARY)
         if fail:
             # The test should raise an exception with code == fail
             oErr = None
@@ -75,7 +75,7 @@ class TestAccounts(unittest.TestCase):
                 self.assertTrue(fail in s)
         else:
             result = api.request(r)
-            self.assertTrue(result["account"]["id"] == account_id and
+            self.assertTrue(result["account"]["id"] == accountID and
                             result["account"]["currency"] == account_cur)
 
     @parameterized.expand([
@@ -87,7 +87,7 @@ class TestAccounts(unittest.TestCase):
         """ get account
             the instruments of specified account
         """
-        r = accounts.Accounts(account_id=account_id, subject="instruments")
+        r = accounts.Accounts(accountID=accountID, op=accounts.ACCOUNT_INSTRUMENTS)
         params = None
         if instr:
             params = {"instruments": instr}
@@ -113,7 +113,7 @@ class TestAccounts(unittest.TestCase):
                 self.assertTrue(len(result["instruments"]) == cnt)
 
     @parameterized.expand([
-                       (None, "1.0"),
+                       (None, "0.2"),
                        (None, "0.1"),
                        (None, "0.05"),
                        ("X", "0.05", "Account does not exist"),
@@ -121,12 +121,12 @@ class TestAccounts(unittest.TestCase):
     def test__account_configuration(self, accID, marginRate, fail=None):
         """account configuration tests."""
         if not accID:
-            accID = account_id
+            accID = accountID
 
         config = {"marginRate": marginRate}
-        r = accounts.Accounts(account_id=accID,
-                              subject="configuration",
-                              configuration=config)
+        r = accounts.Accounts(accountID=accID,
+                              op=accounts.ACCOUNT_CONFIGURATION,
+                              data=config)
 
         result = None
         if fail:

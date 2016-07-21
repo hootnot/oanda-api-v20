@@ -78,7 +78,9 @@ class API(object):
         try:
             response = func(url, **request_args)
         except requests.RequestException as e:
-            print (str(e))
+            # log it ?
+            raise e
+
         content = response.content.decode('utf-8')
 
         # Handle error responses

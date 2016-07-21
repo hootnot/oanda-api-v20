@@ -29,6 +29,18 @@ def dyndoc_insert(src):
     return dec
 
 
+def get_endpoint_config(endp_conf, op):
+    """get_endpoint_config - fetch details of an endpoint.
+
+    From a set of endpoints this function returns the HTTP-method and
+    additional path component for the endpoint based on the op-code.
+    """
+    try:
+        return endp_conf[op]['method'], endp_conf[op]['path_comp']
+    except KeyError:
+        raise KeyError("Missing or unknown op-flag")
+
+
 class APIRequest(object):
     """Base Class for API-request classes."""
 

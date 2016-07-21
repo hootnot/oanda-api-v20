@@ -1,5 +1,5 @@
 """Handle orders and pendingOrders endpoints."""
-from .apirequest import APIRequest, dyndoc_insert
+from .apirequest import APIRequest, dyndoc_insert, get_endpoint_config
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {}
@@ -45,7 +45,7 @@ class Orders(APIRequest):
     ENDPOINT = "v3/accounts/{accountID}/orders"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, op, orderID=None, data=None):
+    def __init__(self, accountID, orderID=None, data=None, op=None):
         """Instantiate an Orders request.
 
         Parameters
@@ -53,7 +53,7 @@ class Orders(APIRequest):
         accountID : string (required)
             id of the account to perform the request on.
 
-        op : operation flag
+        op : operation flag (required)
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
 
@@ -65,17 +65,12 @@ class Orders(APIRequest):
             to create or modify an order.
         """
         endpoint = self.ENDPOINT
-        method = None
-        try:
-            method = endp_conf[op]['method']
-        except KeyError:
-            raise KeyError("Unkown op-flag")
+        method, path_comp = get_endpoint_config(endp_conf, op)
 
         if orderID:
             endpoint = '{}/{{orderID}}'.format(endpoint)
 
-        path_comp = endp_conf[op]['path_comp']
-        if op and path_comp:
+        if path_comp:
             endpoint = '{}/{}'.format(endpoint, path_comp)
 
         endpoint = endpoint.format(accountID=accountID, orderID=orderID)

@@ -79,7 +79,8 @@ class Orders(APIRequest):
         endpoint = self.ENDPOINT
         method, path_comp = get_endpoint_config(endp_conf, op)
 
-        if orderID:
+        if op in [ORDER_DETAILS, ORDER_REPLACE, ORDER_CANCEL,
+                  ORDER_CLIENT_EXTENSIONS]:
             endpoint = '{}/{{orderID}}'.format(endpoint)
 
         if path_comp:

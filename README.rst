@@ -85,55 +85,61 @@ an array or from some 'request-factory' class. Below an array example:
 
      for r in lor:
          rv = client.request(r)
-         print("RESPONSE for request {}:\n{}".format(r, json.dumps(rv, indent=2)))
+         # put request and response in 1 JSON structure
+         print("{}".format(json.dumps({"request": "{}".format(r), 
+                                       "response": rv}, indent=2)))
 
 
 Output
 ~~~~~~
 
-.. code-block:: python
+.. code-block:: json
 
-
-     RESPONSE for request v3/accounts/101-004-1435156-001/trades:
-     {
-       "lastTransactionID": "1108",
-       "trades": [
-         {
-           "state": "OPEN",
-           "unrealizedPL": "13.0000",
-           "id": "1105",
-           "realizedPL": "0.0000",
-           "openTime": "2016-07-22T16:47:04.315211198Z",
-           "currentUnits": "-10",
-           "financing": "0.0000",
-           "initialUnits": "-10",
-           "price": "10159.4",
-           "instrument": "DE30_EUR"
-         },
-         {
-           "state": "OPEN",
-           "unrealizedPL": "13.0000",
-           "id": "1103",
-           "realizedPL": "0.0000",
-           "openTime": "2016-07-22T16:47:04.141436468Z",
-           "currentUnits": "-10",
-           "financing": "0.0000",
-           "initialUnits": "-10",
-           "price": "10159.4",
-           "instrument": "DE30_EUR"
-         }
-       ]
-     }
-     RESPONSE for request v3/accounts:
-     {
-       "accounts": [
-         {
-           "id": "101-004-1435156-002",
-           "tags": []
-         },
-         {
-           "id": "101-004-1435156-001",
-           "tags": []
-         }
-       ]
-     }
+    {
+      "request": "v3/accounts/101-004-1435156-001/trades",
+      "response": {
+        "lastTransactionID": "1109",
+        "trades": [
+          {
+            "unrealizedPL": "23.0000",
+            "financing": "-0.5556",
+            "state": "OPEN",
+            "price": "10159.4",
+            "realizedPL": "0.0000",
+            "currentUnits": "-10",
+            "openTime": "2016-07-22T16:47:04.315211198Z",
+            "initialUnits": "-10",
+            "instrument": "DE30_EUR",
+            "id": "1105"
+          },
+          {
+            "unrealizedPL": "23.0000",
+            "financing": "-0.5556",
+            "state": "OPEN",
+            "price": "10159.4",
+            "realizedPL": "0.0000",
+            "currentUnits": "-10",
+            "openTime": "2016-07-22T16:47:04.141436468Z",
+            "initialUnits": "-10",
+            "instrument": "DE30_EUR",
+            "id": "1103"
+          }
+        ]
+      }
+    }
+    
+    {
+      "request": "v3/accounts",
+      "response": {
+        "accounts": [
+          {
+            "tags": [],
+            "id": "101-004-1435156-002"
+          },
+          {
+            "tags": [],
+            "id": "101-004-1435156-001"
+          }
+        ]
+      }
+    }

@@ -20,7 +20,7 @@ endp_conf = {
 class Transactions(APIRequest):
     """Transactions - class to handle the transaction endpoints."""
 
-    ENDPOINT = "/v3/accounts/{accountID}/transactions"
+    ENDPOINT = "v3/accounts/{accountID}/transactions"
 
     @dyndoc_insert(responses)
     def __init__(self, accountID, transactionID=None, op=None):

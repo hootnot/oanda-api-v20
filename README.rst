@@ -30,3 +30,110 @@ Supported versions (passing the available tests) of Python:
 
 
 Integration with Travis and Coveralls will follow.
+
+Design
+======
+
+I have choosen a different approach regarding the design of the new library versus the
+'oandapy' library which is based on 'mixin' classes.
+
+In the V20-library endpoints are represented as APIRequest objects derived from the
+APIRequest base class. Each endpoint group (accounts, trades, etc.) is represented
+by it's own class covering the functionality of all endpoints for that group.
+
+The V20-library has a client 'API'-class which processes APIRequest objects.
+
+So it comes down to:
+
+.. code-block:: python
+
+     import json
+     from oandapyv20 import API    # the client
+     import oandapyv20.endpoints.trades as trades
+
+     access_token = "..."
+     accountID = "..."
+     client = API(access_token="...")
+
+     # request trades list
+     r = trades.Trades(accountID, op=trades.TRADES_LIST)
+     rv = client.request(r)
+     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
+
+
+Processing series of requests is also possible now by storing different requests in 
+an array or from some 'request-factory' class. Below an array example:
+
+.. code-block:: python
+
+     import json
+     from oandapyV20 import API    # the client
+     import oandapyV20.endpoints.accounts as accounts
+     import oandapyV20.endpoints.trades as trades
+
+     access_token = "..."
+     accountID = "..."
+     client = API(access_token="...")
+
+     # list of requests
+     lor = []
+     # request trades list
+     lor.append(trades.Trades(accountID, op=trades.TRADE_LIST))
+     # request accounts list
+     lor.append(accounts.Accounts(op=accounts.ACCOUNT_LIST))
+
+
+     for r in lor:
+         rv = client.request(r)
+         print("RESPONSE for request {}:\n{}".format(r, json.dumps(rv, indent=2)))
+
+
+Output
+~~~~~~
+
+.. code-block:: python
+
+
+     RESPONSE for request v3/accounts/101-004-1435156-001/trades:
+     {
+       "lastTransactionID": "1108",
+       "trades": [
+         {
+           "state": "OPEN",
+           "unrealizedPL": "13.0000",
+           "id": "1105",
+           "realizedPL": "0.0000",
+           "openTime": "2016-07-22T16:47:04.315211198Z",
+           "currentUnits": "-10",
+           "financing": "0.0000",
+           "initialUnits": "-10",
+           "price": "10159.4",
+           "instrument": "DE30_EUR"
+         },
+         {
+           "state": "OPEN",
+           "unrealizedPL": "13.0000",
+           "id": "1103",
+           "realizedPL": "0.0000",
+           "openTime": "2016-07-22T16:47:04.141436468Z",
+           "currentUnits": "-10",
+           "financing": "0.0000",
+           "initialUnits": "-10",
+           "price": "10159.4",
+           "instrument": "DE30_EUR"
+         }
+       ]
+     }
+     RESPONSE for request v3/accounts:
+     {
+       "accounts": [
+         {
+           "id": "101-004-1435156-002",
+           "tags": []
+         },
+         {
+           "id": "101-004-1435156-001",
+           "tags": []
+         }
+       ]
+     }

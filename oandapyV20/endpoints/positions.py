@@ -68,7 +68,7 @@ class Positions(APIRequest):
         endpoint = self.ENDPOINT
         method, path_comp = get_endpoint_config(endp_conf, op)
 
-        if instrument:
+        if op in [POSITION_DETAILS]:
             endpoint = '{}/{{instrument}}'.format(endpoint)
 
         if path_comp:

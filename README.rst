@@ -53,7 +53,7 @@ So it comes down to:
 
      access_token = "..."
      accountID = "..."
-     client = API(access_token="...")
+     client = API(access_token=access_token)
 
      # request trades list
      r = trades.Trades(accountID, op=trades.TRADES_LIST)
@@ -73,7 +73,7 @@ an array or from some 'request-factory' class. Below an array example:
 
      access_token = "..."
      accountID = "..."
-     client = API(access_token="...")
+     client = API(access_token=access_token)
 
      # list of requests
      lor = []

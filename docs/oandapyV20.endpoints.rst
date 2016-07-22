@@ -68,8 +68,6 @@ oandapyV20.endpoints.transactions module
     :special-members: __init__
 
 
-WTF
----
 
 .. .. Module contents
 .. ---------------

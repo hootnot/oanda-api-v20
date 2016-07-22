@@ -5,7 +5,7 @@ from .apirequest import APIRequest
 class Pricing(APIRequest):
     """Pricing - class to handle pricing endpoint."""
 
-    ENDPOINT = "/v3/accounts/{accountID}/pricing"
+    ENDPOINT = "v3/accounts/{accountID}/pricing"
 
     def __init__(self, accountID):
         """Instantiate a Pricing APIRequest instance.

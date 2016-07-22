@@ -1,10 +1,8 @@
 OANDA REST-V20 API
 ==================
 
-.. automodule:: oandapyV20.oandapyV20
-
-Interface to the REST-service
------------------------------
+Interface to the OANDA V20 REST-service
+---------------------------------------
 
 .. autoclass:: oandapyV20.API
       :inherited-members:

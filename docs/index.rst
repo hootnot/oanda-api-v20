@@ -14,7 +14,11 @@ Contents:
 
    installation
    oanda-api-v20
-   endpoints
+
+   modules
+   oandapyV20.endpoints
+   oandapyV20
+
    examples
 
 

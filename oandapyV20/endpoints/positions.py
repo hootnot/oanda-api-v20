@@ -31,7 +31,7 @@ class OpenPositions(APIRequest):
 
 
 class Positions(APIRequest):
-    """Positions - class to handle the 'positions' endpoint."""
+    """Positions - class to handle the 'positions' endpoints."""
 
     ENDPOINT = "v3/accounts/{accountID}/positions"
 
@@ -47,6 +47,16 @@ class Positions(APIRequest):
         op : operation flag
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
+
+            Possible flags::
+
+                POSITION_LIST
+                POSITION_DETAILS
+                POSITION_CLOSE (data)
+
+                requests involving the 'data'-parameter require headers to
+                be set: Content-Type: application/json)
+
 
         instrument : string
             the instrument for the Positions request

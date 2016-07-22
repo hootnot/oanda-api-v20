@@ -37,6 +37,13 @@ class Transactions(APIRequest):
         op : operation flag (required)
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
+
+            Possible flags::
+
+                TRANSACTION_LIST
+                TRANSACTION_DETAILS
+                TRANSACTION_IDRANGE
+                TRANSACTION_SINCEID
         """
         endpoint = self.ENDPOINT
         method, path_comp = get_endpoint_config(endp_conf, op)

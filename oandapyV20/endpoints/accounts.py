@@ -186,7 +186,7 @@ endp_conf = {
 
 
 class Accounts(APIRequest):
-    """Accounts - class to handle the /v3/accounts endpoint."""
+    """Accounts - class to handle the accounts endpoints."""
 
     ENDPOINT = "v3/accounts"
 
@@ -205,9 +205,20 @@ class Accounts(APIRequest):
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
 
+            Possible flags::
+
+                ACCOUNT_LIST
+                ACCOUNT_DETAILS
+                ACCOUNT_SUMMARY
+                ACCOUNT_INSTRUMENTS
+                ACCOUNT_CONFIGURATION (data)
+                ACCOUNT_CHANGES
+
+                requests involving the 'data'-parameter require headers to
+                be set: Content-Type: application/json)
+
         data : dict (depends on the operation choosen by 'op')
-            configuration details for the account in case of a CHANGES
-            or CONFIGURATION.
+            configuration details for the account in case of ACCOUNT_CONFIGURATION.
 
 
         Examples

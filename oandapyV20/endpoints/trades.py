@@ -20,7 +20,7 @@ endp_conf = {
 
 
 class OpenTrades(APIRequest):
-    """Handle openTrades endpoint."""
+    """OpenTrades - class to handle the openTrades endpoint."""
 
     ENDPOINT = "/v3/accounts/{accountID}/openTrades"
 
@@ -37,7 +37,7 @@ class OpenTrades(APIRequest):
 
 
 class Trades(APIRequest):
-    """Handle trades endpoints."""
+    """Trades - class to handle the trades endpoints."""
 
     ENDPOINT = "v3/accounts/{accountID}/trades"
 
@@ -56,6 +56,17 @@ class Trades(APIRequest):
         op : operation flag
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
+
+            Possible flags::
+
+                TRADE_LIST
+                TRADE_DETAILS
+                TRADE_CLOSE (data)
+                TRADE_UPDATE (data for clientExtensions)
+                TRADE_CRC_DO (create, replace, cancel dependent order) (data)
+
+                requests involving the 'data'-parameter require headers to
+                be set: Content-Type: application/json)
 
         data : dict (optional)
             configuration details for request depending on the operation

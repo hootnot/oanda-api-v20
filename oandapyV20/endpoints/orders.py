@@ -40,7 +40,7 @@ class PendingOrders(APIRequest):
 
 
 class Orders(APIRequest):
-    """Orders - class to handle the /v3/orders endpoint."""
+    """Orders - class to handle the orders endpoints."""
 
     ENDPOINT = "v3/accounts/{accountID}/orders"
 
@@ -56,6 +56,18 @@ class Orders(APIRequest):
         op : operation flag (required)
             this flag acts as task identifier. It is used to construct the API
             endpoint and determine the HTTP method for the request.
+
+            Possible flags::
+
+                ORDER_CREATE (data)
+                ORDER_LIST
+                ORDER_DETAILS
+                ORDER_REPLACE (data)
+                ORDER_CANCEL
+                ORDER_CLIENT_EXTENSIONS (data)
+
+                requests involving the 'data'-parameter require headers to
+                be set: Content-Type: application/json)
 
         orderID : string
             id of the order to perform the request for.

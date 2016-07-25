@@ -31,6 +31,26 @@ Supported versions (passing the available tests) of Python:
 
 Integration with Travis and Coveralls will follow.
 
+Install
+=======
+
+.. code-block:: bash
+
+    $ pip install git+https://github.com/hootnot/oanda-api-v20.git
+
+If you want to run the tests, clone the repository:
+
+.. code-block:: bash
+
+    $ git clone https://github.com/hootnot/oanda-api-v20
+    $ cd oanda-api-v20
+    # edit tests/account.txt and tests/token.txt ...
+    $ python setup.py test
+    $ python setup.py install
+
+
+
+
 Design
 ======
 

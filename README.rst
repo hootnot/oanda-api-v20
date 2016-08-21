@@ -67,18 +67,18 @@ So it comes down to:
 
 .. code-block:: python
 
-     import json
-     from oandapyv20 import API    # the client
-     import oandapyv20.endpoints.trades as trades
+    import json
+    from oandapyV20 import API    # the client
+    import oandapyV20.endpoints.trades as trades
 
      access_token = "..."
      accountID = "..."
      client = API(access_token=access_token)
 
-     # request trades list
-     r = trades.Trades(accountID, op=trades.TRADES_LIST)
-     rv = client.request(r)
-     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
+    # request trades list
+    r = trades.Trades(accountID, op=trades.TRADE_LIST)
+    rv = client.request(r)
+    print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
 
 
 Processing series of requests is also possible now by storing different requests in 

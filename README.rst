@@ -71,9 +71,9 @@ So it comes down to:
     from oandapyV20 import API    # the client
     import oandapyV20.endpoints.trades as trades
 
-     access_token = "..."
-     accountID = "..."
-     client = API(access_token=access_token)
+    access_token = "..."
+    accountID = "..."
+    client = API(access_token=access_token)
 
     # request trades list
     r = trades.Trades(accountID, op=trades.TRADE_LIST)

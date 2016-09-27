@@ -1,9 +1,12 @@
 """Handling of API requests."""
+from abc import ABCMeta, abstractmethod
 
 
 class APIRequest(object):
     """Base Class for API-request classes."""
+    __metaclass__ = ABCMeta
 
+    @abstractmethod
     def __init__(self, endpoint, method="GET", body=None):
         """Instantiate an API request.
 

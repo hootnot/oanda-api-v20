@@ -41,3 +41,38 @@ def endpoint(url, method="GET"):
         return obj
 
     return dec
+
+
+def abstractclass(cls):
+    """abstractclass - class decorator.
+
+    make sure the class is abstract and cannot be used on it's own.
+
+    @abstractclass
+    class A(object):
+        def __init__(self, *args, **kwargs):
+            # logic
+            pass
+
+    class B(A):
+        pass
+
+    a = A()   # results in an AssertionError
+    b = B()   # works fine
+    """
+    setattr(cls, "_ISNEVER", cls.__bases__[0].__name__)
+    origInit = cls.__dict__["__init__"]
+
+    def wrapInit(self, *args, **kwargs):
+        # when the class is instantiated we can check for bases
+        # we don't want it to be the base class
+        try:
+            assert self.__class__.__bases__[-1].__name__ != self._ISNEVER
+            origInit(self, *args, **kwargs)
+        except AssertionError:
+            raise TypeError("Use of abstract base class")
+
+    # replace the original __init__
+    setattr(cls, "__init__", wrapInit)
+
+    return cls

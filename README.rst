@@ -76,7 +76,7 @@ So it comes down to:
     client = API(access_token=access_token)
 
     # request trades list
-    r = trades.Trades(accountID, op=trades.TRADE_LIST)
+    r = trades.TradesList(accountID)
     rv = client.request(r)
     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
 
@@ -98,9 +98,9 @@ an array or from some 'request-factory' class. Below an array example:
      # list of requests
      lor = []
      # request trades list
-     lor.append(trades.Trades(accountID, op=trades.TRADE_LIST))
+     lor.append(trades.TradesList(accountID)
      # request accounts list
-     lor.append(accounts.Accounts(op=accounts.ACCOUNT_LIST))
+     lor.append(accounts.AccountList())
 
 
      for r in lor:

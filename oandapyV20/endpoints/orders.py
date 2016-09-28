@@ -1,48 +1,17 @@
 """Handle orders and pendingOrders endpoints."""
-from .apirequest import APIRequest, dyndoc_insert, get_endpoint_config
+from .apirequest import APIRequest
+from .decorators import dyndoc_insert, endpoint, abstractclass
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {}
 
-# op flags
-ORDER_CREATE = 1
-ORDER_LIST = 2
-ORDER_DETAILS = 4
-ORDER_REPLACE = 8
-ORDER_CANCEL = 16
-ORDER_CLIENT_EXTENSIONS = 32
 
-endp_conf = {
-    ORDER_CREATE: {"path_comp": None, "method": "POST"},
-    ORDER_LIST: {"path_comp": None, "method": "GET"},
-    ORDER_DETAILS: {"path_comp": None, "method": "GET"},
-    ORDER_REPLACE: {"path_comp": None, "method": "PUT"},
-    ORDER_CANCEL: {"path_comp": "cancel", "method": "PUT"},
-    ORDER_CLIENT_EXTENSIONS: {"path_comp": "clientExtensions", "method": "PUT"}
-}
-
-
-class PendingOrders(APIRequest):
-    """PendingOrders - class to handle the pendingOrders endpoint."""
-
-    ENDPOINT = "v3/accounts/{}/pendingOrders"
-
-    def __init__(self, accountID):
-        """Instantiate a PendingOrders request.
-
-        Parameters
-        ----------
-        accountID : string
-            id of the account to perform the request on
-        """
-        endpoint = self.ENDPOINT.format(accountID)
-        super(PendingOrders, self).__init__(endpoint)
-
-
+@abstractclass
 class Orders(APIRequest):
     """Orders - class to handle the orders endpoints."""
 
-    ENDPOINT = "v3/accounts/{accountID}/orders"
+    ENDPOINT = ""
+    METHOD = "GET"
 
     @dyndoc_insert(responses)
     def __init__(self, accountID, orderID=None, data=None, op=None):
@@ -76,15 +45,63 @@ class Orders(APIRequest):
             configuration details for the order in case of a request
             to create or modify an order.
         """
-        endpoint = self.ENDPOINT
-        method, path_comp = get_endpoint_config(endp_conf, op)
+        endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
+        super(Orders, self).__init__(endpoint, method=self.METHOD, body=data)
 
-        if op in [ORDER_DETAILS, ORDER_REPLACE, ORDER_CANCEL,
-                  ORDER_CLIENT_EXTENSIONS]:
-            endpoint = '{}/{{orderID}}'.format(endpoint)
 
-        if path_comp:
-            endpoint = '{}/{}'.format(endpoint, path_comp)
+@endpoint("/v3/accounts/{accountID}/orders", "POST")
+class OrderCreate(Orders):
+    """OrderCreate.
 
-        endpoint = endpoint.format(accountID=accountID, orderID=orderID)
-        super(Orders, self).__init__(endpoint, method=method, body=data)
+    Create an Order for an Account.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/orders")
+class OrderList(Orders):
+    """OrderList.
+
+    Create an Order for an Account.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/pendingOrders")
+class OrdersPending(Orders):
+    """OrdersPending.
+
+    Create an Order for an Account.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/orders/{orderID}")
+class OrderDetails(Orders):
+    """OrderDetails.
+
+    Get details for a single Order in an Account.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/orders/{orderID}", "PUT")
+class OrderReplace(Orders):
+    """OrderReplace.
+
+    Replace an Order in an Account by simultaneously cancelling it and
+    createing a replacement Order.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
+class OrderCancel(Orders):
+    """OrderCancel.
+
+    Cancel a pending Order in an Account.
+    """
+
+
+@endpoint("/v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
+class OrderClientExtensions(Orders):
+    """OrderClientExtensions.
+
+    Update the Client Extensions for an Order in an Account. Do not set,
+    modify or delete clientExtensions if your account is associated with MT4.
+    """

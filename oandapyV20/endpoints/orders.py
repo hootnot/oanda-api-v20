@@ -49,7 +49,7 @@ class Orders(APIRequest):
         super(Orders, self).__init__(endpoint, method=self.METHOD, body=data)
 
 
-@endpoint("/v3/accounts/{accountID}/orders", "POST")
+@endpoint("v3/accounts/{accountID}/orders", "POST")
 class OrderCreate(Orders):
     """OrderCreate.
 
@@ -57,7 +57,7 @@ class OrderCreate(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/orders")
+@endpoint("v3/accounts/{accountID}/orders")
 class OrderList(Orders):
     """OrderList.
 
@@ -65,7 +65,7 @@ class OrderList(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/pendingOrders")
+@endpoint("v3/accounts/{accountID}/pendingOrders")
 class OrdersPending(Orders):
     """OrdersPending.
 
@@ -73,7 +73,7 @@ class OrdersPending(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/orders/{orderID}")
+@endpoint("v3/accounts/{accountID}/orders/{orderID}")
 class OrderDetails(Orders):
     """OrderDetails.
 
@@ -81,7 +81,7 @@ class OrderDetails(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/orders/{orderID}", "PUT")
+@endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT")
 class OrderReplace(Orders):
     """OrderReplace.
 
@@ -90,7 +90,7 @@ class OrderReplace(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
+@endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
 class OrderCancel(Orders):
     """OrderCancel.
 
@@ -98,7 +98,7 @@ class OrderCancel(Orders):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
+@endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
 class OrderClientExtensions(Orders):
     """OrderClientExtensions.
 

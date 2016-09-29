@@ -258,12 +258,12 @@ class Accounts(APIRequest):
         super(Accounts, self).__init__(endpoint, method=self.METHOD, body=data)
 
 
-@endpoint("/v3/accounts")
+@endpoint("v3/accounts")
 class AccountList(Accounts):
     """Get a list of all Accounts authorized for the provided token."""
 
 
-@endpoint("/v3/accounts/{accountID}")
+@endpoint("v3/accounts/{accountID}")
 class AccountDetails(Accounts):
     """AccountDetails.
 
@@ -273,7 +273,7 @@ class AccountDetails(Accounts):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/summary")
+@endpoint("v3/accounts/{accountID}/summary")
 class AccountSummary(Accounts):
     """AccountSummary.
 
@@ -281,7 +281,7 @@ class AccountSummary(Accounts):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/instruments")
+@endpoint("v3/accounts/{accountID}/instruments")
 class AccountInstruments(Accounts):
     """AccountInstruments.
 
@@ -292,7 +292,7 @@ class AccountInstruments(Accounts):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/configuration", "PATCH")
+@endpoint("v3/accounts/{accountID}/configuration", "PATCH")
 class AccountConfiguration(Accounts):
     """AccountConfiguration.
 
@@ -300,7 +300,7 @@ class AccountConfiguration(Accounts):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/changes")
+@endpoint("v3/accounts/{accountID}/changes")
 class AccountChanges(Accounts):
     """AccountChanges.
 

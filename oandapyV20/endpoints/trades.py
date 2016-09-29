@@ -47,7 +47,7 @@ class Trades(APIRequest):
         super(Trades, self).__init__(endpoint, method=self.METHOD, body=data)
 
 
-@endpoint("/v3/accounts/{accountID}/trades")
+@endpoint("v3/accounts/{accountID}/trades")
 class TradesList(Trades):
     """TradesList.
 
@@ -55,7 +55,7 @@ class TradesList(Trades):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/openTrades")
+@endpoint("v3/accounts/{accountID}/openTrades")
 class OpenTrades(Trades):
     """OpenTrades.
 
@@ -63,7 +63,7 @@ class OpenTrades(Trades):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/trades/{tradeID}")
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}")
 class TradeDetails(Trades):
     """TradeDetails.
 
@@ -71,7 +71,7 @@ class TradeDetails(Trades):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
 class TradeClose(Trades):
     """TradeClose.
 
@@ -79,7 +79,7 @@ class TradeClose(Trades):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
 class TradeClientExtensions(Trades):
     """TradeClientExtensions.
 
@@ -88,7 +88,7 @@ class TradeClientExtensions(Trades):
     """
 
 
-@endpoint("/v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
 class TradeCRCDO(Trades):
     """TradeCRCDO.
 

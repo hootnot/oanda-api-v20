@@ -176,7 +176,7 @@ class Accounts(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID=None, data=None, op=None):
+    def __init__(self, accountID=None, data=None):
         """Instantiate an Accounts APIRequest instance.
 
         Parameters

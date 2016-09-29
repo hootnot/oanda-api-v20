@@ -13,7 +13,7 @@ class Trades(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, tradeID=None, data=None, op=None):
+    def __init__(self, accountID, tradeID=None, data=None):
         """Instantiate a Trades APIRequest instance.
 
         Parameters

@@ -59,7 +59,10 @@ I have choosen a different approach regarding the design of the new library vers
 
 In the V20-library endpoints are represented as APIRequest objects derived from the
 APIRequest base class. Each endpoint group (accounts, trades, etc.) is represented
-by it's own class covering the functionality of all endpoints for that group.
+by it's own (abstract) class covering the functionality of all endpoints for that group. Each endpoint within that group is covered by a class derived from
+the abstract class. These classes are provided with their endpoint and method
+using the @endpoint decorator. If it concerns an endpoint based on a GET
+request allowing query-parameters, then the @params decorator is applied also.
 
 The V20-library has a client 'API'-class which processes APIRequest objects.
 

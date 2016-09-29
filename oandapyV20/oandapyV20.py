@@ -188,7 +188,7 @@ class API(object):
 
         method = endpoint.method
         method = method.lower()
-        params =  None
+        params = None
         try:
             params = getattr(endpoint, "params")
         except AttributeError:

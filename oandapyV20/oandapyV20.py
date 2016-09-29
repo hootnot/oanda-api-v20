@@ -179,11 +179,6 @@ class API(object):
             The endpoint parameter contains an instance of an APIRequest
             containing the endpoint, method and optionally other parameters.
 
-        params : dict
-            The params paremeter optionally provides a dictionary with
-            parameters for the request. Data for POST, PUT and PATCH is
-            passed this way.
-
         Raises
         ------
             V20Error in case of HTTP response code >= 400

@@ -20,6 +20,10 @@ class Pricing(APIRequest):
         ----------
         accountID : string (required)
             the accountID of the account.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID)
         super(Pricing, self).__init__(endpoint, method=self.METHOD)

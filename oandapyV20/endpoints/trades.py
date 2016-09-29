@@ -24,24 +24,13 @@ class Trades(APIRequest):
         tradeID : string
             ID of the trade
 
-        op : operation flag
-            this flag acts as task identifier. It is used to construct the API
-            endpoint and determine the HTTP method for the request.
-
-            Possible flags::
-
-                TRADE_LIST
-                TRADE_DETAILS
-                TRADE_CLOSE (data)
-                TRADE_UPDATE (data for clientExtensions)
-                TRADE_CRC_DO (create, replace, cancel dependent order) (data)
-
-                requests involving the 'data'-parameter require headers to
-                be set: Content-Type: application/json)
-
         data : dict (optional)
             configuration details for request depending on the operation
             to be performed.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, tradeID=tradeID)
         super(Trades, self).__init__(endpoint, method=self.METHOD, body=data)

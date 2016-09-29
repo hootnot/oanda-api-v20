@@ -22,28 +22,16 @@ class Orders(APIRequest):
         accountID : string (required)
             id of the account to perform the request on.
 
-        op : operation flag (required)
-            this flag acts as task identifier. It is used to construct the API
-            endpoint and determine the HTTP method for the request.
-
-            Possible flags::
-
-                ORDER_CREATE (data)
-                ORDER_LIST
-                ORDER_DETAILS
-                ORDER_REPLACE (data)
-                ORDER_CANCEL
-                ORDER_CLIENT_EXTENSIONS (data)
-
-                requests involving the 'data'-parameter require headers to
-                be set: Content-Type: application/json)
-
         orderID : string
             id of the order to perform the request for.
 
         data : dict (optional)
             configuration details for the order in case of a request
             to create or modify an order.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
         super(Orders, self).__init__(endpoint, method=self.METHOD, body=data)

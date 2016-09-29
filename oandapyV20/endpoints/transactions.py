@@ -24,6 +24,9 @@ class Transactions(APIRequest):
         transactionID : string
             the id of the transaction
 
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints
         """
         endpoint = self.ENDPOINT.format(accountID=accountID,
                                         transactionID=transactionID)

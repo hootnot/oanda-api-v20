@@ -85,7 +85,8 @@ class TestPositions(unittest.TestCase):
             rv = helper.create_pos(api, accountID, instrument, side, U)
             verify += int(rv["orderCreateTransaction"]["units"])
 
-        r = positions.Positions(accountID, op=positions.POSITION_LIST)
+        data = { "{}Units".format(side): "ALL"}
+        r = positions.PositionList(accountID)
         rv = api.request(r)
         # lookup the instrument in the positions array
         posUnits = None

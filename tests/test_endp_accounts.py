@@ -40,7 +40,7 @@ class TestAccounts(unittest.TestCase):
         """ get all accounts
             normally a user has at least one account
         """
-        r = accounts.Accounts(op=accounts.ACCOUNT_LIST)
+        r = accounts.AccountList()
         result = api.request(r)
         count = len(result['accounts'])
         self.assertGreaterEqual(count, 1)
@@ -49,7 +49,7 @@ class TestAccounts(unittest.TestCase):
         """ get account
             the details of specified account
         """
-        r = accounts.Accounts(accountID=accountID, op=accounts.ACCOUNT_DETAILS)
+        r = accounts.AccountDetails(accountID=accountID)
         result = api.request(r)
         s_result = json.dumps(result)
         self.assertTrue(accountID in s_result)
@@ -65,7 +65,7 @@ class TestAccounts(unittest.TestCase):
         if not accID:
             # hack to use the global accountID
             accID = accountID
-        r = accounts.Accounts(accountID=accID, op=accounts.ACCOUNT_SUMMARY)
+        r = accounts.AccountSummary(accountID=accID)
         if fail:
             # The test should raise an exception with code == fail
             oErr = None
@@ -87,7 +87,7 @@ class TestAccounts(unittest.TestCase):
         """ get account
             the instruments of specified account
         """
-        r = accounts.Accounts(accountID=accountID, op=accounts.ACCOUNT_INSTRUMENTS)
+        r = accounts.AccountInstruments(accountID=accountID)
         params = None
         if instr:
             params = {"instruments": instr}
@@ -113,7 +113,6 @@ class TestAccounts(unittest.TestCase):
                 self.assertTrue(len(result["instruments"]) == cnt)
 
     @parameterized.expand([
-                       (None, "0.2"),
                        (None, "0.1"),
                        (None, "0.05"),
                        ("X", "0.05", "Account does not exist"),
@@ -124,9 +123,7 @@ class TestAccounts(unittest.TestCase):
             accID = accountID
 
         config = {"marginRate": marginRate}
-        r = accounts.Accounts(accountID=accID,
-                              op=accounts.ACCOUNT_CONFIGURATION,
-                              data=config)
+        r = accounts.AccountConfiguration(accountID=accID, data=config)
 
         result = None
         if fail:

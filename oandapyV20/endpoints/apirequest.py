@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 class APIRequest(object):
     """Base Class for API-request classes."""
+
     __metaclass__ = ABCMeta
 
     @abstractmethod

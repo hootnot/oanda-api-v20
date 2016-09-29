@@ -1,6 +1,6 @@
 """Handle pricing endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 responses = {}
 
@@ -25,6 +25,7 @@ class Pricing(APIRequest):
         super(Pricing, self).__init__(endpoint, method=self.METHOD)
 
 
+@params
 @endpoint("v3/accounts/{accountID}/pricing")
 class PricingInfo(Pricing):
     """Pricing.

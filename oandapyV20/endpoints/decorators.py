@@ -76,3 +76,21 @@ def abstractclass(cls):
     setattr(cls, "__init__", wrapInit)
 
     return cls
+
+
+def params(cls):
+    """'params' decorator.
+
+    Add the 'params' argument to the constructor of the class.
+    """
+    # save parent class __init__
+    origInit = cls.__bases__[0].__dict__["__init__"]
+
+    def wrapInit(self, *args, **kwargs):
+        if "params" in kwargs:
+            setattr(cls, "params", kwargs['params'])
+            del kwargs['params']
+        origInit(self, *args, **kwargs)
+    setattr(cls, "__init__", wrapInit)
+
+    return cls

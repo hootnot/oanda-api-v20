@@ -1,6 +1,6 @@
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 responses = {}
 
@@ -31,6 +31,7 @@ class Transactions(APIRequest):
                                            method=self.METHOD, body=None)
 
 
+@params
 @endpoint("v3/accounts/{accountID}/transactions")
 class TransactionList(Transactions):
     """TransactionList.
@@ -48,6 +49,7 @@ class TransactionDetails(Transactions):
     """
 
 
+@params
 @endpoint("v3/accounts/{accountID}/transactions/idrange")
 class TransactionIDRange(Transactions):
     """TransactionIDRange.
@@ -56,6 +58,7 @@ class TransactionIDRange(Transactions):
     """
 
 
+@params
 @endpoint("v3/accounts/{accountID}/transactions/sinceid")
 class TransactionSinceID(Transactions):
     """TransactionSinceID.

@@ -1,6 +1,6 @@
 """Handle account endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
@@ -193,6 +193,9 @@ class Accounts(APIRequest):
             requests involving the 'data'-parameter require headers to
             be set: Content-Type: application/json)
 
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints
 
         Examples
         --------
@@ -281,6 +284,7 @@ class AccountSummary(Accounts):
     """
 
 
+@params
 @endpoint("v3/accounts/{accountID}/instruments")
 class AccountInstruments(Accounts):
     """AccountInstruments.
@@ -300,6 +304,7 @@ class AccountConfiguration(Accounts):
     """
 
 
+@params
 @endpoint("v3/accounts/{accountID}/changes")
 class AccountChanges(Accounts):
     """AccountChanges.

@@ -1,6 +1,6 @@
 """Handle trades endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 responses = {}
 
@@ -47,6 +47,7 @@ class Trades(APIRequest):
         super(Trades, self).__init__(endpoint, method=self.METHOD, body=data)
 
 
+@params
 @endpoint("v3/accounts/{accountID}/trades")
 class TradesList(Trades):
     """TradesList.

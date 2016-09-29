@@ -87,25 +87,22 @@ class TestAccounts(unittest.TestCase):
         """ get account
             the instruments of specified account
         """
-        r = accounts.AccountInstruments(accountID=accountID)
         params = None
         if instr:
             params = {"instruments": instr}
+        r = accounts.AccountInstruments(accountID=accountID, params=params)
 
         result = None
         if fail:
             # The test should raise an exception with code == fail
             oErr = None
             with self.assertRaises(V20Error) as oErr:
-                result = api.request(r, params=params)
+                result = api.request(r)
                 s = "{}".format(oErr)
                 self.assertTrue(fail in s)
 
         else:
-            if params:
-                result = api.request(r, params=params)
-            else:
-                result = api.request(r)
+            result = api.request(r)
 
             if f == "gt":
                 self.assertTrue(len(result["instruments"]) > cnt)

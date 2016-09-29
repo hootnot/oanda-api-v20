@@ -43,8 +43,8 @@ class TestPricing(unittest.TestCase):
                           ])
     def test__pricing(self, instruments, fail=False):
 
-        r = pricing.PricingInfo(account_id)
-        result = api.request(r, params={"instruments": instruments})
+        r = pricing.PricingInfo(account_id, params={"instruments": instruments})
+        result = api.request(r)
         count = len(result['prices'])
         f = result['prices'][0]
         # status strings allowed in the response

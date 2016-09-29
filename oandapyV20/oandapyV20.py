@@ -170,7 +170,7 @@ class API(object):
         if headers:
             self.client.headers.update(headers)
 
-    def request(self, endpoint, params=None):
+    def request(self, endpoint):
         """Perform a request for the APIRequest instance 'endpoint'.
 
         Parameters
@@ -193,7 +193,12 @@ class API(object):
 
         method = endpoint.method
         method = method.lower()
-        params = params or {}
+        params =  None
+        try:
+            params = getattr(endpoint, "params")
+        except AttributeError:
+            # request does not have params
+            params = {}
 
         func = getattr(self.client, method)
 

@@ -1,6 +1,6 @@
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {}
@@ -57,6 +57,7 @@ class OrderCreate(Orders):
     """
 
 
+@params
 @endpoint("v3/accounts/{accountID}/orders")
 class OrderList(Orders):
     """OrderList.

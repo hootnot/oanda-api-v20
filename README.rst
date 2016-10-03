@@ -117,7 +117,7 @@ an array or from some 'request-factory' class. Below an array example:
              print("{}".format(json.dumps({"request": "{}".format(r),
                                            "response": rv}, indent=2)))
          except V20Error as e:
-             print("OOPS: %d %s" % (e.code, e.msg,))
+             print("OOPS: {:d} {:d}".format(e.code, e.msg))
 
 Output
 ~~~~~~
@@ -172,6 +172,7 @@ Output
         ]
       }
     }
+
     {
       "request": "v3/accounts/101-004-1435156-001/pricing",
       "response": {

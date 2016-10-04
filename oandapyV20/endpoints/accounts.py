@@ -147,6 +147,41 @@ responses = {
             "lastTransactionID": "833"
         }
     },
+    "_v3_account_by_accountID_summary": {
+        "url": "v3/accounts/{accountID}/summary",
+        "response": {
+            "account": {
+                "marginCloseoutNAV": "35454.4740",
+                "marginUsed": "10581.5000",
+                "currency": "EUR",
+                "resettablePL": "-13840.3525",
+                "NAV": "35454.4740",
+                "marginCloseoutMarginUsed": "10581.5000",
+                "marginCloseoutPositionValue": "211630.0000",
+                "openTradeCount": 2,
+                "id": "101-004-1435156-001",
+                "openPositionCount": 1,
+                "marginCloseoutPercent": "0.14923",
+                "marginCallMarginUsed": "10581.5000",
+                "hedgingEnabled": False,
+                "positionValue": "211630.0000",
+                "pl": "-13840.3525",
+                "lastTransactionID": "2123",
+                "marginAvailable": "24872.9740",
+                "marginRate": "0.05",
+                "marginCallPercent": "0.29845",
+                "pendingOrderCount": 0,
+                "withdrawalLimit": "24872.9740",
+                "unrealizedPL": "0.0000",
+                "alias": "hootnotv20",
+                "createdByUserID": 1435156,
+                "marginCloseoutUnrealizedPL": "0.0000",
+                "createdTime": "2016-06-24T21:03:50.914647476Z",
+                "balance": "35454.4740"
+            },
+            "lastTransactionID": "2123"
+        }
+    },
     "_v3_account_by_accountID_configuration": {
         "url": "/v3/accounts/{}/configuration",
         "response": {

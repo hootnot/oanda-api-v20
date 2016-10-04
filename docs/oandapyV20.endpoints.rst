@@ -4,19 +4,19 @@ oandapyV20.endpoints package
 Submodules
 ----------
 
-oandapyV20.endpoints.accounts module
-------------------------------------
+oandapyV20.endpoints.apirequest module
+--------------------------------------
 
-.. automodule:: oandapyV20.endpoints.accounts
+.. automodule:: oandapyV20.endpoints.apirequest
     :members:
     :undoc-members:
     :show-inheritance:
     :special-members: __init__
 
-oandapyV20.endpoints.apirequest module
---------------------------------------
+oandapyV20.endpoints.accounts module
+------------------------------------
 
-.. automodule:: oandapyV20.endpoints.apirequest
+.. automodule:: oandapyV20.endpoints.accounts
     :members:
     :undoc-members:
     :show-inheritance:

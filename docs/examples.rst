@@ -34,7 +34,7 @@ Take the script below and name it 'trades.py'. From the shell:
     api = API(access_token=access_token, headers={ "Content-Type": "application/json"} )
  
     if chc == 'list':
-       r = trades.Trades(accountID, op=trades.TRADE_LIST)
+       r = trades.TradesList(accountID)
        rv = api.request(r)
        print("RESP:\n{} ".format(json.dumps(rv, indent=2)))
  
@@ -47,7 +47,7 @@ Take the script below and name it 'trades.py'. From the shell:
  
     if chc == 'details':
        for O in sys.argv[2:]:
-           r = trades.Trades(accountID, tradeID=O, op=trades.TRADE_DETAILS)
+           r = trades.TradeDetails(accountID, tradeID=O)
            rv = api.request(r)
            print("RESP:\n{} ".format(json.dumps(rv, indent=2)))
  
@@ -55,7 +55,7 @@ Take the script below and name it 'trades.py'. From the shell:
        X = iter(sys.argv[2:])
        for O in X:
            cfg = { "units": X.next() }
-           r = trades.Trades(accountID, tradeID=O, op=trades.TRADE_CLOSE, data=cfg)
+           r = trades.TradeClose(accountID, tradeID=O, data=cfg)
            rv = api.request(r)
            print("RESP:\n{} ".format(json.dumps(rv, indent=2)))
  
@@ -66,7 +66,7 @@ Take the script below and name it 'trades.py'. From the shell:
                    "comment": "myComment",
                 }
              }
-           r = trades.Trades(accountID, tradeID=O, data=cfg, op=trades.TRADE_UPDATE)
+           r = trades.TradeClientExtensions(accountID, tradeID=O, data=cfg)
            rv = api.request(r)
            print("RESP:\n{} ".format(json.dumps(rv, indent=2)))
  
@@ -83,6 +83,6 @@ Take the script below and name it 'trades.py'. From the shell:
                      "price": X.next()
                    }
              }
-           r = trades.Trades(accountID, tradeID=O, data=cfg, op=trades.TRADE_CRC_DO)
+           r = trades.TradeCRCDO(accountID, tradeID=O, data=cfg)
            rv = api.request(r)
            print("RESP:\n{} ".format(json.dumps(rv, indent=2)))

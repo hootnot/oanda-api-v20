@@ -1,0 +1,12 @@
+language: python
+python:
+- '2.7'
+install:
+- pip install pip --upgrade
+- pip install requests-mock
+- pip install coveralls
+- pip install nose nose-parameterized
+script:
+- coverage run --source=oandapyV20 setup.py test
+after_success:
+- coveralls

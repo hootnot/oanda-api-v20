@@ -2,7 +2,6 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
-from mock import mock
 import requests_mock
 
 

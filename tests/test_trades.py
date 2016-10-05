@@ -43,6 +43,14 @@ class TestTrades(unittest.TestCase):
             print("%s" % e)
             exit(0)
 
+    def test__trades_base_exception(self):
+        """test for the exception when using the baseclass."""
+        with self.assertRaises(TypeError) as bcErr:
+            r = trades.TradesList(accountID)
+
+        bcErr = bcErr.exception
+        self.assertTrue("Use of abstract base class" in "{}".format(bcErr))
+
     @requests_mock.Mocker()
     def test__trades_list(self, mock_get):
         """get the trades information for an account."""
@@ -52,7 +60,7 @@ class TestTrades(unittest.TestCase):
         mock_get.register_uri('GET',
                               uri,
                               text=text)
-        r = trades.TradesList(accountID)
+        r = trades.Trades(accountID)
         result = api.request(r)
         self.assertTrue(len(result['trades']) == 2 and
                         result['trades'][0]['instrument'] == "DE30_EUR")

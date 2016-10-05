@@ -73,6 +73,8 @@ def abstractclass(cls):
             raise TypeError("Use of abstract base class")
 
     # replace the original __init__
+    setattr(wrapInit, "__doc__", getattr(origInit, "__doc__"))
+    setattr(origInit, "__doc__", "")
     setattr(cls, "__init__", wrapInit)
 
     return cls

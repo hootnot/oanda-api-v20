@@ -98,7 +98,7 @@ class TestAccounts(unittest.TestCase):
             with self.assertRaises(V20Error) as oErr:
                 result = api.request(r)
 
-            self.assertTrue(fail in oErr.exception)
+            self.assertTrue(fail in "{}".format(oErr.exception))
         else:
             result = api.request(r)
             self.assertTrue(result["account"]["id"] == accountID and

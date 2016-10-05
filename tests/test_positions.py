@@ -1,0 +1,65 @@
+import unittest
+import json
+from . import unittestsetup
+from .unittestsetup import environment as environment
+import requests_mock
+
+
+try:
+    from nose_parameterized import parameterized
+except:
+    print("*** Please install 'nose_parameterized' to run these tests ***")
+    exit(0)
+
+import oandapyV20
+from oandapyV20 import API
+from oandapyV20.exceptions import V20Error
+import oandapyV20.endpoints.positions as positions
+from oandapyV20.endpoints.positions import responses
+
+access_token = None
+accountID = None
+account_cur = None
+api = None
+
+
+class TestPositions(unittest.TestCase):
+    """Tests regarding the positions endpoints."""
+
+    def setUp(self):
+        """setup for all tests."""
+        global access_token
+        global accountID
+        global account_cur
+        global api
+        # self.maxDiff = None
+        try:
+            accountID, account_cur, access_token = unittestsetup.auth()
+            api = API(environment=environment,
+                      access_token=access_token,
+                      headers={"Content-Type": "application/json"})
+            api.api_url = 'https://test.com'
+        except Exception as e:
+            print("%s" % e)
+            exit(0)
+
+    @requests_mock.Mocker()
+    def test__positions_list(self, mock_get):
+        """get the positions list for an account."""
+        uri = 'https://test.com/v3/accounts/{}/positions'.format(accountID)
+        resp = responses["_v3_accounts_accountID_positions"]['response']
+        text = json.dumps(resp)
+        mock_get.register_uri('GET',
+                              uri,
+                              text=text)
+        r = positions.PositionList(accountID)
+        result = api.request(r)
+        pos1 = result['positions'][1]
+        self.assertTrue(pos1["instrument"] == "DE30_EUR" and
+                        int(pos1["short"]["units"]) == -20 and
+                        result["lastTransactionID"] == "2124")
+
+
+if __name__ == "__main__":
+
+    unittest.main()

@@ -26,7 +26,7 @@ Status
  * Tests partially completed
 
 
-Supported versions (passing the available tests) of Python:
+Supported Python versions:
 
     +-------------------+-----+-----+-----+-----+
     |                   | 2.7 | 3.3 | 3.4 | 3.5 |
@@ -34,8 +34,6 @@ Supported versions (passing the available tests) of Python:
     | **oanda-api-v20** | YES | YES | YES | YES |
     +-------------------+-----+-----+-----+-----+
 
-
-Integration with Travis and Coveralls will follow.
 
 Install
 =======

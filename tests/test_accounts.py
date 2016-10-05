@@ -104,6 +104,17 @@ class TestAccounts(unittest.TestCase):
             self.assertTrue(result["account"]["id"] == accountID and
                             result["account"]["currency"] == account_cur)
 
+    @requests_mock.Mocker()
+    def test__get_instruments(self, mock_get):
+        """get the instruments of specified account."""
+        uri = 'https://test.com/v3/accounts/{}/instruments'.format(accountID)
+        respKey = "_v3_account_by_accountID_instruments"
+        text = json.dumps(responses[respKey]['response'])
+        mock_get.register_uri('GET', uri, text=text)
+        r = accounts.AccountInstruments(accountID=accountID)
+        result = api.request(r)
+        s_result = json.dumps(result)
+        self.assertTrue("DE30_EUR" in s_result and "EUR_AUD" not in s_result)
 
 if __name__ == "__main__":
 

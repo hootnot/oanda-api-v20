@@ -182,6 +182,98 @@ responses = {
             "lastTransactionID": "2123"
         }
     },
+    "_v3_account_by_accountID_instruments": {
+        "url": "/v3/accounts/{accountID}/instuments",
+        "response": {
+            "instruments": [
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "Europe 50",
+                    "name": "EU50_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "3000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "EUR/USD",
+                    "name": "EUR_USD",
+                    "displayPrecision": 5,
+                    "type": "CURRENCY",
+                    "minimumTrailingStopDistance": "0.00050",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "100000000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": -4,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "1.00000"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "US Wall St 30",
+                    "name": "US30_USD",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "1000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "France 40",
+                    "name": "FR40_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "2000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "EUR/CHF",
+                    "name": "EUR_CHF",
+                    "displayPrecision": 5,
+                    "type": "CURRENCY",
+                    "minimumTrailingStopDistance": "0.00050",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "100000000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": -4,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "1.00000"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "Germany 30",
+                    "name": "DE30_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "2500",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+            ],
+            "lastTransactionID": "2124"
+        },
+    },
     "_v3_account_by_accountID_configuration": {
         "url": "/v3/accounts/{}/configuration",
         "response": {

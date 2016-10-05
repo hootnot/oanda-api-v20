@@ -46,7 +46,7 @@ class TestTrades(unittest.TestCase):
     def test__trades_base_exception(self):
         """test for the exception when using the baseclass."""
         with self.assertRaises(TypeError) as bcErr:
-            r = trades.TradesList(accountID)
+            r = trades.Trades(accountID)
 
         bcErr = bcErr.exception
         self.assertTrue("Use of abstract base class" in "{}".format(bcErr))
@@ -60,7 +60,7 @@ class TestTrades(unittest.TestCase):
         mock_get.register_uri('GET',
                               uri,
                               text=text)
-        r = trades.Trades(accountID)
+        r = trades.TradesList(accountID)
         result = api.request(r)
         self.assertTrue(len(result['trades']) == 2 and
                         result['trades'][0]['instrument'] == "DE30_EUR")

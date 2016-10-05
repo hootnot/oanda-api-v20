@@ -47,7 +47,7 @@ class TestPricing(unittest.TestCase):
     def test__pricing(self, mock_get):
         """get the pricing information for instruments."""
         uri = 'https://test.com/v3/accounts/{}/pricing'.format(accountID)
-        resp = responses["_v3_account_accountID_pricing"]['response']
+        resp = responses["_v3_accounts_accountID_pricing"]['response']
         text = json.dumps(resp)
         mock_get.register_uri('GET',
                               uri,
@@ -55,7 +55,8 @@ class TestPricing(unittest.TestCase):
         params = {"instruments": "EUR_USD,EUR_JPY"}
         r = pricing.PricingInfo(accountID, params=params)
         result = api.request(r)
-        self.assertTrue("EUR_USD" in result and "EUR_JPY" in result)
+        s_result = json.dumps(result)
+        self.assertTrue("EUR_USD" in s_result and "EUR_JPY" in s_result)
 
 
 if __name__ == "__main__":

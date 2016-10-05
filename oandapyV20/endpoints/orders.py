@@ -1,51 +1,68 @@
 """Handle orders and pendingOrders endpoints."""
-from .apirequest import APIRequest, dyndoc_insert, get_endpoint_config
+from .apirequest import APIRequest
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
-responses = {}
-
-# op flags
-ORDER_CREATE = 1
-ORDER_LIST = 2
-ORDER_DETAILS = 4
-ORDER_REPLACE = 8
-ORDER_CANCEL = 16
-ORDER_CLIENT_EXTENSIONS = 32
-
-endp_conf = {
-    ORDER_CREATE: {"path_comp": None, "method": "POST"},
-    ORDER_LIST: {"path_comp": None, "method": "GET"},
-    ORDER_DETAILS: {"path_comp": None, "method": "GET"},
-    ORDER_REPLACE: {"path_comp": None, "method": "PUT"},
-    ORDER_CANCEL: {"path_comp": "cancel", "method": "PUT"},
-    ORDER_CLIENT_EXTENSIONS: {"path_comp": "clientExtensions", "method": "PUT"}
+responses = {
+    "_v3_accounts_accountID_orders": {
+        "url": "v3/accounts/{accountID}/orders",
+        "response": {
+            "orders": [
+                {
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "partialFill": "DEFAULT_FILL",
+                    "price": "1.20000",
+                    "stopLossOnFill": {
+                        "timeInForce": "GTC",
+                        "price": "1.22000"
+                    },
+                    "createTime": "2016-10-05T10:25:47.627003645Z",
+                    "timeInForce": "GTC",
+                    "instrument": "EUR_USD",
+                    "state": "PENDING",
+                    "units": "-100",
+                    "id": "2125",
+                    "type": "LIMIT",
+                    "positionFill": "POSITION_DEFAULT"
+                }
+            ],
+            "lastTransactionID": "2129"
+        }
+    },
+    "_v3_accounts_accountID_order_replace": {
+        "url": "v3/accounts/{accountID}/orders",
+        "response": {
+            "orders": [
+                {
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "replacesOrderID": "2125",
+                    "partialFill": "DEFAULT_FILL",
+                    "price": "1.25000",
+                    "createTime": "2016-10-05T10:52:43.742347417Z",
+                    "timeInForce": "GTC",
+                    "instrument": "EUR_USD",
+                    "state": "PENDING",
+                    "units": "-50000",
+                    "id": "2133",
+                    "type": "LIMIT",
+                    "positionFill": "POSITION_DEFAULT"
+                }
+            ],
+            "lastTransactionID": "2133"
+        }
+    }
 }
 
 
-class PendingOrders(APIRequest):
-    """PendingOrders - class to handle the pendingOrders endpoint."""
-
-    ENDPOINT = "v3/accounts/{}/pendingOrders"
-
-    def __init__(self, accountID):
-        """Instantiate a PendingOrders request.
-
-        Parameters
-        ----------
-        accountID : string
-            id of the account to perform the request on
-        """
-        endpoint = self.ENDPOINT.format(accountID)
-        super(PendingOrders, self).__init__(endpoint)
-
-
+@abstractclass
 class Orders(APIRequest):
     """Orders - class to handle the orders endpoints."""
 
-    ENDPOINT = "v3/accounts/{accountID}/orders"
+    ENDPOINT = ""
+    METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, orderID=None, data=None, op=None):
+    def __init__(self, accountID, orderID=None, data=None):
         """Instantiate an Orders request.
 
         Parameters
@@ -53,38 +70,75 @@ class Orders(APIRequest):
         accountID : string (required)
             id of the account to perform the request on.
 
-        op : operation flag (required)
-            this flag acts as task identifier. It is used to construct the API
-            endpoint and determine the HTTP method for the request.
-
-            Possible flags::
-
-                ORDER_CREATE (data)
-                ORDER_LIST
-                ORDER_DETAILS
-                ORDER_REPLACE (data)
-                ORDER_CANCEL
-                ORDER_CLIENT_EXTENSIONS (data)
-
-                requests involving the 'data'-parameter require headers to
-                be set: Content-Type: application/json)
-
         orderID : string
             id of the order to perform the request for.
 
         data : dict (optional)
             configuration details for the order in case of a request
             to create or modify an order.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
         """
-        endpoint = self.ENDPOINT
-        method, path_comp = get_endpoint_config(endp_conf, op)
+        endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
+        super(Orders, self).__init__(endpoint, method=self.METHOD, body=data)
 
-        if op in [ORDER_DETAILS, ORDER_REPLACE, ORDER_CANCEL,
-                  ORDER_CLIENT_EXTENSIONS]:
-            endpoint = '{}/{{orderID}}'.format(endpoint)
 
-        if path_comp:
-            endpoint = '{}/{}'.format(endpoint, path_comp)
+@endpoint("v3/accounts/{accountID}/orders", "POST")
+class OrderCreate(Orders):
+    """OrderCreate.
 
-        endpoint = endpoint.format(accountID=accountID, orderID=orderID)
-        super(Orders, self).__init__(endpoint, method=method, body=data)
+    Create an Order for an Account.
+    """
+
+
+@params
+@endpoint("v3/accounts/{accountID}/orders")
+class OrderList(Orders):
+    """OrderList.
+
+    Create an Order for an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/pendingOrders")
+class OrdersPending(Orders):
+    """OrdersPending.
+
+    Create an Order for an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/orders/{orderID}")
+class OrderDetails(Orders):
+    """OrderDetails.
+
+    Get details for a single Order in an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT")
+class OrderReplace(Orders):
+    """OrderReplace.
+
+    Replace an Order in an Account by simultaneously cancelling it and
+    createing a replacement Order.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
+class OrderCancel(Orders):
+    """OrderCancel.
+
+    Cancel a pending Order in an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
+class OrderClientExtensions(Orders):
+    """OrderClientExtensions.
+
+    Update the Client Extensions for an Order in an Account. Do not set,
+    modify or delete clientExtensions if your account is associated with MT4.
+    """

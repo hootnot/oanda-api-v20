@@ -1,48 +1,52 @@
 """Handle trades endpoints."""
-from .apirequest import APIRequest, dyndoc_insert, get_endpoint_config
+from .apirequest import APIRequest
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
-# op flags
-TRADE_LIST = 1
-TRADE_DETAILS = 2
-TRADE_CLOSE = 4
-TRADE_UPDATE = 8
-TRADE_CRC_DO = 16
-
-responses = {}
-
-endp_conf = {
-    TRADE_LIST: {"path_comp": None, "method": "GET"},
-    TRADE_DETAILS: {"path_comp": None, "method": "GET"},
-    TRADE_CLOSE: {"path_comp": "close", "method": "PUT"},
-    TRADE_UPDATE: {"path_comp": "clientExtensions", "method": "PUT"},
-    TRADE_CRC_DO: {"path_comp": "orders", "method": "PUT"},
+responses = {
+    "_v3_accounts_accountID_trades": {
+        "url": "v3/accounts/101-004-1435156-001/trades",
+        "response": {
+            "trades": [
+                {
+                    "financing": "-1.8516",
+                    "openTime": "2016-10-04T08:51:40.444453952Z",
+                    "price": "10581.5",
+                    "unrealizedPL": "250.0000",
+                    "realizedPL": "0.0000",
+                    "instrument": "DE30_EUR",
+                    "state": "OPEN",
+                    "initialUnits": "-10",
+                    "currentUnits": "-10",
+                    "id": "2123"
+                },
+                {
+                    "financing": "-1.8516",
+                    "openTime": "2016-10-04T08:51:40.214522674Z",
+                    "price": "10581.5",
+                    "unrealizedPL": "250.0000",
+                    "realizedPL": "0.0000",
+                    "instrument": "DE30_EUR",
+                    "state": "OPEN",
+                    "initialUnits": "-10",
+                    "currentUnits": "-10",
+                    "id": "2121"
+                }
+            ],
+            "lastTransactionID": "2124"
+        }
+    }
 }
 
 
-class OpenTrades(APIRequest):
-    """OpenTrades - class to handle the openTrades endpoint."""
-
-    ENDPOINT = "/v3/accounts/{accountID}/openTrades"
-
-    def __init__(self, accountID):
-        """Instantiate an OpenTrades APIRequest instance.
-
-        Parameters
-        ----------
-        accountID : string
-            the accountID of the account.
-        """
-        endpoint = self.ENDPOINT.format(accountID=accountID)
-        super(OpenTrades, self).__init__(endpoint)
-
-
+@abstractclass
 class Trades(APIRequest):
     """Trades - class to handle the trades endpoints."""
 
-    ENDPOINT = "v3/accounts/{accountID}/trades"
+    ENDPOINT = ""
+    METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, tradeID=None, data=None, op=None):
+    def __init__(self, accountID, tradeID=None, data=None):
         """Instantiate a Trades APIRequest instance.
 
         Parameters
@@ -53,33 +57,63 @@ class Trades(APIRequest):
         tradeID : string
             ID of the trade
 
-        op : operation flag
-            this flag acts as task identifier. It is used to construct the API
-            endpoint and determine the HTTP method for the request.
-
-            Possible flags::
-
-                TRADE_LIST
-                TRADE_DETAILS
-                TRADE_CLOSE (data)
-                TRADE_UPDATE (data for clientExtensions)
-                TRADE_CRC_DO (create, replace, cancel dependent order) (data)
-
-                requests involving the 'data'-parameter require headers to
-                be set: Content-Type: application/json)
-
         data : dict (optional)
             configuration details for request depending on the operation
             to be performed.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
         """
-        endpoint = self.ENDPOINT
-        method, path_comp = get_endpoint_config(endp_conf, op)
+        endpoint = self.ENDPOINT.format(accountID=accountID, tradeID=tradeID)
+        super(Trades, self).__init__(endpoint, method=self.METHOD, body=data)
 
-        if op in [TRADE_DETAILS, TRADE_CLOSE, TRADE_UPDATE, TRADE_CRC_DO]:
-            endpoint = "{}/{{tradeID}}".format(endpoint)
 
-        if path_comp:
-            endpoint = "{}/{}".format(endpoint, path_comp)
+@params
+@endpoint("v3/accounts/{accountID}/trades")
+class TradesList(Trades):
+    """TradesList.
 
-        endpoint = endpoint.format(accountID=accountID, tradeID=tradeID)
-        super(Trades, self).__init__(endpoint, method=method, body=data)
+    Get a list of trades for an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/openTrades")
+class OpenTrades(Trades):
+    """OpenTrades.
+
+    Get the list of open Trades for an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}")
+class TradeDetails(Trades):
+    """TradeDetails.
+
+    Get the details of a specific Trade in an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
+class TradeClose(Trades):
+    """TradeClose.
+
+    Close (partially or fully) a specific open Trade in an Account.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
+class TradeClientExtensions(Trades):
+    """TradeClientExtensions.
+
+    Update the Client Extensions for a Trade. Do not add, update or delete
+    the Client Extensions if your account is associated with MT4.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
+class TradeCRCDO(Trades):
+    """TradeCRCDO.
+
+    Trade Create Replace Cancel Dependent Orders.
+    """

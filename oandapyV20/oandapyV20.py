@@ -170,7 +170,7 @@ class API(object):
         if headers:
             self.client.headers.update(headers)
 
-    def request(self, endpoint, params=None):
+    def request(self, endpoint):
         """Perform a request for the APIRequest instance 'endpoint'.
 
         Parameters
@@ -178,11 +178,6 @@ class API(object):
         endpoint : APIRequest
             The endpoint parameter contains an instance of an APIRequest
             containing the endpoint, method and optionally other parameters.
-
-        params : dict
-            The params paremeter optionally provides a dictionary with
-            parameters for the request. Data for POST, PUT and PATCH is
-            passed this way.
 
         Raises
         ------
@@ -193,7 +188,12 @@ class API(object):
 
         method = endpoint.method
         method = method.lower()
-        params = params or {}
+        params = None
+        try:
+            params = getattr(endpoint, "params")
+        except AttributeError:
+            # request does not have params
+            params = {}
 
         func = getattr(self.client, method)
 

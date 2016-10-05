@@ -3,15 +3,21 @@ OANDA REST-V20 API wrapper
 
 The REST-V20 API specs are not completely released yet. Support for 'streaming', 'pricing history' and 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
 
-
-.. image:: https://landscape.io/github/hootnot/oanda-api-v20/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/hootnot/oanda-api-v20/master
-   :alt: Code Health
+.. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
+   :target: https://travis-ci.org/hootnot/oanda-api-v20
+   :alt: Build
 
 .. image:: https://readthedocs.org/projects/oanda-api-v20/badge/?version=latest
    :target: http://oanda-api-v20.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
    
+.. image:: https://landscape.io/github/hootnot/oanda-api-v20/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/hootnot/oanda-api-v20/master
+   :alt: Code Health
+
+.. image:: https://coveralls.io/repos/github/hootnot/oanda-api-v20/badge.svg?branch=master
+   :target: https://coveralls.io/github/hootnot/oanda-api-v20?branch=master
+   :alt: Coverage
 
 Status
 ======
@@ -20,16 +26,14 @@ Status
  * Tests partially completed
 
 
-Supported versions (passing the available tests) of Python:
+Supported Python versions:
 
-    +-------------------+-----+-----+ 
-    |                   | 2.7 | 3.5 |
-    +===================+=====+=====+ 
-    | **oanda-api-v20** | YES | YES |
-    +-------------------+-----+-----+ 
+    +-------------------+-----+-----+-----+-----+
+    |                   | 2.7 | 3.3 | 3.4 | 3.5 |
+    +===================+=====+=====+=====+=====+
+    | **oanda-api-v20** | YES | YES | YES | YES |
+    +-------------------+-----+-----+-----+-----+
 
-
-Integration with Travis and Coveralls will follow.
 
 Install
 =======
@@ -59,7 +63,10 @@ I have choosen a different approach regarding the design of the new library vers
 
 In the V20-library endpoints are represented as APIRequest objects derived from the
 APIRequest base class. Each endpoint group (accounts, trades, etc.) is represented
-by it's own class covering the functionality of all endpoints for that group.
+by it's own (abstract) class covering the functionality of all endpoints for that group. Each endpoint within that group is covered by a class derived from
+the abstract class. These classes are provided with their endpoint and method
+using the @endpoint decorator. If it concerns an endpoint based on a GET
+request allowing query-parameters, then the @params decorator is applied also.
 
 The V20-library has a client 'API'-class which processes APIRequest objects.
 
@@ -76,7 +83,7 @@ So it comes down to:
     client = API(access_token=access_token)
 
     # request trades list
-    r = trades.Trades(accountID, op=trades.TRADE_LIST)
+    r = trades.TradesList(accountID)
     rv = client.request(r)
     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
 
@@ -88,8 +95,10 @@ an array or from some 'request-factory' class. Below an array example:
 
      import json
      from oandapyV20 import API    # the client
+     from oandapyV20.exceptions import V20Error
      import oandapyV20.endpoints.accounts as accounts
      import oandapyV20.endpoints.trades as trades
+     import oandapyV20.endpoints.pricing as pricing
 
      access_token = "..."
      accountID = "..."
@@ -98,17 +107,21 @@ an array or from some 'request-factory' class. Below an array example:
      # list of requests
      lor = []
      # request trades list
-     lor.append(trades.Trades(accountID, op=trades.TRADE_LIST))
+     lor.append(trades.TradesList(accountID)
      # request accounts list
-     lor.append(accounts.Accounts(op=accounts.ACCOUNT_LIST))
-
+     lor.append(accounts.AccountList())
+     # request pricing info
+     params={"instruments": "DE30_EUR,EUR_GBP"}
+     lor.append(pricing.PricingInfo(accountID, params=params)
 
      for r in lor:
-         rv = client.request(r)
-         # put request and response in 1 JSON structure
-         print("{}".format(json.dumps({"request": "{}".format(r), 
-                                       "response": rv}, indent=2)))
-
+         try:
+             rv = client.request(r)
+             # put request and response in 1 JSON structure
+             print("{}".format(json.dumps({"request": "{}".format(r),
+                                           "response": rv}, indent=2)))
+         except V20Error as e:
+             print("OOPS: {:d} {:d}".format(e.code, e.msg))
 
 Output
 ~~~~~~
@@ -159,6 +172,136 @@ Output
           {
             "tags": [],
             "id": "101-004-1435156-001"
+          }
+        ]
+      }
+    }
+
+    {
+      "request": "v3/accounts/101-004-1435156-001/pricing",
+      "response": {
+        "prices": [
+          {
+            "status": "tradeable",
+            "quoteHomeConversionFactors": {
+              "negativeUnits": "1.00000000",
+              "positiveUnits": "1.00000000"
+            },
+            "asks": [
+              {
+                "price": "10295.1",
+                "liquidity": 25
+              },
+              {
+                "price": "10295.3",
+                "liquidity": 75
+              },
+              {
+                "price": "10295.5",
+                "liquidity": 150
+              }
+            ],
+            "unitsAvailable": {
+              "default": {
+                "short": "60",
+                "long": "100"
+              },
+              "reduceOnly": {
+                "short": "0",
+                "long": "20"
+              },
+              "openOnly": {
+                "short": "60",
+                "long": "0"
+              },
+              "reduceFirst": {
+                "short": "60",
+                "long": "100"
+              }
+            },
+            "closeoutBid": "10293.5",
+            "bids": [
+              {
+                "price": "10293.9",
+                "liquidity": 25
+              },
+              {
+                "price": "10293.7",
+                "liquidity": 75
+              },
+              {
+                "price": "10293.5",
+                "liquidity": 150
+              }
+            ],
+            "instrument": "DE30_EUR",
+            "time": "2016-09-29T17:07:19.598030528Z",
+            "closeoutAsk": "10295.5"
+          },
+          {
+            "status": "tradeable",
+            "quoteHomeConversionFactors": {
+              "negativeUnits": "1.15679152",
+              "positiveUnits": "1.15659083"
+            },
+            "asks": [
+              {
+                "price": "0.86461",
+                "liquidity": 1000000
+              },
+              {
+                "price": "0.86462",
+                "liquidity": 2000000
+              },
+              {
+                "price": "0.86463",
+                "liquidity": 5000000
+              },
+              {
+                "price": "0.86465",
+                "liquidity": 10000000
+              }
+            ],
+            "unitsAvailable": {
+              "default": {
+                "short": "624261",
+                "long": "624045"
+              },
+              "reduceOnly": {
+                "short": "0",
+                "long": "0"
+              },
+              "openOnly": {
+                "short": "624261",
+                "long": "624045"
+              },
+              "reduceFirst": {
+                "short": "624261",
+                "long": "624045"
+              }
+            },
+            "closeoutBid": "0.86442",
+            "bids": [
+              {
+                "price": "0.86446",
+                "liquidity": 1000000
+              },
+              {
+                "price": "0.86445",
+                "liquidity": 2000000
+              },
+              {
+                "price": "0.86444",
+                "liquidity": 5000000
+              },
+              {
+                "price": "0.86442",
+                "liquidity": 10000000
+              }
+            ],
+            "instrument": "EUR_GBP",
+            "time": "2016-09-29T17:07:19.994271769Z",
+            "closeoutAsk": "0.86465"
           }
         ]
       }

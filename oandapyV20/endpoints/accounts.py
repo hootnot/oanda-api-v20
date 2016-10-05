@@ -1,5 +1,6 @@
 """Handle account endpoints."""
-from .apirequest import APIRequest, dyndoc_insert, get_endpoint_config
+from .apirequest import APIRequest
+from .decorators import dyndoc_insert, endpoint, abstractclass, params
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
@@ -146,6 +147,133 @@ responses = {
             "lastTransactionID": "833"
         }
     },
+    "_v3_account_by_accountID_summary": {
+        "url": "v3/accounts/{accountID}/summary",
+        "response": {
+            "account": {
+                "marginCloseoutNAV": "35454.4740",
+                "marginUsed": "10581.5000",
+                "currency": "EUR",
+                "resettablePL": "-13840.3525",
+                "NAV": "35454.4740",
+                "marginCloseoutMarginUsed": "10581.5000",
+                "marginCloseoutPositionValue": "211630.0000",
+                "openTradeCount": 2,
+                "id": "101-004-1435156-001",
+                "openPositionCount": 1,
+                "marginCloseoutPercent": "0.14923",
+                "marginCallMarginUsed": "10581.5000",
+                "hedgingEnabled": False,
+                "positionValue": "211630.0000",
+                "pl": "-13840.3525",
+                "lastTransactionID": "2123",
+                "marginAvailable": "24872.9740",
+                "marginRate": "0.05",
+                "marginCallPercent": "0.29845",
+                "pendingOrderCount": 0,
+                "withdrawalLimit": "24872.9740",
+                "unrealizedPL": "0.0000",
+                "alias": "hootnotv20",
+                "createdByUserID": 1435156,
+                "marginCloseoutUnrealizedPL": "0.0000",
+                "createdTime": "2016-06-24T21:03:50.914647476Z",
+                "balance": "35454.4740"
+            },
+            "lastTransactionID": "2123"
+        }
+    },
+    "_v3_account_by_accountID_instruments": {
+        "url": "/v3/accounts/{accountID}/instuments",
+        "response": {
+            "instruments": [
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "Europe 50",
+                    "name": "EU50_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "3000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "EUR/USD",
+                    "name": "EUR_USD",
+                    "displayPrecision": 5,
+                    "type": "CURRENCY",
+                    "minimumTrailingStopDistance": "0.00050",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "100000000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": -4,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "1.00000"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "US Wall St 30",
+                    "name": "US30_USD",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "1000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "France 40",
+                    "name": "FR40_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "2000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "EUR/CHF",
+                    "name": "EUR_CHF",
+                    "displayPrecision": 5,
+                    "type": "CURRENCY",
+                    "minimumTrailingStopDistance": "0.00050",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "100000000",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": -4,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "1.00000"
+                },
+                {
+                    "minimumTradeSize": "1",
+                    "displayName": "Germany 30",
+                    "name": "DE30_EUR",
+                    "displayPrecision": 1,
+                    "type": "CFD",
+                    "minimumTrailingStopDistance": "5.0",
+                    "marginRate": "0.05",
+                    "maximumOrderUnits": "2500",
+                    "tradeUnitsPrecision": 0,
+                    "pipLocation": 0,
+                    "maximumPositionSize": "0",
+                    "maximumTrailingStopDistance": "10000.0"
+                },
+            ],
+            "lastTransactionID": "2124"
+        },
+    },
     "_v3_account_by_accountID_configuration": {
         "url": "/v3/accounts/{}/configuration",
         "response": {
@@ -167,59 +295,34 @@ responses = {
 }
 
 
-# op flags
-ACCOUNT_LIST = 1
-ACCOUNT_DETAILS = 2
-ACCOUNT_SUMMARY = 4
-ACCOUNT_INSTRUMENTS = 8
-ACCOUNT_CONFIGURATION = 16
-ACCOUNT_CHANGES = 32
-
-endp_conf = {
-    ACCOUNT_LIST: {"path_comp": None, "method": "GET"},
-    ACCOUNT_DETAILS: {"path_comp": None, "method": "GET"},
-    ACCOUNT_SUMMARY: {"path_comp": "summary", "method": "GET"},
-    ACCOUNT_INSTRUMENTS: {"path_comp": "instruments", "method": "GET"},
-    ACCOUNT_CONFIGURATION: {"path_comp": "configuration", "method": "PATCH"},
-    ACCOUNT_CHANGES: {"path_comp": "changes", "method": "GET"},
-}
-
-
+@abstractclass
 class Accounts(APIRequest):
     """Accounts - class to handle the accounts endpoints."""
 
-    ENDPOINT = "v3/accounts"
+    ENDPOINT = ""
+    METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID=None, data=None, op=None):
+    def __init__(self, accountID=None, data=None):
         """Instantiate an Accounts APIRequest instance.
 
         Parameters
         ----------
         accountID : string (optional)
             the accountID of the account. Optional when requesting
-            all accounts. For all other requests to endpoint it is
+            all accounts. For all other requests to the endpoint it is
             required.
 
-        op : operation flag
-            this flag acts as task identifier. It is used to construct the API
-            endpoint and determine the HTTP method for the request.
 
-            Possible flags::
+        data : dict (depends on the endpoint to access)
+            configuration details for the account in case of
 
-                ACCOUNT_LIST
-                ACCOUNT_DETAILS
-                ACCOUNT_SUMMARY
-                ACCOUNT_INSTRUMENTS
-                ACCOUNT_CONFIGURATION (data)
-                ACCOUNT_CHANGES
+            requests involving the 'data'-parameter require headers to
+            be set: Content-Type: application/json)
 
-                requests involving the 'data'-parameter require headers to
-                be set: Content-Type: application/json)
-
-        data : dict (depends on the operation choosen by 'op')
-            configuration details for the account in case of ACCOUNT_CONFIGURATION.
-
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints
 
         Examples
         --------
@@ -234,7 +337,7 @@ class Accounts(APIRequest):
 
             access_token = "..."
             client = oandapy.API(access_token=access_token)
-            r = accounts.Account(op=accounts.ACCOUNT_SUMMARY)
+            r = accounts.AccountList()
             response = client.request(r)
 
         response::
@@ -252,7 +355,7 @@ class Accounts(APIRequest):
             access_token = "..."
             accountID = "101-004-1435156-002"
             client = oandapy.API(access_token=access_token)
-            r = accounts.Account(accountID, op=accounts.ACCOUNT_DETAILS)
+            r = accounts.AccountDetails(accountID)
             response = client.request(r)
 
         response::
@@ -273,8 +376,7 @@ class Accounts(APIRequest):
             configuration = {_v3_account_by_accountID_configuration_body}
             client = oandapy.API(access_token=access_token)
 
-            r = accounts.Account(accountID, data=configuration,
-                                 op=accounts.ACCOUNT_CONFIGURATION)
+            r = accounts.AccountConfiguration(accountID, data=configuration)
             response = client.request(r)
 
         response::
@@ -282,15 +384,58 @@ class Accounts(APIRequest):
             {_v3_account_by_accountID_configuration_resp}
 
         """
-        endpoint = self.ENDPOINT
-        method, path_comp = get_endpoint_config(endp_conf, op)
+        endpoint = self.ENDPOINT.format(accountID=accountID)
+        super(Accounts, self).__init__(endpoint, method=self.METHOD, body=data)
 
-        if op in [ACCOUNT_DETAILS, ACCOUNT_SUMMARY, ACCOUNT_INSTRUMENTS,
-                  ACCOUNT_CONFIGURATION, ACCOUNT_CHANGES]:
-            endpoint = "{}/{{accountID}}".format(endpoint)
 
-        if path_comp:
-            endpoint = "{}/{}".format(endpoint, path_comp)
+@endpoint("v3/accounts")
+class AccountList(Accounts):
+    """Get a list of all Accounts authorized for the provided token."""
 
-        endpoint = endpoint.format(accountID=accountID)
-        super(Accounts, self).__init__(endpoint, method=method, body=data)
+
+@endpoint("v3/accounts/{accountID}")
+class AccountDetails(Accounts):
+    """AccountDetails.
+
+    Get the full details for a single Account that a client has access
+    to. Full pending Order, open Trade and open Position representations are
+    provided.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/summary")
+class AccountSummary(Accounts):
+    """AccountSummary.
+
+    Get a summary for a single Account that a client has access to.
+    """
+
+
+@params
+@endpoint("v3/accounts/{accountID}/instruments")
+class AccountInstruments(Accounts):
+    """AccountInstruments.
+
+    Get the list of tradable instruments for the given Account. The list of
+    tradeable instruments is dependent on the regulatory division that the
+    Account is located in, thus should be the same for all Accounts owned by a
+    single user.
+    """
+
+
+@endpoint("v3/accounts/{accountID}/configuration", "PATCH")
+class AccountConfiguration(Accounts):
+    """AccountConfiguration.
+
+    Set the client-configurable portions of an Account.
+    """
+
+
+@params
+@endpoint("v3/accounts/{accountID}/changes")
+class AccountChanges(Accounts):
+    """AccountChanges.
+
+    Endpoint used to poll an Account for its current state and changes
+    since a specified TransactionID.
+    """

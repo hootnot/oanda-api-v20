@@ -7,10 +7,9 @@ from oandapyV20.exceptions import V20Error
 def close_pos(api, account_id, instrument, side, verbose=False):
     """close_pos: close a position by instrument."""
     try:
-        r = positions.Positions(
+        r = positions.PositionClose(
                        accountID=account_id,
                        instrument=instrument,
-                       op=positions.POSITION_CLOSE,
                        data={"{}Units".format(side): "ALL"})
         api.request(r)
     except V20Error as e:
@@ -31,5 +30,5 @@ def create_pos(api, account_id, instrument, side, units):
         "positionFill": "DEFAULT"
       }
     }
-    r = orders.Orders(account_id, data=orderSpec, op=orders.ORDER_CREATE)
+    r = orders.OrderCreate(account_id, data=orderSpec)
     return api.request(r)

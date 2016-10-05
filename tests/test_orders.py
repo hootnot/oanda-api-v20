@@ -65,6 +65,31 @@ class TestOrders(unittest.TestCase):
         self.assertTrue(len(result['orders']) == 1 and
                         result['orders'][0]['instrument'] == "EUR_USD")
 
+    @requests_mock.Mocker()
+    def test__order_replace(self, mock_get):
+        """test replacing an order."""
+        orderID = "2125"
+        # to replace with
+        tmp = {"order": {
+                   "units": "-50000",
+                   "type": "LIMIT",
+                   "instrument": "EUR_USD",
+                   "price": "1.25",
+                }
+               }
+
+        uri = 'https://test.com/v3/accounts/{}/orders/{}'.format(accountID,
+                                                                 orderID)
+        resp = responses["_v3_accounts_accountID_order_replace"]['response']
+        text = json.dumps(resp)
+        mock_get.register_uri('PUT',
+                              uri,
+                              text=text)
+        r = orders.OrderReplace(accountID, orderID, data=tmp)
+        result = api.request(r)
+        self.assertTrue(len(result['orders']) == 1 and
+                        result['orders'][0]['units'] == tmp["order"]["units"])
+
 
 if __name__ == "__main__":
 

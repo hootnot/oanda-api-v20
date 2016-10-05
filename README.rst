@@ -3,15 +3,21 @@ OANDA REST-V20 API wrapper
 
 The REST-V20 API specs are not completely released yet. Support for 'streaming', 'pricing history' and 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
 
-
-.. image:: https://landscape.io/github/hootnot/oanda-api-v20/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/hootnot/oanda-api-v20/master
-   :alt: Code Health
+.. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
+   :target: https://travis-ci.org/hootnot/oanda-api-v20
+   :alt: Build
 
 .. image:: https://readthedocs.org/projects/oanda-api-v20/badge/?version=latest
    :target: http://oanda-api-v20.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
    
+.. image:: https://landscape.io/github/hootnot/oanda-api-v20/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/hootnot/oanda-api-v20/master
+   :alt: Code Health
+
+.. image:: https://coveralls.io/repos/github/hootnot/oanda-api-v20/badge.svg?branch=master
+   :target: https://coveralls.io/github/hootnot/oanda-api-v20?branch=master
+   :alt: Coverage
 
 Status
 ======

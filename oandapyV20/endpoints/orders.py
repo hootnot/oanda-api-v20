@@ -1,6 +1,6 @@
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, params
+from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
@@ -62,7 +62,7 @@ class Orders(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, orderID=None, data=None):
+    def __init__(self, accountID, orderID=None):
         """Instantiate an Orders request.
 
         Parameters
@@ -82,9 +82,10 @@ class Orders(APIRequest):
             endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
-        super(Orders, self).__init__(endpoint, method=self.METHOD, body=data)
+        super(Orders, self).__init__(endpoint, method=self.METHOD)
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders", "POST")
 class OrderCreate(Orders):
     """OrderCreate.
@@ -93,7 +94,7 @@ class OrderCreate(Orders):
     """
 
 
-@params
+@extendargs("params")
 @endpoint("v3/accounts/{accountID}/orders")
 class OrderList(Orders):
     """OrderList.
@@ -118,6 +119,7 @@ class OrderDetails(Orders):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT")
 class OrderReplace(Orders):
     """OrderReplace.
@@ -135,6 +137,7 @@ class OrderCancel(Orders):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
 class OrderClientExtensions(Orders):
     """OrderClientExtensions.

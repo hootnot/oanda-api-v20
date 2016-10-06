@@ -8,7 +8,7 @@ class APIRequest(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self, endpoint, method="GET", body=None):
+    def __init__(self, endpoint, method="GET"):
         """Instantiate an API request.
 
         Parameters
@@ -27,7 +27,6 @@ class APIRequest(object):
 
         self._endpoint = endpoint
         self.method = method
-        self.body = body
 
     def response(self, s):
         """response - set the response of the request."""

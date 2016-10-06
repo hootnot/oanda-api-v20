@@ -1,6 +1,6 @@
 """Handle trades endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, params
+from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
 
 responses = {
     "_v3_accounts_accountID_trades": {
@@ -46,7 +46,7 @@ class Trades(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, tradeID=None, data=None):
+    def __init__(self, accountID, tradeID=None):
         """Instantiate a Trades APIRequest instance.
 
         Parameters
@@ -66,10 +66,10 @@ class Trades(APIRequest):
             endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, tradeID=tradeID)
-        super(Trades, self).__init__(endpoint, method=self.METHOD, body=data)
+        super(Trades, self).__init__(endpoint, method=self.METHOD)
 
 
-@params
+@extendargs("params")
 @endpoint("v3/accounts/{accountID}/trades")
 class TradesList(Trades):
     """TradesList.
@@ -94,6 +94,7 @@ class TradeDetails(Trades):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
 class TradeClose(Trades):
     """TradeClose.
@@ -102,6 +103,7 @@ class TradeClose(Trades):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
 class TradeClientExtensions(Trades):
     """TradeClientExtensions.
@@ -111,6 +113,7 @@ class TradeClientExtensions(Trades):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
 class TradeCRCDO(Trades):
     """TradeCRCDO.

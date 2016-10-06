@@ -200,8 +200,8 @@ class API(object):
         request_args = {}
         if method == 'get':
             request_args['params'] = params
-        elif endpoint.body:
-            request_args['data'] = json.dumps(endpoint.body)
+        elif hasattr(endpoint, "data") and endpoint.data:
+            request_args['data'] = json.dumps(endpoint.data)
 
         response = None
         try:

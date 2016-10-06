@@ -80,19 +80,25 @@ def abstractclass(cls):
     return cls
 
 
-def params(cls):
-    """'params' decorator.
+class extendargs(object):
+    """'extendargs' decorator.
 
-    Add the 'params' argument to the constructor of the class.
+    Add extra arguments to the argumentlist of the constructor of the class.
     """
-    # save parent class __init__
-    origInit = cls.__bases__[0].__dict__["__init__"]
 
-    def wrapInit(self, *args, **kwargs):
-        if "params" in kwargs:
-            setattr(cls, "params", kwargs['params'])
-            del kwargs['params']
-        origInit(self, *args, **kwargs)
-    setattr(cls, "__init__", wrapInit)
+    def __init__(self, *loa):
+        self.loa = loa
 
-    return cls
+    def __call__(self, cls):
+        # save parent class __init__
+        origInit = cls.__bases__[0].__dict__["__init__"]
+
+        def wrapInit(wself, *args, **kwargs):
+            for extraArg in self.loa:
+                if extraArg in kwargs:
+                    setattr(cls, extraArg, kwargs[extraArg])
+                    del kwargs[extraArg]
+            origInit(wself, *args, **kwargs)
+        setattr(cls, "__init__", wrapInit)
+
+        return cls

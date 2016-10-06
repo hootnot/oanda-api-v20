@@ -1,6 +1,6 @@
 """Handle position endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
 
 responses = {
     "_v3_accounts_accountID_positions": {
@@ -81,7 +81,7 @@ class Positions(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID, instrument=None, data=None):
+    def __init__(self, accountID, instrument=None):
         """Instantiate a Positions APIRequest instance.
 
         Parameters
@@ -99,7 +99,7 @@ class Positions(APIRequest):
         endpoint = self.ENDPOINT.format(accountID=accountID,
                                         instrument=instrument)
         super(Positions, self).__init__(endpoint,
-                                        method=self.METHOD, body=data)
+                                        method=self.METHOD)
 
 
 @endpoint("v3/accounts/{accountID}/positions")
@@ -129,6 +129,7 @@ class PositionDetails(Positions):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/positions/{instrument}/close", "PUT")
 class PositionClose(Positions):
     """PositionClose.

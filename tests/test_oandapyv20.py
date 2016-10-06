@@ -51,6 +51,19 @@ class TestOandapyV20(unittest.TestCase):
 
         self.assertTrue("Unknown environment" in "{}".format(envErr.exception))
 
+    def test__requests_exception(self):
+        """force a requests exception."""
+        from requests.exceptions import RequestException
+        import oandapyV20.endpoints.accounts as accounts
+        text = "No connection " \
+               "adapters were found for 'ttps://test.com/v3/accounts'"
+        api.api_url = "ttps://test.com"
+        r = accounts.AccountList()
+        with self.assertRaises(RequestException) as oErr:
+            result = api.request(r)
+
+        self.assertEqual("{}".format(oErr.exception), text)
+
 
 if __name__ == "__main__":
 

@@ -116,6 +116,20 @@ class TestAccounts(unittest.TestCase):
         s_result = json.dumps(result)
         self.assertTrue("DE30_EUR" in s_result and "EUR_AUD" not in s_result)
 
+    def test__get_instruments_data_exception(self):
+        """check for data parameter exception."""
+        with self.assertRaises(TypeError) as oErr:
+            r = accounts.AccountInstruments(accountID=accountID, data={})
+
+        self.assertEqual("__init__() got an unexpected keyword argument 'data'", "{}".format(oErr.exception))
+
+    def test__get_instruments_params_exception(self):
+        """check for params parameter exception."""
+        with self.assertRaises(TypeError) as oErr:
+            r = accounts.AccountConfiguration(accountID=accountID, params={})
+
+        self.assertEqual("__init__() got an unexpected keyword argument 'params'", "{}".format(oErr.exception))
+
 if __name__ == "__main__":
 
     unittest.main()

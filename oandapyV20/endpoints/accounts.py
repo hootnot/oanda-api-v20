@@ -1,6 +1,6 @@
 """Handle account endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, params
+from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
@@ -303,7 +303,7 @@ class Accounts(APIRequest):
     METHOD = "GET"
 
     @dyndoc_insert(responses)
-    def __init__(self, accountID=None, data=None):
+    def __init__(self, accountID=None):
         """Instantiate an Accounts APIRequest instance.
 
         Parameters
@@ -385,7 +385,7 @@ class Accounts(APIRequest):
 
         """
         endpoint = self.ENDPOINT.format(accountID=accountID)
-        super(Accounts, self).__init__(endpoint, method=self.METHOD, body=data)
+        super(Accounts, self).__init__(endpoint, method=self.METHOD)
 
 
 @endpoint("v3/accounts")
@@ -411,7 +411,7 @@ class AccountSummary(Accounts):
     """
 
 
-@params
+@extendargs("params")
 @endpoint("v3/accounts/{accountID}/instruments")
 class AccountInstruments(Accounts):
     """AccountInstruments.
@@ -423,6 +423,7 @@ class AccountInstruments(Accounts):
     """
 
 
+@extendargs("data")
 @endpoint("v3/accounts/{accountID}/configuration", "PATCH")
 class AccountConfiguration(Accounts):
     """AccountConfiguration.
@@ -431,7 +432,7 @@ class AccountConfiguration(Accounts):
     """
 
 
-@params
+@extendargs("params")
 @endpoint("v3/accounts/{accountID}/changes")
 class AccountChanges(Accounts):
     """AccountChanges.

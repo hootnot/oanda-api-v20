@@ -6,8 +6,14 @@ from .exceptions import V20Error
 
 
 TRADING_ENVIRONMENTS = {
-    "practice": 'https://api-fxpractice.oanda.com',
-    "live": 'https://api-fxtrade.oanda.com'
+    "practice": {
+        "stream": 'https://stream-fxpractice.oanda.com',
+        "api": 'https://api-fxpractice.oanda.com'
+    },
+    "live": {
+        "stream": 'https://stream-fxtrade.oanda.com',
+        "api": 'https://api-fxtrade.oanda.com'
+    }
 }
 
 
@@ -156,12 +162,16 @@ class API(object):
 
         """
         try:
-            self.api_url = TRADING_ENVIRONMENTS[environment]
+            TRADING_ENVIRONMENTS[environment]
         except:
             raise KeyError("Unknown environment: {}".format(environment))
+        else:
+            self.environment = environment
 
         self.access_token = access_token
         self.client = requests.Session()
+        self.connected = False
+        self.client.stream = False
 
         # personal token authentication
         if self.access_token:
@@ -170,7 +180,25 @@ class API(object):
         if headers:
             self.client.headers.update(headers)
 
-    def request(self, endpoint):
+    def _request(self, method, url, request_args):
+        func = getattr(self.client, method)
+
+        response = None
+        try:
+            response = func(url, **request_args)
+        except requests.RequestException as e:
+            # log it ?
+            raise e
+        else:
+            self.connected = True
+
+        # Handle error responses
+        if response.status_code >= 400:
+            raise V20Error(response.status_code,
+                           response.content.decode('utf-8'))
+        return response
+
+    def api_request(self, method, url, request_args):
         """Perform a request for the APIRequest instance 'endpoint'.
 
         Parameters
@@ -184,7 +212,52 @@ class API(object):
             V20Error in case of HTTP response code >= 400
 
         """
-        url = "{}/{}".format(self.api_url, endpoint)
+        content = None
+        response = None
+        try:
+            response = self._request(method, url, request_args)
+        except requests.RequestException as e:
+            raise e
+        else:
+            content = response.content.decode('utf-8')
+            content = json.loads(content)
+            #endpoint.response(content)
+
+        return content
+
+
+    def stream_request(self, method, url, request_args):
+        """Perform a request for the APIRequest instance 'endpoint'.
+
+        Parameters
+        ----------
+        endpoint : APIRequest
+            The endpoint parameter contains an instance of an APIRequest
+            containing the endpoint, method and optionally other parameters.
+
+        Raises
+        ------
+            V20Error in case of HTTP response code >= 400
+
+        """
+        response = self._request(method, url, request_args)
+        for line in response.iter_lines(90):
+            if not self.connected:
+                break
+
+            if line:
+                data = json.loads(line.decode("utf-8"))
+                yield data
+
+    def request(self, endpoint):
+
+        at = "api"
+        if hasattr(endpoint, "STREAM") and getattr(endpoint, "STREAM") is True:
+            self.client.stream = True
+            at = "stream"
+
+        url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
+                             endpoint)
 
         method = endpoint.method
         method = method.lower()
@@ -195,28 +268,17 @@ class API(object):
             # request does not have params
             params = {}
 
-        func = getattr(self.client, method)
-
         request_args = {}
         if method == 'get':
             request_args['params'] = params
         elif hasattr(endpoint, "data") and endpoint.data:
             request_args['data'] = json.dumps(endpoint.data)
 
-        response = None
-        try:
-            response = func(url, **request_args)
-        except requests.RequestException as e:
-            # log it ?
-            raise e
+        if at == "api":
+            content = self.api_request(method, url, request_args)
+            endpoint.response(content)
+            return content
+        else:
+            return self.stream_request(method, url, request_args)
 
-        content = response.content.decode('utf-8')
 
-        # Handle error responses
-        if response.status_code >= 400:
-            raise V20Error(response.status_code, content)
-
-        content = json.loads(content)
-
-        endpoint.response(content)
-        return content

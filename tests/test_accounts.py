@@ -1,3 +1,4 @@
+import sys
 import unittest
 import json
 from . import unittestsetup
@@ -35,6 +36,12 @@ class TestAccounts(unittest.TestCase):
         # self.maxDiff = None
         try:
             accountID, account_cur, access_token = unittestsetup.auth()
+            setattr(sys.modules["oandapyV20.oandapyV20"],
+                    "TRADING_ENVIRONMENTS",
+                    {"practice": {
+                     "stream": "https://test.com",
+                     "api": "https://test.com",
+                     }})
             api = API(environment=environment,
                       access_token=access_token,
                       headers={"Content-Type": "application/json"})

@@ -1,3 +1,4 @@
+import sys
 import unittest
 import json
 from . import unittestsetup
@@ -35,10 +36,15 @@ class TestPricing(unittest.TestCase):
         # self.maxDiff = None
         try:
             accountID, account_cur, access_token = unittestsetup.auth()
+            setattr(sys.modules["oandapyV20.oandapyV20"],
+                    "TRADING_ENVIRONMENTS",
+                    {"practice": {
+                     "stream": "https://test.com",
+                     "api": "https://test.com",
+                     }})
             api = API(environment=environment,
                       access_token=access_token,
                       headers={"Content-Type": "application/json"})
-            api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -57,6 +63,23 @@ class TestPricing(unittest.TestCase):
         result = api.request(r)
         s_result = json.dumps(result)
         self.assertTrue("EUR_USD" in s_result and "EUR_JPY" in s_result)
+
+    @requests_mock.Mocker()
+    def test__pricing_stream(self, mock_get):
+        """get the pricing information for instruments."""
+        uri = 'https://test.com/v3/accounts/{}/pricing/stream'.format(accountID)
+        resp = responses["_v3_accounts_accountID_pricing"]['response']
+        resp = {"a": 10}
+        text = json.dumps(resp)
+        mock_get.register_uri('GET',
+                              uri,
+                              text=text)
+        params = {"instruments": "EUR_USD,EUR_JPY"}
+        r = pricing.PricingStream(accountID, params=params)
+        result = []
+        for r in api.request(r):
+            result.append(r)
+        self.assertTrue(result[0] == resp)
 
 
 if __name__ == "__main__":

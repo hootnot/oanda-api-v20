@@ -206,19 +206,12 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def api_request(self, method, url, request_args):
-        """Perform a request for the APIRequest instance 'endpoint'.
+    def _api_request(self, method, url, request_args):
+        """_api_request.
 
-        Parameters
-        ----------
-        endpoint : APIRequest
-            The endpoint parameter contains an instance of an APIRequest
-            containing the endpoint, method and optionally other parameters.
-
-        Raises
-        ------
-            V20Error in case of HTTP response code >= 400
-
+        make a 'regular' request. This method is called by
+        the 'request' method after it has determined which
+        call applies: regular or streaming.
         """
         content = None
         response = None
@@ -233,19 +226,12 @@ class API(object):
 
         return content
 
-    def stream_request(self, method, url, request_args):
-        """Perform a request for the APIRequest instance 'endpoint'.
+    def _stream_request(self, method, url, request_args):
+        """_stream_request.
 
-        Parameters
-        ----------
-        endpoint : APIRequest
-            The endpoint parameter contains an instance of an APIRequest
-            containing the endpoint, method and optionally other parameters.
-
-        Raises
-        ------
-            V20Error in case of HTTP response code >= 400
-
+        make a 'stream' request. This method is called by
+        the 'request' method after it has determined which
+        call applies: regular or streaming.
         """
         response = self._request(method, url, request_args)
         for line in response.iter_lines(90):
@@ -257,7 +243,19 @@ class API(object):
                 yield data
 
     def request(self, endpoint):
+        """Perform a request for the APIRequest instance 'endpoint'.
 
+        Parameters
+        ----------
+        endpoint : APIRequest
+            The endpoint parameter contains an instance of an APIRequest
+            containing the endpoint, method and optionally other parameters
+            or body data.
+
+        Raises
+        ------
+            V20Error in case of HTTP response code >= 400
+        """
         at = "api"
         if hasattr(endpoint, "STREAM") and getattr(endpoint, "STREAM") is True:
             self.client.stream = True
@@ -282,8 +280,8 @@ class API(object):
             request_args['data'] = json.dumps(endpoint.data)
 
         if at == "api":
-            content = self.api_request(method, url, request_args)
+            content = self._api_request(method, url, request_args)
             endpoint.response(content)
             return content
         else:
-            return self.stream_request(method, url, request_args)
+            return self._stream_request(method, url, request_args)

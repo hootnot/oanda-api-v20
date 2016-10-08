@@ -170,7 +170,7 @@ class API(object):
 
         self.access_token = access_token
         self.client = requests.Session()
-        self.connected = False
+        self._connected = False
         self.client.stream = False
 
         # personal token authentication
@@ -179,6 +179,14 @@ class API(object):
 
         if headers:
             self.client.headers.update(headers)
+
+    def disconnect(self):
+        """disconnect.
+
+        disconnect a streaming connection. The _stream_request generator
+        wil terminate.
+        """
+        self._connected = False
 
     def _request(self, method, url, request_args):
         func = getattr(self.client, method)
@@ -190,7 +198,7 @@ class API(object):
             # log it ?
             raise e
         else:
-            self.connected = True
+            self._connected = True
 
         # Handle error responses
         if response.status_code >= 400:
@@ -225,7 +233,6 @@ class API(object):
 
         return content
 
-
     def stream_request(self, method, url, request_args):
         """Perform a request for the APIRequest instance 'endpoint'.
 
@@ -242,7 +249,7 @@ class API(object):
         """
         response = self._request(method, url, request_args)
         for line in response.iter_lines(90):
-            if not self.connected:
+            if not self._connected:
                 break
 
             if line:
@@ -280,5 +287,3 @@ class API(object):
             return content
         else:
             return self.stream_request(method, url, request_args)
-
-

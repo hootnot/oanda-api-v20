@@ -164,8 +164,9 @@ class PricingInfo(Pricing):
 @extendargs("params")
 @endpoint("v3/accounts/{accountID}/pricing/stream")
 class PricingStream(Pricing):
-    STREAM = True
     """PricingStream.
 
     Get realtime pricing information for a specified list of Instruments.
     """
+
+    STREAM = True

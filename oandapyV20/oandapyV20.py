@@ -213,16 +213,9 @@ class API(object):
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
-        content = None
-        response = None
-        try:
-            response = self._request(method, url, request_args)
-        except requests.RequestException as e:
-            raise e
-        else:
-            content = response.content.decode('utf-8')
-            content = json.loads(content)
-            #endpoint.response(content)
+        response = self._request(method, url, request_args)
+        content = response.content.decode('utf-8')
+        content = json.loads(content)
 
         return content
 

@@ -237,7 +237,8 @@ class API(object):
         call applies: regular or streaming.
         """
         response = self.__request(method, url, request_args)
-        for line in response.iter_lines(ITER_LINES_CHUNKSIZE):
+        lines = response.iter_lines(ITER_LINES_CHUNKSIZE)
+        for line in lines:
             if not self.connected:
                 break
 

@@ -183,12 +183,12 @@ class API(object):
     def disconnect(self):
         """disconnect.
 
-        disconnect a streaming connection. The _stream_request generator
+        disconnect a streaming connection. The __stream_request generator
         wil terminate.
         """
         self._connected = False
 
-    def _request(self, method, url, request_args):
+    def __request(self, method, url, request_args):
         func = getattr(self.client, method)
 
         response = None
@@ -206,7 +206,7 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def _api_request(self, method, url, request_args):
+    def __api_request(self, method, url, request_args):
         """_api_request.
 
         make a 'regular' request. This method is called by
@@ -219,7 +219,7 @@ class API(object):
 
         return content
 
-    def _stream_request(self, method, url, request_args):
+    def __stream_request(self, method, url, request_args):
         """_stream_request.
 
         make a 'stream' request. This method is called by

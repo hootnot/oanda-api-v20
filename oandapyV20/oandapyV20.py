@@ -4,6 +4,7 @@ import json
 import requests
 from .exceptions import V20Error
 
+ITER_LINES_CHUNKSIZE = 60
 
 TRADING_ENVIRONMENTS = {
     "practice": {
@@ -231,7 +232,7 @@ class API(object):
         call applies: regular or streaming.
         """
         response = self.__request(method, url, request_args)
-        for line in response.iter_lines(90):
+        for line in response.iter_lines(ITER_LINES_CHUNKSIZE):
             if not self.connected:
                 break
 

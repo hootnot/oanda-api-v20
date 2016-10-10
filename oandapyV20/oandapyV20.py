@@ -180,6 +180,10 @@ class API(object):
         if headers:
             self.client.headers.update(headers)
 
+    @property
+    def connected(self):
+        return self._connected
+
     def disconnect(self):
         """disconnect.
 
@@ -228,7 +232,7 @@ class API(object):
         """
         response = self.__request(method, url, request_args)
         for line in response.iter_lines(90):
-            if not self._connected:
+            if not self.connected:
                 break
 
             if line:

@@ -17,6 +17,10 @@ TRADING_ENVIRONMENTS = {
     }
 }
 
+DEFAULT_HEADERS = {
+    "Accept-Encoding": "gzip, deflate"
+}
+
 
 class API(object):
     r"""API - class to handle APIRequests objects to access API endpoints.
@@ -178,6 +182,7 @@ class API(object):
         if self.access_token:
             self.client.headers['Authorization'] = 'Bearer '+self.access_token
 
+        self.client.headers.update(DEFAULT_HEADERS)
         if headers:
             self.client.headers.update(headers)
 

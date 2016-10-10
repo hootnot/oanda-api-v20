@@ -213,7 +213,7 @@ class API(object):
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
-        response = self._request(method, url, request_args)
+        response = self.__request(method, url, request_args)
         content = response.content.decode('utf-8')
         content = json.loads(content)
 
@@ -226,7 +226,7 @@ class API(object):
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
-        response = self._request(method, url, request_args)
+        response = self.__request(method, url, request_args)
         for line in response.iter_lines(90):
             if not self._connected:
                 break
@@ -273,8 +273,8 @@ class API(object):
             request_args['data'] = json.dumps(endpoint.data)
 
         if at == "api":
-            content = self._api_request(method, url, request_args)
+            content = self.__api_request(method, url, request_args)
             endpoint.response(content)
             return content
         else:
-            return self._stream_request(method, url, request_args)
+            return self.__stream_request(method, url, request_args)

@@ -1,7 +1,7 @@
 OANDA REST-V20 API wrapper
 --------------------------
 
-The REST-V20 API specs are not completely released yet. Support for 'streaming', 'pricing history' and 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
+The REST-V20 API specs are not completely released yet. Support for 'pricing history' and 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
 
 .. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
    :target: https://travis-ci.org/hootnot/oanda-api-v20

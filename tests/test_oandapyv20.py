@@ -1,3 +1,4 @@
+import sys
 import unittest
 import json
 from . import unittestsetup
@@ -33,10 +34,15 @@ class TestOandapyV20(unittest.TestCase):
         # self.maxDiff = None
         try:
             accountID, account_cur, access_token = unittestsetup.auth()
+            setattr(sys.modules["oandapyV20.oandapyV20"],
+                    "TRADING_ENVIRONMENTS",
+                    {"practice": {
+                     "stream": "https://test.com",
+                     "api": "https://test.com",
+                     }})
             api = API(environment=environment,
                       access_token=access_token,
                       headers={"Content-Type": "application/json"})
-            api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -55,9 +61,17 @@ class TestOandapyV20(unittest.TestCase):
         """force a requests exception."""
         from requests.exceptions import RequestException
         import oandapyV20.endpoints.accounts as accounts
+        setattr(sys.modules["oandapyV20.oandapyV20"],
+                "TRADING_ENVIRONMENTS",
+                {"practice": {
+                 "stream": "ttps://test.com",
+                 "api": "ttps://test.com",
+                 }})
+        api = API(environment=environment,
+                  access_token=access_token,
+                  headers={"Content-Type": "application/json"})
         text = "No connection " \
                "adapters were found for 'ttps://test.com/v3/accounts'"
-        api.api_url = "ttps://test.com"
         r = accounts.AccountList()
         with self.assertRaises(RequestException) as oErr:
             result = api.request(r)

@@ -159,3 +159,14 @@ class PricingInfo(Pricing):
     Get pricing information for a specified list of Instruments within
     an account.
     """
+
+
+@extendargs("params")
+@endpoint("v3/accounts/{accountID}/pricing/stream")
+class PricingStream(Pricing):
+    """PricingStream.
+
+    Get realtime pricing information for a specified list of Instruments.
+    """
+
+    STREAM = True

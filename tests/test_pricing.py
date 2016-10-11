@@ -1,3 +1,4 @@
+import sys
 import unittest
 import json
 from . import unittestsetup
@@ -35,10 +36,15 @@ class TestPricing(unittest.TestCase):
         # self.maxDiff = None
         try:
             accountID, account_cur, access_token = unittestsetup.auth()
+            setattr(sys.modules["oandapyV20.oandapyV20"],
+                    "TRADING_ENVIRONMENTS",
+                    {"practice": {
+                     "stream": "https://test.com",
+                     "api": "https://test.com",
+                     }})
             api = API(environment=environment,
                       access_token=access_token,
                       headers={"Content-Type": "application/json"})
-            api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -57,6 +63,31 @@ class TestPricing(unittest.TestCase):
         result = api.request(r)
         s_result = json.dumps(result)
         self.assertTrue("EUR_USD" in s_result and "EUR_JPY" in s_result)
+
+    @requests_mock.Mocker()
+    def test__pricing_stream(self, mock_get):
+        """get the streaming pricing information for instruments."""
+        uri = 'https://test.com/v3/accounts/{}/pricing/stream'.format(accountID)
+        ticks = [{"a": 10}, {"b": 20}, {"c": 30}, {"d": 40}, {"e": 50}]
+        text = "\n".join([json.dumps(r) for r in ticks])
+        mock_get.register_uri('GET',
+                              uri,
+                              text=text)
+        params = {"instruments": "EUR_USD,EUR_JPY"}
+        r = pricing.PricingStream(accountID, params=params)
+        result = []
+        n = 0
+        for r in api.request(r):
+            result.append(json.dumps(r))
+            n += 1
+            # disconnect when we have 3 response lines
+            if n == 3:
+                api.disconnect()
+
+        # the result containing 3 items, should equal the first 3 items
+        # of the ticks
+        self.assertTrue("\n".join(result) ==
+                        "\n".join(json.dumps(r) for r in ticks[0:3]))
 
 
 if __name__ == "__main__":

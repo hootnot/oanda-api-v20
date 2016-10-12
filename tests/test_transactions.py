@@ -63,6 +63,30 @@ class TestTransactions(unittest.TestCase):
         result = api.request(r)
         self.assertTrue(len(result['pages']) > 0)
 
+    @requests_mock.Mocker()
+    def test__transaction_stream(self, mock_get):
+        """get the streaming transaction information."""
+        uri = 'https://test.com/v3/accounts/{}/transactions/stream'.format(accountID)
+        # simulated list of transactions
+        lot = [{"a": 10}, {"b": 20}, {"c": 30}, {"d": 40}, {"e": 50}]
+        text = "\n".join([json.dumps(r) for r in lot])
+        mock_get.register_uri('GET',
+                              uri,
+                              text=text)
+        r = transactions.TransactionsStream(accountID)
+        result = []
+        n = 0
+        for rv in api.request(r):
+            result.append(json.dumps(rv))
+            n += 1
+            # disconnect when we have 3 response lines
+            if n == 3:
+                api.disconnect()
+
+        # the result containing 3 items, should equal the first 3 items
+        # of the ticks
+        self.assertTrue("\n".join(result) ==
+                        "\n".join(json.dumps(x) for x in lot[0:3]))
 
 if __name__ == "__main__":
 

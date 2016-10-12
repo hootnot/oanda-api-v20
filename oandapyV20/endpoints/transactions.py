@@ -126,3 +126,15 @@ class TransactionSinceID(Transactions):
     Get a range of Transactions for an Account starting at (but not including)
     a provided Transaction ID.
     """
+
+
+@extendargs("params")
+@endpoint("v3/accounts/{accountID}/transactions/stream")
+class TransactionsStream(Transactions):
+    """TransactionsStream.
+
+    Get a stream of Transactions for an Account starting from when the
+    request is made.
+    """
+
+    STREAM = True

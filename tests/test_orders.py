@@ -89,14 +89,42 @@ class TestOrders(unittest.TestCase):
                                                                  orderID)
         resp = responses["_v3_accounts_accountID_order_replace"]['response']
         text = json.dumps(resp)
+        r = orders.OrderReplace(accountID, orderID, data=tmp)
         mock_get.register_uri('PUT',
                               uri,
-                              text=text)
-        r = orders.OrderReplace(accountID, orderID, data=tmp)
+                              text=text,
+                              status_code=r._expected_status)
         result = api.request(r)
         self.assertTrue(len(result['orders']) == 1 and
                         result['orders'][0]['units'] == tmp["order"]["units"])
 
+    @requests_mock.Mocker()
+    def test__order_replace_wrong_status_exception(self, mock_get):
+        """test replacing an order with success but wrong status_code."""
+        orderID = "2125"
+        # to replace with
+        tmp = {"order": {
+                   "units": "-50000",
+                   "type": "LIMIT",
+                   "instrument": "EUR_USD",
+                   "price": "1.25",
+                }
+               }
+
+        uri = 'https://test.com/v3/accounts/{}/orders/{}'.format(accountID,
+                                                                 orderID)
+        resp = responses["_v3_accounts_accountID_order_replace"]['response']
+        text = json.dumps(resp)
+        r = orders.OrderReplace(accountID, orderID, data=tmp)
+        # force the wrong status code
+        mock_get.register_uri('PUT',
+                              uri,
+                              text=text,
+                              status_code=200)
+        with self.assertRaises(ValueError) as err:
+            result = api.request(r)
+
+        self.assertTrue("200" in "{}".format(err.exception))
 
 if __name__ == "__main__":
 

@@ -29,7 +29,7 @@ def dyndoc_insert(src):
     return dec
 
 
-def endpoint(url, method="GET"):
+def endpoint(url, method="GET", expected_status=200):
     """endpoint - decorator to manipulate the REST-service endpoint.
 
     The endpoint decorator sets the endpoint and the method for the class
@@ -38,6 +38,7 @@ def endpoint(url, method="GET"):
     def dec(obj):
         obj.ENDPOINT = url
         obj.METHOD = method
+        obj.EXPECTED_STATUS = expected_status
         return obj
 
     return dec

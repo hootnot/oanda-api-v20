@@ -8,7 +8,7 @@ class APIRequest(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self, endpoint, method="GET"):
+    def __init__(self, endpoint, method="GET", expected_status=200):
         """Instantiate an API request.
 
         Parameters
@@ -23,10 +23,22 @@ class APIRequest(object):
             dictionary with data for the request. This data
             will be sent as JSON-data.
         """
+        self._expected_status = expected_status
+        self._status_code = None
         self._response = None
 
         self._endpoint = endpoint
         self.method = method
+
+    @property
+    def status_code(self):
+        return self._status_code
+
+    @status_code.setter
+    def status_code(self, value):
+        if value != self._expected_status:
+            raise ValueError("{} {} {:d}".format(self, self.method, value))
+        self._status_code = value
 
     def response(self, s):
         """response - set the response of the request."""

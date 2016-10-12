@@ -77,8 +77,8 @@ class TestPricing(unittest.TestCase):
         r = pricing.PricingStream(accountID, params=params)
         result = []
         n = 0
-        for r in api.request(r):
-            result.append(json.dumps(r))
+        for rec in api.request(r):
+            result.append(json.dumps(rec))
             n += 1
             # disconnect when we have 3 response lines
             if n == 3:

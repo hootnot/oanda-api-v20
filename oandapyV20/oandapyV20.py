@@ -216,19 +216,6 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def __api_request(self, method, url, request_args):
-        """_api_request.
-
-        make a 'regular' request. This method is called by
-        the 'request' method after it has determined which
-        call applies: regular or streaming.
-        """
-        response = self.__request(method, url, request_args)
-        content = response.content.decode('utf-8')
-        content = json.loads(content)
-
-        return content
-
     def __stream_request(self, method, url, request_args):
         """_stream_request.
 
@@ -260,13 +247,6 @@ class API(object):
         ------
             V20Error in case of HTTP response code >= 400
         """
-        at = "api"
-        if hasattr(endpoint, "STREAM") and getattr(endpoint, "STREAM") is True:
-            self.client.stream = True
-            at = "stream"
-
-        url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
-                             endpoint)
 
         method = endpoint.method
         method = method.lower()
@@ -283,9 +263,26 @@ class API(object):
         elif hasattr(endpoint, "data") and endpoint.data:
             request_args['data'] = json.dumps(endpoint.data)
 
-        if at == "api":
-            content = self.__api_request(method, url, request_args)
+        # which API to access ?
+        at = "api"
+        if not (hasattr(endpoint, "STREAM") and
+                getattr(endpoint, "STREAM") is True):
+            url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
+                                 endpoint)
+
+            response = self.__request(method, url, request_args)
+            content = response.content.decode('utf-8')
+            content = json.loads(content)
+
+            # update endpoint
             endpoint.response(content)
+            endpoint.status_code = response.status_code
+
             return content
+
         else:
+            at = "stream"
+            self.client.stream = True
+            url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
+                                 endpoint)
             return self.__stream_request(method, url, request_args)

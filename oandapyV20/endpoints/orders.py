@@ -60,6 +60,7 @@ class Orders(APIRequest):
 
     ENDPOINT = ""
     METHOD = "GET"
+    EXPECTED_STATUS = 0
 
     @dyndoc_insert(responses)
     def __init__(self, accountID, orderID=None):
@@ -82,11 +83,12 @@ class Orders(APIRequest):
             endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
-        super(Orders, self).__init__(endpoint, method=self.METHOD)
+        super(Orders, self).__init__(endpoint, method=self.METHOD,
+                                     expected_status=self.EXPECTED_STATUS)
 
 
 @extendargs("data")
-@endpoint("v3/accounts/{accountID}/orders", "POST")
+@endpoint("v3/accounts/{accountID}/orders", "POST", 201)
 class OrderCreate(Orders):
     """OrderCreate.
 
@@ -120,7 +122,7 @@ class OrderDetails(Orders):
 
 
 @extendargs("data")
-@endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT")
+@endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT", 201)
 class OrderReplace(Orders):
     """OrderReplace.
 

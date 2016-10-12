@@ -124,7 +124,8 @@ class TestOrders(unittest.TestCase):
         with self.assertRaises(ValueError) as err:
             result = api.request(r)
 
-        self.assertTrue("200" in "{}".format(err.exception))
+        self.assertTrue("200" in "{}".format(err.exception) and
+                        r.status_code is None)
 
 if __name__ == "__main__":
 

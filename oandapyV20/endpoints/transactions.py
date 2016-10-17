@@ -2,7 +2,7 @@
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
-from .definitions.transactions import definitions
+from .definitions.transactions import definitions    # flake8: noqa
 
 responses = {
     "_v3_accounts_accountID_transactions": {

@@ -2,7 +2,7 @@
 """Handle account endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
-from .definitions.accounts import definitions
+from .definitions.accounts import definitions    # flake8: noqa
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {

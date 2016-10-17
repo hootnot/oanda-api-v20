@@ -1,5 +1,5 @@
 OANDA REST-V20 API wrapper
---------------------------
+==========================
 
 The REST-V20 API specs are not completely released yet. Support for 'pricing history' and 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
 
@@ -20,7 +20,7 @@ The REST-V20 API specs are not completely released yet. Support for 'pricing his
    :alt: Coverage
 
 Status
-======
+------
 
  * The endpoint specs known till this moment are covered by the code.
  * Tests partially completed
@@ -37,7 +37,7 @@ Supported Python versions:
 
 
 Install
-=======
+-------
 
 .. code-block:: bash
 
@@ -57,7 +57,7 @@ If you want to run the tests, clone the repository:
 
 
 Design
-======
+------
 
 I have choosen a different approach regarding the design of the new library versus the
 'oandapy' library which is based on 'mixin' classes.
@@ -71,8 +71,11 @@ request allowing query-parameters, then the @params decorator is applied also.
 
 The V20-library has a client 'API'-class which processes APIRequest objects.
 
+Examples
+--------
+
 API-endpoint access
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -125,9 +128,8 @@ an array or from some 'request-factory' class. Below an array example:
          except V20Error as e:
              print("OOPS: {:d} {:d}".format(e.code, e.msg))
 
-
 Output
-~~~~~~
+``````
 
 .. code-block:: json
 
@@ -311,8 +313,8 @@ Output
     }
 
 
-Streaming-endpoints
--------------------
+Streaming endpoints
+~~~~~~~~~~~~~~~~~~~
 
 Streaming quotes: use pricing.PricingStream.
 Streaming transactions: use transactions.TransactionsEvents.
@@ -345,7 +347,7 @@ To fetch streaming data from a stream use the following pattern:
 
 
 Output
-~~~~~~
+``````
 
 .. code-block:: json
 

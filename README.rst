@@ -126,7 +126,7 @@ an array or from some 'request-factory' class. Below an array example:
              print("{}".format(json.dumps({"request": "{}".format(r),
                                            "response": rv}, indent=2)))
          except V20Error as e:
-             print("OOPS: {:d} {:d}".format(e.code, e.msg))
+             print("OOPS: {:d} {:s}".format(e.code, e.msg))
 
 Output
 ``````

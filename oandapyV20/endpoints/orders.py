@@ -1,6 +1,8 @@
+# -*- encoding: utf-8 -*-
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .definitions.orders import definitions
 
 # responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {

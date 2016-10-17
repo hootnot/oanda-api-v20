@@ -1,6 +1,8 @@
+# -*- encoding: utf-8 -*-
 """Handle pricing endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .definitions.pricing import definitions
 
 responses = {
     "_v3_accounts_accountID_pricing": {

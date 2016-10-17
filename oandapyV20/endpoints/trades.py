@@ -1,6 +1,8 @@
+# -*- encoding: utf-8 -*-
 """Handle trades endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .definitions.trades import definitions    # flake8: noqa
 
 responses = {
     "_v3_accounts_accountID_trades": {

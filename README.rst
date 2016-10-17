@@ -28,11 +28,12 @@ Status
 
 Supported Python versions:
 
-    +-------------------+-----+-----+-----+-----+
-    |                   | 2.7 | 3.3 | 3.4 | 3.5 |
-    +===================+=====+=====+=====+=====+
-    | **oanda-api-v20** | YES | YES | YES | YES |
-    +-------------------+-----+-----+-----+-----+
+    +-------------------+-----+-----+-----+-----+------+
+    | Python            | 2.7 | 3.3 | 3.4 | 3.5 | Pypy |
+    +===================+=====+=====+=====+=====+======+
+    | **oanda-api-v20** | YES | YES | YES | YES | YES  |
+    +-------------------+-----+-----+-----+-----+------+
+
 
 
 Install
@@ -70,7 +71,8 @@ request allowing query-parameters, then the @params decorator is applied also.
 
 The V20-library has a client 'API'-class which processes APIRequest objects.
 
-So it comes down to:
+API-endpoint access
+-------------------
 
 .. code-block:: python
 
@@ -122,6 +124,7 @@ an array or from some 'request-factory' class. Below an array example:
                                            "response": rv}, indent=2)))
          except V20Error as e:
              print("OOPS: {:d} {:d}".format(e.code, e.msg))
+
 
 Output
 ~~~~~~
@@ -305,4 +308,313 @@ Output
           }
         ]
       }
+    }
+
+
+Streaming-endpoints
+-------------------
+
+Streaming quotes: use pricing.PricingStream.
+Streaming transactions: use transactions.TransactionsEvents.
+
+To fetch streaming data from a stream use the following pattern:
+
+.. code-block:: python
+
+    import json
+    from oandapyV20 import API
+    from oandapyV20.exceptions import V20Error
+    from oandapyV20.endpoints.pricing import PricingStream
+
+    accountID = "..."
+    access_token="..."
+
+    api = API(access_token=access_token, environment="practice")
+
+    instruments = "DE30_EUR,EUR_USD,EUR_JPY"
+    s = PricingStream(accountID=accountID, params={"instruments":instruments})
+    try:
+        n = 0
+        for R in api.request(s):
+            print(json.dumps(R, indent=2))
+            n += 1
+            if n > 10:
+                api.disconnect()
+    except V20Error as e:
+        print("Error: {}".format(e))
+
+
+Output
+~~~~~~
+
+.. code-block:: json
+
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "10547.0",
+          "liquidity": 25
+        },
+        {
+          "price": "10547.2",
+          "liquidity": 75
+        },
+        {
+          "price": "10547.4",
+          "liquidity": 150
+        }
+      ],
+      "closeoutBid": "10546.6",
+      "bids": [
+        {
+          "price": "10547.0",
+          "liquidity": 25
+        },
+        {
+          "price": "10546.8",
+          "liquidity": 75
+        },
+        {
+          "price": "10546.6",
+          "liquidity": 150
+        }
+      ],
+      "instrument": "DE30_EUR",
+      "time": "2016-10-17T12:25:28.158741026Z",
+      "closeoutAsk": "10547.4"
+    }
+    {
+      "type": "HEARTBEAT",
+      "time": "2016-10-17T12:25:37.447397298Z"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "114.490",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.491",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.492",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.494",
+          "liquidity": 10000000
+        }
+      ],
+      "closeoutBid": "114.469",
+      "bids": [
+        {
+          "price": "114.473",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.472",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.471",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.469",
+          "liquidity": 10000000
+        }
+      ],
+      "instrument": "EUR_JPY",
+      "time": "2016-10-17T12:25:40.837289374Z",
+      "closeoutAsk": "114.494"
+    }
+    {
+      "type": "HEARTBEAT",
+      "time": "2016-10-17T12:25:42.447922336Z"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "1.09966",
+          "liquidity": 10000000
+        },
+        {
+          "price": "1.09968",
+          "liquidity": 10000000
+        }
+      ],
+      "closeoutBid": "1.09949",
+      "bids": [
+        {
+          "price": "1.09953",
+          "liquidity": 10000000
+        },
+        {
+          "price": "1.09951",
+          "liquidity": 10000000
+        }
+      ],
+      "instrument": "EUR_USD",
+      "time": "2016-10-17T12:25:43.689619691Z",
+      "closeoutAsk": "1.09970"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "114.486",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.487",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.488",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.490",
+          "liquidity": 10000000
+        }
+      ],
+      "closeoutBid": "114.466",
+      "bids": [
+        {
+          "price": "114.470",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.469",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.468",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.466",
+          "liquidity": 10000000
+        }
+      ],
+      "instrument": "EUR_JPY",
+      "time": "2016-10-17T12:25:43.635964725Z",
+      "closeoutAsk": "114.490"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "10547.3",
+          "liquidity": 25
+        },
+        {
+          "price": "10547.5",
+          "liquidity": 75
+        },
+        {
+          "price": "10547.7",
+          "liquidity": 150
+        }
+      ],
+      "closeoutBid": "10546.9",
+      "bids": [
+        {
+          "price": "10547.3",
+          "liquidity": 25
+        },
+        {
+          "price": "10547.1",
+          "liquidity": 75
+        },
+        {
+          "price": "10546.9",
+          "liquidity": 150
+        }
+      ],
+      "instrument": "DE30_EUR",
+      "time": "2016-10-17T12:25:44.900162113Z",
+      "closeoutAsk": "10547.7"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "10547.0",
+          "liquidity": 25
+        },
+        {
+          "price": "10547.2",
+          "liquidity": 75
+        },
+        {
+          "price": "10547.4",
+          "liquidity": 150
+        }
+      ],
+      "closeoutBid": "10546.6",
+      "bids": [
+        {
+          "price": "10547.0",
+          "liquidity": 25
+        },
+        {
+          "price": "10546.8",
+          "liquidity": 75
+        },
+        {
+          "price": "10546.6",
+          "liquidity": 150
+        }
+      ],
+      "instrument": "DE30_EUR",
+      "time": "2016-10-17T12:25:44.963539084Z",
+      "closeoutAsk": "10547.4"
+    }
+    {
+      "status": "tradeable",
+      "asks": [
+        {
+          "price": "114.491",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.492",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.493",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.495",
+          "liquidity": 10000000
+        }
+      ],
+      "closeoutBid": "114.471",
+      "bids": [
+        {
+          "price": "114.475",
+          "liquidity": 1000000
+        },
+        {
+          "price": "114.474",
+          "liquidity": 2000000
+        },
+        {
+          "price": "114.473",
+          "liquidity": 5000000
+        },
+        {
+          "price": "114.471",
+          "liquidity": 10000000
+        }
+      ],
+      "instrument": "EUR_JPY",
+      "time": "2016-10-17T12:25:45.586100087Z",
+      "closeoutAsk": "114.495"
     }

@@ -17,6 +17,7 @@ from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.accounts as accounts
 from oandapyV20.endpoints.accounts import responses
+from oandapyV20.endpoints.definitions import primitives
 
 access_token = None
 accountID = None
@@ -120,8 +121,19 @@ class TestAccounts(unittest.TestCase):
         mock_get.register_uri('GET', uri, text=text)
         r = accounts.AccountInstruments(accountID=accountID)
         result = api.request(r)
+        dax = None
+        for instr in result["instruments"]:
+            if instr["name"] == "DE30_EUR":
+                dax = instr
+                break
+
         s_result = json.dumps(result)
-        self.assertTrue("DE30_EUR" in s_result and "EUR_AUD" not in s_result)
+        primDev = primitives.definitions["InstrumentType"][dax["type"]]
+        self.assertTrue(
+            dax is not None and
+            dax["type"] == "CFD" and
+            primDev == "Contract For Difference" and
+            "EUR_AUD" not in s_result)
 
     def test__get_instruments_data_exception(self):
         """check for data parameter exception."""

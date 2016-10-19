@@ -59,3 +59,5 @@ if __name__ == "__main__":
         parser.parse_args(["--help"])
     except V20Error as v20e:
         print("ERROR {} {}".format(v20e.code, v20e.msg))
+    else:
+        print("Unkown error: {}".format(e))

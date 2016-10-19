@@ -2,7 +2,6 @@
 """Retrieve candle data."""
 import argparse
 import json
-import sys
 from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.instruments as instruments

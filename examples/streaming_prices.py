@@ -2,13 +2,11 @@
 """Streaming price data."""
 import argparse
 import json
-import sys
 from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
 from oandapyV20.endpoints.pricing import PricingStream
 from exampleauth import exampleAuth
 from requests.exceptions import ConnectionError
-import sys
 
 # create the top-level parser
 parser = argparse.ArgumentParser(prog='steaming_prices')

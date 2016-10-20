@@ -341,10 +341,12 @@ To fetch streaming data from a stream use the following pattern:
             print(json.dumps(R, indent=2))
             n += 1
             if n > 10:
-                api.disconnect()
+                s.terminate("maxrecs received: {}".format(MAXREC))
+
     except V20Error as e:
         print("Error: {}".format(e))
 
+Check the 'examples' directory for more detailed examples.
 
 Output
 ``````

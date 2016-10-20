@@ -136,3 +136,5 @@ class PositionClose(Positions):
 
     Closeout the open Position for a specific instrument in an Account.
     """
+
+    HEADERS = {"Content-Type": "application/json"}

@@ -212,7 +212,7 @@ class API(object):
         """
         self._connected = False
 
-    def __request(self, method, url, request_args, stream=False):
+    def __request(self, method, url, request_args, headers={}, stream=False):
         """__request.
 
         make the actual request. This method is called by the
@@ -223,7 +223,8 @@ class API(object):
 
         response = None
         try:
-            response = func(url, stream=stream, **request_args)
+            response = func(url, stream=stream, headers=headers,
+                            **request_args)
         except requests.RequestException as e:
             # log it ?
             raise e
@@ -237,14 +238,15 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def __stream_request(self, method, url, request_args):
+    def __stream_request(self, method, url, request_args, headers={}):
         """__stream_request.
 
         make a 'stream' request. This method is called by
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
-        response = self.__request(method, url, request_args, stream=True)
+        response = self.__request(method, url, request_args,
+                                  headers=headers, stream=True)
         lines = response.iter_lines(ITER_LINES_CHUNKSIZE)
         for line in lines:
             if not self.connected:
@@ -277,6 +279,10 @@ class API(object):
             # request does not have params
             params = {}
 
+        headers = {}
+        if hasattr(endpoint, "HEADERS"):
+            headers = getattr(endpoint, "HEADERS")
+
         request_args = {}
         if method == 'get':
             request_args['params'] = params
@@ -293,7 +299,8 @@ class API(object):
                             TRADING_ENVIRONMENTS[self.environment]["api"],
                             endpoint)
 
-            response = self.__request(method, url, request_args)
+            response = self.__request(method, url,
+                                      request_args, headers=headers)
             content = response.content.decode('utf-8')
             content = json.loads(content)
 
@@ -307,4 +314,5 @@ class API(object):
             url = "{}/{}".format(
                             TRADING_ENVIRONMENTS[self.environment]["stream"],
                             endpoint)
-            return self.__stream_request(method, url, request_args)
+            return self.__stream_request(method, url,
+                                         request_args, headers=headers)

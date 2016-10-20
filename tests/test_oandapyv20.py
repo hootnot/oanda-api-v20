@@ -57,6 +57,15 @@ class TestOandapyV20(unittest.TestCase):
 
         self.assertTrue("Unknown environment" in "{}".format(envErr.exception))
 
+    def test__requests_params(self):
+        """request parameters."""
+        request_params = {"timeout": 10}
+        api = API(environment=environment,
+                  access_token=access_token,
+                  headers={"Content-Type": "application/json"},
+                  request_params=request_params)
+        self.assertTrue(api.request_params == request_params)
+
     def test__requests_exception(self):
         """force a requests exception."""
         from requests.exceptions import RequestException

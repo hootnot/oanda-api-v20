@@ -112,12 +112,12 @@ an array or from some 'request-factory' class. Below an array example:
      # list of requests
      lor = []
      # request trades list
-     lor.append(trades.TradesList(accountID)
+     lor.append(trades.TradesList(accountID))
      # request accounts list
      lor.append(accounts.AccountList())
      # request pricing info
      params={"instruments": "DE30_EUR,EUR_GBP"}
-     lor.append(pricing.PricingInfo(accountID, params=params)
+     lor.append(pricing.PricingInfo(accountID, params=params))
 
      for r in lor:
          try:

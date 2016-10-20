@@ -97,6 +97,8 @@ class OrderCreate(Orders):
     Create an Order for an Account.
     """
 
+    HEADERS = {"Content-Type": "application/json"}
+
 
 @extendargs("params")
 @endpoint("v3/accounts/{accountID}/orders")
@@ -132,6 +134,8 @@ class OrderReplace(Orders):
     createing a replacement Order.
     """
 
+    HEADERS = {"Content-Type": "application/json"}
+
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
 class OrderCancel(Orders):
@@ -149,3 +153,5 @@ class OrderClientExtensions(Orders):
     Update the Client Extensions for an Order in an Account. Do not set,
     modify or delete clientExtensions if your account is associated with MT4.
     """
+
+    HEADERS = {"Content-Type": "application/json"}

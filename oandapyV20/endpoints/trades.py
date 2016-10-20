@@ -104,6 +104,8 @@ class TradeClose(Trades):
     Close (partially or fully) a specific open Trade in an Account.
     """
 
+    HEADERS = {"Content-Type": "application/json"}
+
 
 @extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
@@ -114,6 +116,8 @@ class TradeClientExtensions(Trades):
     the Client Extensions if your account is associated with MT4.
     """
 
+    HEADERS = {"Content-Type": "application/json"}
+
 
 @extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
@@ -122,3 +126,5 @@ class TradeCRCDO(Trades):
 
     Trade Create Replace Cancel Dependent Orders.
     """
+
+    HEADERS = {"Content-Type": "application/json"}

@@ -2,7 +2,7 @@
 
 import json
 import requests
-from .exceptions import V20Error
+from .exceptions import V20Error, StreamTerminated
 
 ITER_LINES_CHUNKSIZE = 60
 
@@ -148,7 +148,8 @@ class API(object):
         }
     """
 
-    def __init__(self, access_token, environment="practice", headers=None):
+    def __init__(self, access_token, environment="practice",
+                 headers=None, request_params={}):
         """Instantiate an instance of OandaPy's API wrapper.
 
         Parameters
@@ -165,6 +166,14 @@ class API(object):
             endpoints need data in a JSON format. These calls require the
             header: 'Content-Type: application/json'.
 
+        request_params : (optional)
+            parameters to be passed to the request. This can be used to apply
+            for instance a timeout value:
+
+               request_params={"timeout": 0.1}
+
+            See specs of the requests module for full details of possible
+            parameters.
         """
         try:
             TRADING_ENVIRONMENTS[environment]
@@ -175,8 +184,8 @@ class API(object):
 
         self.access_token = access_token
         self.client = requests.Session()
-        self._connected = False
         self.client.stream = False
+        self._request_params = request_params
 
         # personal token authentication
         if self.access_token:
@@ -187,28 +196,25 @@ class API(object):
             self.client.headers.update(headers)
 
     @property
-    def connected(self):
-        return self._connected
+    def request_params(self):
+        return self._request_params
 
-    def disconnect(self):
-        """disconnect.
+    def __request(self, method, url, request_args, headers={}, stream=False):
+        """__request.
 
-        disconnect a streaming connection. The __stream_request generator
-        wil terminate.
+        make the actual request. This method is called by the
+        request method in case of 'regular' API-calls. Or indirectly by
+        the__stream_request method if it concerns a 'streaming' call.
         """
-        self._connected = False
-
-    def __request(self, method, url, request_args):
         func = getattr(self.client, method)
 
         response = None
         try:
-            response = func(url, **request_args)
+            response = func(url, stream=stream, headers=headers,
+                            **request_args)
         except requests.RequestException as e:
             # log it ?
             raise e
-        else:
-            self._connected = True
 
         # Handle error responses
         if response.status_code >= 400:
@@ -216,19 +222,17 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def __stream_request(self, method, url, request_args):
-        """_stream_request.
+    def __stream_request(self, method, url, request_args, headers={}):
+        """__stream_request.
 
         make a 'stream' request. This method is called by
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
-        response = self.__request(method, url, request_args)
+        response = self.__request(method, url, request_args,
+                                  headers=headers, stream=True)
         lines = response.iter_lines(ITER_LINES_CHUNKSIZE)
         for line in lines:
-            if not self.connected:
-                break
-
             if line:
                 data = json.loads(line.decode("utf-8"))
                 yield data
@@ -247,7 +251,6 @@ class API(object):
         ------
             V20Error in case of HTTP response code >= 400
         """
-
         method = endpoint.method
         method = method.lower()
         params = None
@@ -257,32 +260,43 @@ class API(object):
             # request does not have params
             params = {}
 
+        headers = {}
+        if hasattr(endpoint, "HEADERS"):
+            headers = getattr(endpoint, "HEADERS")
+
         request_args = {}
         if method == 'get':
             request_args['params'] = params
         elif hasattr(endpoint, "data") and endpoint.data:
             request_args['data'] = json.dumps(endpoint.data)
 
+        # if any parameter for request then merge them
+        request_args.update(self._request_params)
+
         # which API to access ?
-        at = "api"
         if not (hasattr(endpoint, "STREAM") and
                 getattr(endpoint, "STREAM") is True):
-            url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
-                                 endpoint)
+            url = "{}/{}".format(
+                            TRADING_ENVIRONMENTS[self.environment]["api"],
+                            endpoint)
 
-            response = self.__request(method, url, request_args)
+            response = self.__request(method, url,
+                                      request_args, headers=headers)
             content = response.content.decode('utf-8')
             content = json.loads(content)
 
             # update endpoint
-            endpoint.response(content)
+            endpoint.response = content
             endpoint.status_code = response.status_code
 
             return content
 
         else:
-            at = "stream"
-            self.client.stream = True
-            url = "{}/{}".format(TRADING_ENVIRONMENTS[self.environment][at],
-                                 endpoint)
-            return self.__stream_request(method, url, request_args)
+            url = "{}/{}".format(
+                            TRADING_ENVIRONMENTS[self.environment]["stream"],
+                            endpoint)
+            endpoint.response = self.__stream_request(method,
+                                                      url,
+                                                      request_args,
+                                                      headers=headers)
+            return endpoint.response

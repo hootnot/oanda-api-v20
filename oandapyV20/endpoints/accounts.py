@@ -433,6 +433,8 @@ class AccountConfiguration(Accounts):
     Set the client-configurable portions of an Account.
     """
 
+    HEADERS = {"Content-Type": "application/json"}
+
 
 @extendargs("params")
 @endpoint("v3/accounts/{accountID}/changes")

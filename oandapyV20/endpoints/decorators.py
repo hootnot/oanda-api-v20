@@ -97,7 +97,7 @@ class extendargs(object):
         def wrapInit(wself, *args, **kwargs):
             for extraArg in self.loa:
                 if extraArg in kwargs:
-                    setattr(cls, extraArg, kwargs[extraArg])
+                    setattr(wself, extraArg, kwargs[extraArg])
                     del kwargs[extraArg]
             origInit(wself, *args, **kwargs)
         setattr(cls, "__init__", wrapInit)

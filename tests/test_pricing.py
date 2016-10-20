@@ -14,7 +14,7 @@ except:
 
 import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
+from oandapyV20.exceptions import V20Error, StreamTerminated
 import oandapyV20.endpoints.pricing as pricing
 from oandapyV20.endpoints.pricing import responses
 
@@ -77,18 +77,25 @@ class TestPricing(unittest.TestCase):
         r = pricing.PricingStream(accountID, params=params)
         result = []
         n = 0
-        for rec in api.request(r):
-            result.append(json.dumps(rec))
-            n += 1
-            # disconnect when we have 3 response lines
-            if n == 3:
-                api.disconnect()
+        with self.assertRaises(StreamTerminated) as oErr:
+            for rec in api.request(r):
+                result.append(json.dumps(rec))
+                n += 1
+                # terminate when we have 3 response lines
+                if n == 3:
+                    r.terminate()
 
         # the result containing 3 items, should equal the first 3 items
         # of the ticks
         self.assertTrue("\n".join(result) ==
                         "\n".join(json.dumps(r) for r in ticks[0:3]))
 
+    def test__pricing_stream_termination_1(self):
+        """terminate a stream that does not exist."""
+        params = {"instruments": "EUR_USD,EUR_JPY"}
+        r = pricing.PricingStream(accountID, params=params)
+        with self.assertRaises(ValueError) as oErr:
+            r.terminate()
 
 if __name__ == "__main__":
 

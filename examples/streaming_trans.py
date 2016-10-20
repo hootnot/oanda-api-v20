@@ -13,6 +13,7 @@ try:
         print R
         n += 1
         if n > 10:
-            api.disconnect()
+            s.terminate()
+
 except V20Error as e:
     print("Error: {}".format(e))

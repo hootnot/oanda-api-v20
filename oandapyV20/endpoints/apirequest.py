@@ -40,9 +40,15 @@ class APIRequest(object):
             raise ValueError("{} {} {:d}".format(self, self.method, value))
         self._status_code = value
 
-    def response(self, s):
+    @property
+    def response(self):
+        """response - get the response of the request."""
+        return self._response
+
+    @response.setter
+    def response(self, value):
         """response - set the response of the request."""
-        self._response = s
+        self._response = value
 
     def __str__(self):
         """return the endpoint."""

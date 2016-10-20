@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
+from ..exceptions import StreamTerminated
 from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
 from .definitions.transactions import definitions    # flake8: noqa
+from types import GeneratorType
 
 responses = {
     "_v3_accounts_accountID_transactions": {
@@ -140,3 +142,9 @@ class TransactionsStream(Transactions):
     """
 
     STREAM = True
+
+    def terminate(self, message=""):
+        if not isinstance(self.response, GeneratorType):
+            raise ValueError("request does not contain a stream response")
+
+        self.response.throw(StreamTerminated(message))

@@ -3,7 +3,7 @@
 import argparse
 import json
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
+from oandapyV20.exceptions import V20Error, StreamTerminated
 from oandapyV20.endpoints.pricing import PricingStream
 from exampleauth import exampleAuth
 from requests.exceptions import ConnectionError
@@ -48,19 +48,21 @@ while True:
             print R
             n += 1
             if MAXREC and n >= MAXREC:
-                api.disconnect()
+                r.terminate("maxrecs received: {}".format(MAXREC))
 
     except V20Error as e:
+        # catch API related errors that may occur
         with open("LOG", "a") as LOG:
             LOG.write("V20Error: {}\n".format(e))
+        break
     except ConnectionError as e:
         with open("LOG", "a") as LOG:
             LOG.write("Error: {}\n".format(e))
+    except StreamTerminated as e:
+        with open("LOG", "a") as LOG:
+            LOG.write("Stopping: {}\n".format(e))
+        break
     except Exception as e:
         with open("LOG", "a") as LOG:
             LOG.write("??? : {}\n".format(e))
-            break
-    else:
-        if not api.connected:
-            print("Stopping")
-            break
+        break

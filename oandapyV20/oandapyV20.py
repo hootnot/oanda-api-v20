@@ -2,7 +2,7 @@
 
 import json
 import requests
-from .exceptions import V20Error
+from .exceptions import V20Error, StreamTerminated
 
 ITER_LINES_CHUNKSIZE = 60
 
@@ -184,7 +184,6 @@ class API(object):
 
         self.access_token = access_token
         self.client = requests.Session()
-        self._connected = False
         self.client.stream = False
         self._request_params = request_params
 
@@ -197,20 +196,8 @@ class API(object):
             self.client.headers.update(headers)
 
     @property
-    def connected(self):
-        return self._connected
-
-    @property
     def request_params(self):
         return self._request_params
-
-    def disconnect(self):
-        """disconnect.
-
-        disconnect a streaming connection. The __stream_request generator
-        wil terminate.
-        """
-        self._connected = False
 
     def __request(self, method, url, request_args, headers={}, stream=False):
         """__request.
@@ -228,9 +215,6 @@ class API(object):
         except requests.RequestException as e:
             # log it ?
             raise e
-        else:
-            if stream:
-                self._connected = True
 
         # Handle error responses
         if response.status_code >= 400:
@@ -249,9 +233,6 @@ class API(object):
                                   headers=headers, stream=True)
         lines = response.iter_lines(ITER_LINES_CHUNKSIZE)
         for line in lines:
-            if not self.connected:
-                break
-
             if line:
                 data = json.loads(line.decode("utf-8"))
                 yield data
@@ -305,7 +286,7 @@ class API(object):
             content = json.loads(content)
 
             # update endpoint
-            endpoint.response(content)
+            endpoint.response = content
             endpoint.status_code = response.status_code
 
             return content
@@ -314,5 +295,8 @@ class API(object):
             url = "{}/{}".format(
                             TRADING_ENVIRONMENTS[self.environment]["stream"],
                             endpoint)
-            return self.__stream_request(method, url,
-                                         request_args, headers=headers)
+            endpoint.response = self.__stream_request(method,
+                                                      url,
+                                                      request_args,
+                                                      headers=headers)
+            return endpoint.response

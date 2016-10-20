@@ -14,7 +14,7 @@ except:
 
 import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
+from oandapyV20.exceptions import V20Error, StreamTerminated
 import oandapyV20.endpoints.transactions as transactions
 from oandapyV20.endpoints.transactions import responses
 
@@ -76,17 +76,24 @@ class TestTransactions(unittest.TestCase):
         r = transactions.TransactionsStream(accountID)
         result = []
         n = 0
-        for rv in api.request(r):
-            result.append(json.dumps(rv))
-            n += 1
-            # disconnect when we have 3 response lines
-            if n == 3:
-                api.disconnect()
+        with self.assertRaises(StreamTerminated) as oErr:
+            for rv in api.request(r):
+                result.append(json.dumps(rv))
+                n += 1
+                # terminate when we have 3 response lines
+                if n == 3:
+                    r.terminate()
 
         # the result containing 3 items, should equal the first 3 items
         # of the ticks
         self.assertTrue("\n".join(result) ==
                         "\n".join(json.dumps(x) for x in lot[0:3]))
+
+    def test__transaction_stream_termination_1(self):
+        """terminate a stream that does not exist."""
+        r = transactions.TransactionsStream(accountID)
+        with self.assertRaises(ValueError) as oErr:
+            r.terminate()
 
 if __name__ == "__main__":
 

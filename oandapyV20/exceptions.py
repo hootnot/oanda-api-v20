@@ -1,6 +1,10 @@
 """Exceptions."""
 
 
+class StreamTerminated(Exception):
+    """StreamTerminated."""
+
+
 class V20Error(Exception):
     """Generic error class.
 

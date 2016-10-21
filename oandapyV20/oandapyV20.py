@@ -2,7 +2,7 @@
 
 import json
 import requests
-from .exceptions import V20Error, StreamTerminated
+from .exceptions import V20Error
 
 ITER_LINES_CHUNKSIZE = 60
 
@@ -149,7 +149,7 @@ class API(object):
     """
 
     def __init__(self, access_token, environment="practice",
-                 headers=None, request_params={}):
+                 headers=None, request_params=None):
         """Instantiate an instance of OandaPy's API wrapper.
 
         Parameters
@@ -185,7 +185,7 @@ class API(object):
         self.access_token = access_token
         self.client = requests.Session()
         self.client.stream = False
-        self._request_params = request_params
+        self._request_params = request_params if request_params else {}
 
         # personal token authentication
         if self.access_token:
@@ -197,9 +197,10 @@ class API(object):
 
     @property
     def request_params(self):
+        """request_params property."""
         return self._request_params
 
-    def __request(self, method, url, request_args, headers={}, stream=False):
+    def __request(self, method, url, request_args, headers=None, stream=False):
         """__request.
 
         make the actual request. This method is called by the
@@ -207,14 +208,13 @@ class API(object):
         the__stream_request method if it concerns a 'streaming' call.
         """
         func = getattr(self.client, method)
-
+        headers = headers if headers else {}
         response = None
         try:
             response = func(url, stream=stream, headers=headers,
                             **request_args)
-        except requests.RequestException as e:
-            # log it ?
-            raise e
+        except requests.RequestException as err:
+            raise err
 
         # Handle error responses
         if response.status_code >= 400:
@@ -222,13 +222,14 @@ class API(object):
                            response.content.decode('utf-8'))
         return response
 
-    def __stream_request(self, method, url, request_args, headers={}):
+    def __stream_request(self, method, url, request_args, headers=None):
         """__stream_request.
 
         make a 'stream' request. This method is called by
         the 'request' method after it has determined which
         call applies: regular or streaming.
         """
+        headers = headers if headers else {}
         response = self.__request(method, url, request_args,
                                   headers=headers, stream=True)
         lines = response.iter_lines(ITER_LINES_CHUNKSIZE)
@@ -277,8 +278,8 @@ class API(object):
         if not (hasattr(endpoint, "STREAM") and
                 getattr(endpoint, "STREAM") is True):
             url = "{}/{}".format(
-                            TRADING_ENVIRONMENTS[self.environment]["api"],
-                            endpoint)
+                TRADING_ENVIRONMENTS[self.environment]["api"],
+                endpoint)
 
             response = self.__request(method, url,
                                       request_args, headers=headers)
@@ -293,8 +294,8 @@ class API(object):
 
         else:
             url = "{}/{}".format(
-                            TRADING_ENVIRONMENTS[self.environment]["stream"],
-                            endpoint)
+                TRADING_ENVIRONMENTS[self.environment]["stream"],
+                endpoint)
             endpoint.response = self.__stream_request(method,
                                                       url,
                                                       request_args,

@@ -1,10 +1,17 @@
 """create order demo."""
 import json
-import sys
 from oandapyV20 import API
 import oandapyV20.endpoints.orders as orders
 from oandapyV20.exceptions import V20Error
 from exampleauth import exampleAuth
+import logging
+from requests.exceptions import HTTPError
+
+logging.basicConfig(
+    filename="log.out",
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(name)s : %(message)s',
+)
 
 accountID, token = exampleAuth()
 

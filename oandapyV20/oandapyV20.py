@@ -2,6 +2,7 @@
 
 import json
 import requests
+import logging
 from .exceptions import V20Error
 
 ITER_LINES_CHUNKSIZE = 60
@@ -20,6 +21,8 @@ TRADING_ENVIRONMENTS = {
 DEFAULT_HEADERS = {
     "Accept-Encoding": "gzip, deflate"
 }
+
+logger = logging.getLogger(__name__)
 
 
 class API(object):
@@ -175,9 +178,11 @@ class API(object):
             See specs of the requests module for full details of possible
             parameters.
         """
+        logger.info("setting up API-client for environment %s", environment)
         try:
             TRADING_ENVIRONMENTS[environment]
         except:
+            logger.error("unkown environment %s", environment)
             raise KeyError("Unknown environment: {}".format(environment))
         else:
             self.environment = environment
@@ -194,6 +199,7 @@ class API(object):
         self.client.headers.update(DEFAULT_HEADERS)
         if headers:
             self.client.headers.update(headers)
+            logger.info("applying headers %s", ",".join(headers.keys()))
 
     @property
     def request_params(self):
@@ -211,13 +217,19 @@ class API(object):
         headers = headers if headers else {}
         response = None
         try:
+            logger.info("performing request %s", url)
             response = func(url, stream=stream, headers=headers,
                             **request_args)
         except requests.RequestException as err:
+            logger.error("request %s failed [%s]", url, err)
             raise err
 
         # Handle error responses
         if response.status_code >= 400:
+            logger.error("request %s failed [%d,%s]",
+                         url,
+                         response.status_code,
+                         response.content.decode('utf-8'))
             raise V20Error(response.status_code,
                            response.content.decode('utf-8'))
         return response

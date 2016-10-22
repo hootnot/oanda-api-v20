@@ -22,6 +22,16 @@ oandapyV20.endpoints.accounts module
     :show-inheritance:
     :special-members: __init__
 
+
+oandapyV20.endpoints.instruments module
+---------------------------------------
+
+.. automodule:: oandapyV20.endpoints.instruments
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :special-members: __init__
+
 oandapyV20.endpoints.orders module
 ----------------------------------
 

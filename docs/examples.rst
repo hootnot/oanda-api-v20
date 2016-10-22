@@ -19,7 +19,7 @@ Take the script below and name it 'trades.py'. From the shell:
 
 .. code-block:: python
    
-    # use of the Trades class to demonstrate the use of various 'op'-flags
+    # use of the Trades{..} classes
     import json
     import requests
     from oandapyV20 import API
@@ -31,7 +31,7 @@ Take the script below and name it 'trades.py'. From the shell:
     access_token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
     accountID = "zzz-zzzz-zzzzz"
 
-    api = API(access_token=access_token, headers={ "Content-Type": "application/json"} )
+    api = API(access_token=access_token)
  
     if chc == 'list':
        r = trades.TradesList(accountID)

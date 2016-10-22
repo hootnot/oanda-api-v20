@@ -5,7 +5,6 @@ import oandapyV20.endpoints.orders as orders
 from oandapyV20.exceptions import V20Error
 from exampleauth import exampleAuth
 import logging
-from requests.exceptions import HTTPError
 
 logging.basicConfig(
     filename="log.out",

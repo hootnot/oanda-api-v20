@@ -37,7 +37,7 @@ class API(object):
         api = API(access_token="xxx")
         accountID = "101-305-3091856-001"
 
-        r = trades.Trades(accountID, op=trades.TRADE_LIST)
+        r = trades.TradesList(accountID)
         # show the endpoint as it is constructed for this call
         print("REQUEST:{}".format(r))
         rv = api.request(r)
@@ -83,14 +83,12 @@ class API(object):
         from oandapyV20 import API
         import oandapyV20.endpoints.trades as trades
 
-        headers = {"Content-Type": "application/json"}
-        api = API(access_token="...", headers=headers)
+        api = API(access_token="...")
 
         accountID = "101-305-3091856-001"
         tradeID = "1030"
-        cfg = { "units": 5 }
-        r = trades.Trades(accountID, tradeID=tradeID,
-                          op=trades.TRADE_CLOSE, data=cfg)
+        cfg = {"units": 5}
+        r = trades.TradeClose(accountID, tradeID=tradeID, data=cfg)
         # show the endpoint as it is constructed for this call
         print("REQUEST:{}".format(r))
         rv = api.request(r)
@@ -162,9 +160,10 @@ class API(object):
             'practice' or 'live'. Default: 'practice'.
 
         headers : dict (optional)
-            Provide request headers to be set for a request. Several API
-            endpoints need data in a JSON format. These calls require the
-            header: 'Content-Type: application/json'.
+            Provide request headers to be set for a request.
+            There is no need to set the 'Content-Type: application/json'
+            for the endpoints that require this header. The API-request
+            classes covering those endpoints will take care of the header.
 
         request_params : (optional)
             parameters to be passed to the request. This can be used to apply

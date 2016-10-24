@@ -8,7 +8,7 @@ from .responses.orders import responses
 
 @abstractclass
 class Orders(APIRequest):
-    """Orders - class to handle the orders endpoints."""
+    """Orders - abstract base class to handle the orders endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -25,14 +25,6 @@ class Orders(APIRequest):
 
         orderID : string
             id of the order to perform the request for.
-
-        data : dict (optional)
-            configuration details for the order in case of a request
-            to create or modify an order.
-
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
         super(Orders, self).__init__(endpoint, method=self.METHOD,

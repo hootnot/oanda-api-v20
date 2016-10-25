@@ -93,7 +93,7 @@ class TestOrders(unittest.TestCase):
         mock_get.register_uri('PUT',
                               uri,
                               text=text,
-                              status_code=r._expected_status)
+                              status_code=r.expected_status)
         result = api.request(r)
         self.assertTrue(len(result['orders']) == 1 and
                         result['orders'][0]['units'] == tmp["order"]["units"])

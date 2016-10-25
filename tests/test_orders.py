@@ -61,7 +61,7 @@ class TestOrders(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test__order_create(self, mock_post):
-        """get the orders information for an account."""
+        """order create."""
         tid = "_v3_accounts_accountID_orders_create"
         resp, data = fetchTestData(responses, tid)
         r = orders.OrderCreate(accountID, data=data)
@@ -74,7 +74,7 @@ class TestOrders(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test__order_clientextensions(self, mock_put):
-        """get the orders information for an account."""
+        """set order client extensions."""
         tid = "_v3_accounts_accountID_order_clientextensions"
         resp, data = fetchTestData(responses, tid)
         r = orders.OrderClientExtensions(accountID, orderID="2304", data=data)
@@ -100,7 +100,7 @@ class TestOrders(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test__orders_list(self, mock_get):
-        """get the orders information for an account."""
+        """get the orders for an account."""
         tid = "_v3_accounts_accountID_orders_list"
         resp, data = fetchTestData(responses, tid)
         r = orders.OrderList(accountID)
@@ -115,7 +115,7 @@ class TestOrders(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test__order_replace(self, mock_get):
-        """test replacing an order."""
+        """replace an order."""
         orderID = "2125"
         # to replace with
         tmp = {"order": {
@@ -141,7 +141,7 @@ class TestOrders(unittest.TestCase):
 
     @requests_mock.Mocker()
     def test__order_replace_wrong_status_exception(self, mock_get):
-        """test replacing an order with success but wrong status_code."""
+        """replacing an order with success but wrong status_code."""
         orderID = "2125"
         # to replace with
         tmp = {"order": {

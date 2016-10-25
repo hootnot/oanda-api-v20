@@ -67,10 +67,10 @@ class TestOrders(unittest.TestCase):
         r = orders.OrderCreate(accountID, data=data)
         mock_post.register_uri('POST',
                                "{}/{}".format(api.api_url, r),
-                               text=json.dumps(data),
+                               text=json.dumps(resp),
                                status_code=r.expected_status)
         result = api.request(r)
-        self.assertTrue(result == data)
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
     def test__order_clientextensions(self, mock_put):
@@ -80,10 +80,10 @@ class TestOrders(unittest.TestCase):
         r = orders.OrderClientExtensions(accountID, orderID="2304", data=data)
         mock_put.register_uri('PUT',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(data),
+                              text=json.dumps(resp),
                               status_code=r.expected_status)
         result = api.request(r)
-        self.assertTrue(result == data)
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
     def test__orders_list(self, mock_get):

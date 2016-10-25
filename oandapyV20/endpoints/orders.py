@@ -109,10 +109,34 @@ class OrderList(Orders):
 
 @endpoint("v3/accounts/{accountID}/pendingOrders")
 class OrdersPending(Orders):
-    """OrdersPending.
+    """List all pending Orders in an Account."""
 
-    Create an Order for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OrdersPending request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrdersPending(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_orders_pending_resp}
+
+        """
+        super(OrdersPending, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}")

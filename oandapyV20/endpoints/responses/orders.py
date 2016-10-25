@@ -46,6 +46,35 @@ responses = {
             "lastTransactionID": "2304"
         }
     },
+    "_v3_accounts_accountID_orders_pending": {
+        "url": "v3/accounts/{accountID}/orders",
+        "response": {
+            "orders": [
+                {
+                    "timeInForce": "GTC",
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "partialFill": "DEFAULT_FILL",
+                    "positionFill": "POSITION_DEFAULT",
+                    "stopLossOnFill": {
+                        "timeInForce": "GTC",
+                        "price": "1.22000"
+                    },
+                    "id": "2304",
+                    "price": "1.20000",
+                    "instrument": "EUR_USD",
+                    "state": "PENDING",
+                    "units": "-100",
+                    "clientExtensions": {
+                        "comment": "myComment",
+                        "id": "myID"
+                    },
+                    "type": "LIMIT",
+                    "createTime": "2016-10-24T21:48:18.593753865Z"
+                }
+            ],
+            "lastTransactionID": "2305"
+        }
+    },
     "_v3_accounts_accountID_orders_list": {
         "url": "v3/accounts/{accountID}/orders",
         "response": {

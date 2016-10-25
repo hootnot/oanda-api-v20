@@ -86,6 +86,19 @@ class TestOrders(unittest.TestCase):
         self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
+    def test__orders_pending(self, mock_get):
+        """get the orders pending for an account."""
+        tid = "_v3_accounts_accountID_orders_pending"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrdersPending(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp),
+                              status_code=r.expected_status)
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
     def test__orders_list(self, mock_get):
         """get the orders information for an account."""
         tid = "_v3_accounts_accountID_orders_list"

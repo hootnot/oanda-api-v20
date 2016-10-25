@@ -114,6 +114,21 @@ class TestOrders(unittest.TestCase):
             resp['orders'][0]['instrument'])
 
     @requests_mock.Mocker()
+    def test__order_details(self, mock_get):
+        """details of an order."""
+        orderID = "2309"
+        tid = "_v3_accounts_accountID_order_details"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderDetails(accountID, orderID=orderID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        result = result["order"]
+        self.assertTrue(result['id'] == orderID and
+                        result['units'] == resp["order"]["units"])
+
+    @requests_mock.Mocker()
     def test__order_cancel(self, mock_get):
         """cancel an order."""
         orderID = "2307"

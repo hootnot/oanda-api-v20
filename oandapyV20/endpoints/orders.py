@@ -141,10 +141,34 @@ class OrdersPending(Orders):
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}")
 class OrderDetails(Orders):
-    """OrderDetails.
+    """Get details for a single Order in an Account."""
 
-    Get details for a single Order in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID):
+        """Instantiate an OrderDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderDetails(accountID=..., orderID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_order_details_resp}
+
+        """
+        super(OrderDetails, self).__init__(accountID, orderID)
 
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT", 201)

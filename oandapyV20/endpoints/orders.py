@@ -196,10 +196,37 @@ class OrderReplace(Orders):
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
 class OrderCancel(Orders):
-    """OrderCancel.
+    """Cancel a pending Order in an Account."""
 
-    Cancel a pending Order in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID):
+        """Instantiate an OrdersCancel request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the account to perform the request on.
+
+
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderCancel(accountID= ..., orderID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_order_cancel_resp}
+
+        """
+        super(OrderCancel, self).__init__(accountID, orderID)
 
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")

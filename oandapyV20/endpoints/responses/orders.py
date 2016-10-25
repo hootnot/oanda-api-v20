@@ -75,6 +75,27 @@ responses = {
             "lastTransactionID": "2305"
         }
     },
+    "_v3_accounts_accountID_order_cancel": {
+        "url": "v3/accounts/{accountID}/orders/{orderID}/cancel",
+        "orderID": "2307",
+        "response": {
+            "orderCancelTransaction": {
+                "orderID": "2307",
+                "clientOrderID": "myID",
+                "userID": 1435156,
+                "batchID": "2308",
+                "reason": "CLIENT_REQUEST",
+                "time": "2016-10-25T20:53:03.789670387Z",
+                "type": "ORDER_CANCEL",
+                "id": "2308",
+                "accountID": "101-004-1435156-001"
+            },
+            "relatedTransactionIDs": [
+                "2308"
+            ],
+            "lastTransactionID": "2308"
+        }
+    },
     "_v3_accounts_accountID_orders_list": {
         "url": "v3/accounts/{accountID}/orders",
         "response": {

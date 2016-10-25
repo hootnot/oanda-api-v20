@@ -114,6 +114,22 @@ class TestOrders(unittest.TestCase):
             resp['orders'][0]['instrument'])
 
     @requests_mock.Mocker()
+    def test__order_cancel(self, mock_get):
+        """cancel an order."""
+        orderID = "2307"
+        tid = "_v3_accounts_accountID_order_cancel"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderCancel(accountID, orderID=orderID)
+        mock_get.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        result = result["orderCancelTransaction"]
+        self.assertTrue(result['orderID'] == orderID and
+                        result['reason'] == "CLIENT_REQUEST" and
+                        result['type'] == "ORDER_CANCEL")
+
+    @requests_mock.Mocker()
     def test__order_replace(self, mock_put):
         """replace an order."""
         orderID = "2304"

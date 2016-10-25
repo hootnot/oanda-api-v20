@@ -70,13 +70,41 @@ class OrderCreate(Orders):
         self.data = data
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/orders")
 class OrderList(Orders):
-    """OrderList.
+    """Create an Order for an Account."""
 
-    Create an Order for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an OrderList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict
+            optional request query parameters, check developer.oanda.com
+            for details
+
+
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderList(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_orders_list_resp}
+
+        """
+        super(OrderList, self).__init__(accountID)
+        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/pendingOrders")

@@ -46,7 +46,7 @@ responses = {
             "lastTransactionID": "2304"
         }
     },
-    "_v3_accounts_accountID_orders": {
+    "_v3_accounts_accountID_orders_list": {
         "url": "v3/accounts/{accountID}/orders",
         "response": {
             "orders": [

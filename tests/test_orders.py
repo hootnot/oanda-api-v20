@@ -88,16 +88,17 @@ class TestOrders(unittest.TestCase):
     @requests_mock.Mocker()
     def test__orders_list(self, mock_get):
         """get the orders information for an account."""
-        uri = 'https://test.com/v3/accounts/{}/orders'.format(accountID)
-        resp = responses["_v3_accounts_accountID_orders"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
+        tid = "_v3_accounts_accountID_orders_list"
+        resp, data = fetchTestData(responses, tid)
         r = orders.OrderList(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(len(result['orders']) == 1 and
-                        result['orders'][0]['instrument'] == "EUR_USD")
+        self.assertTrue(
+            len(result['orders']) == len(resp['orders']) and
+            result['orders'][0]['instrument'] ==
+            resp['orders'][0]['instrument'])
 
     @requests_mock.Mocker()
     def test__order_replace(self, mock_get):

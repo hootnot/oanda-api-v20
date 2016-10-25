@@ -114,30 +114,27 @@ class TestOrders(unittest.TestCase):
             resp['orders'][0]['instrument'])
 
     @requests_mock.Mocker()
-    def test__order_replace(self, mock_get):
+    def test__order_replace(self, mock_put):
         """replace an order."""
-        orderID = "2125"
-        # to replace with
-        tmp = {"order": {
-                   "units": "-50000",
-                   "type": "LIMIT",
-                   "instrument": "EUR_USD",
-                   "price": "1.25",
-                }
-               }
-
-        uri = 'https://test.com/v3/accounts/{}/orders/{}'.format(accountID,
-                                                                 orderID)
-        resp = responses["_v3_accounts_accountID_order_replace"]['response']
-        text = json.dumps(resp)
-        r = orders.OrderReplace(accountID, orderID, data=tmp)
-        mock_get.register_uri('PUT',
-                              uri,
-                              text=text,
+        orderID = "2304"
+        # to replace with data
+        tid = "_v3_accounts_accountID_order_replace"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderReplace(accountID, orderID, data=data)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp),
                               status_code=r.expected_status)
         result = api.request(r)
-        self.assertTrue(len(result['orders']) == 1 and
-                        result['orders'][0]['units'] == tmp["order"]["units"])
+        self.assertTrue(
+          "orderCreateTransaction" in result and
+          "orderCancelTransaction" in result and
+          result["orderCancelTransaction"]["orderID"] == orderID and
+          result["orderCreateTransaction"]["replacesOrderID"] == orderID and
+          result["orderCreateTransaction"]["units"] ==
+          data["order"]['units'] and
+          result["orderCreateTransaction"]["price"] ==
+          data["order"]['price'])
 
     @requests_mock.Mocker()
     def test__order_replace_wrong_status_exception(self, mock_get):

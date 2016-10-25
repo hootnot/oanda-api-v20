@@ -147,7 +147,6 @@ class OrderDetails(Orders):
     """
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT", 201)
 class OrderReplace(Orders):
     """OrderReplace.
@@ -157,6 +156,42 @@ class OrderReplace(Orders):
     """
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID, data):
+        """Instantiate an OrderReplace request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_order_replace_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_accounts_accountID_order_replace_body}
+        >>> r = orders.OrderReplace(accountID=..., orderID=..., data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_order_replace_resp}
+
+        """
+        super(OrderReplace, self).__init__(accountID, orderID)
+        self.data = data
 
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")

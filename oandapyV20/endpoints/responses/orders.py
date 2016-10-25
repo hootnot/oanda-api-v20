@@ -102,24 +102,52 @@ responses = {
     },
     "_v3_accounts_accountID_order_replace": {
         "url": "v3/accounts/{accountID}/orders",
+        "body": {
+            "order": {
+                "units": "-500000",
+                "type": "LIMIT",
+                "instrument": "EUR_USD",
+                "price": "1.25000",
+            }
+        },
         "response": {
-            "orders": [
-                {
-                    "triggerCondition": "TRIGGER_DEFAULT",
-                    "replacesOrderID": "2125",
-                    "partialFill": "DEFAULT_FILL",
-                    "price": "1.25000",
-                    "createTime": "2016-10-05T10:52:43.742347417Z",
+                "orderCreateTransaction": {
                     "timeInForce": "GTC",
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "replacesOrderID": "2304",
+                    "positionFill": "DEFAULT",
+                    "userID": 1435156,
+                    "units": "-500000",
+                    "batchID": "2306",
                     "instrument": "EUR_USD",
-                    "state": "PENDING",
-                    "units": "-50000",
-                    "id": "2133",
-                    "type": "LIMIT",
-                    "positionFill": "POSITION_DEFAULT"
-                }
-            ],
-            "lastTransactionID": "2133"
+                    "reason": "REPLACEMENT",
+                    "time": "2016-10-25T19:45:38.558056359Z",
+                    "price": "1.25000",
+                    "clientExtensions": {
+                        "comment": "myComment",
+                        "id": "myID"
+                    },
+                    "type": "LIMIT_ORDER",
+                    "id": "2307",
+                    "accountID": "101-004-1435156-001"
+                },
+                "orderCancelTransaction": {
+                    "orderID": "2304",
+                    "clientOrderID": "myID",
+                    "replacedByOrderID": "2307",
+                    "userID": 1435156,
+                    "batchID": "2306",
+                    "reason": "CLIENT_REQUEST_REPLACED",
+                    "time": "2016-10-25T19:45:38.558056359Z",
+                    "type": "ORDER_CANCEL",
+                    "id": "2306",
+                    "accountID": "101-004-1435156-001"
+                },
+                "relatedTransactionIDs": [
+                    "2306",
+                    "2307"
+                ],
+                "lastTransactionID": "2307"
         }
     },
     "_v3_accounts_accountID_order_clientextensions": {

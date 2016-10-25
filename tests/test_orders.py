@@ -63,13 +63,25 @@ class TestOrders(unittest.TestCase):
     def test__order_create(self, mock_post):
         """get the orders information for an account."""
         tid = "_v3_accounts_accountID_orders_create"
-        uri, resp, data = fetchTestData(responses, tid)
-        uri = "{}/{}".format(api.api_url, uri).format(accountID=accountID)
+        resp, data = fetchTestData(responses, tid)
         r = orders.OrderCreate(accountID, data=data)
         mock_post.register_uri('POST',
-                               uri,
+                               "{}/{}".format(api.api_url, r),
                                text=json.dumps(data),
                                status_code=r.expected_status)
+        result = api.request(r)
+        self.assertTrue(result == data)
+
+    @requests_mock.Mocker()
+    def test__order_clientextensions(self, mock_put):
+        """get the orders information for an account."""
+        tid = "_v3_accounts_accountID_order_clientextensions"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderClientExtensions(accountID, orderID="2304", data=data)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(data),
+                              status_code=r.expected_status)
         result = api.request(r)
         self.assertTrue(result == data)
 

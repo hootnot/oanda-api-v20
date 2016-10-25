@@ -92,5 +92,34 @@ responses = {
             ],
             "lastTransactionID": "2133"
         }
+    },
+    "_v3_accounts_accountID_order_clientextensions": {
+        "url": "v3/accounts/{accountID}/orders/{orderID}/clientExtensions",
+        "orderID": 2304,
+        "body": {
+            "clientExtensions": {
+                "id": "myID",
+                "comment": "myComment",
+            }
+        },
+        "response": {
+            "relatedTransactionIDs": [
+                "2305"
+            ],
+            "orderClientExtensionsModifyTransaction": {
+                "orderID": "2304",
+                "userID": 1435156,
+                "batchID": "2305",
+                "clientExtensionsModify": {
+                    "comment": "myComment",
+                    "id": "myID"
+                },
+                "time": "2016-10-25T15:56:43.075594239Z",
+                "type": "ORDER_CLIENT_EXTENSIONS_MODIFY",
+                "id": "2305",
+                "accountID": "101-004-1435156-001"
+            },
+            "lastTransactionID": "2305"
+        }
     }
 }

@@ -11,7 +11,6 @@ expiryDate = time.strftime("%Y-%m-%dT%H:%M:%S",
 
 
 def fetchTestData(responses, k):
-    uri = responses[k]['url']
     resp = responses[k]['response']
     data = None
     try:
@@ -19,7 +18,7 @@ def fetchTestData(responses, k):
     except:
         pass
 
-    return (uri, resp, data)
+    return (resp, data)
 
 
 def auth():

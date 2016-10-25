@@ -115,13 +115,48 @@ class OrderCancel(Orders):
     """
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
 class OrderClientExtensions(Orders):
-    """OrderClientExtensions.
+    """Update the Client Extensions for an Order in an Account.
 
-    Update the Client Extensions for an Order in an Account. Do not set,
-    modify or delete clientExtensions if your account is associated with MT4.
+    .. warning::
+        Do not set, modify or delete clientExtensions if your account
+        is associated with MT4.
     """
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID, data):
+        """Instantiate an OrderCreate request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_order_clientextensions_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderClientExtensions(accountID, orderID, data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_accountID_order_clientextensions_resp}
+
+        """
+        super(OrderClientExtensions, self).__init__(accountID, orderID)
+        self.data = data

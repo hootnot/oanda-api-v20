@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -57,6 +58,20 @@ class TestOrders(unittest.TestCase):
 
         bcErr = bcErr.exception
         self.assertTrue("Use of abstract base class" in "{}".format(bcErr))
+
+    @requests_mock.Mocker()
+    def test__order_create(self, mock_post):
+        """get the orders information for an account."""
+        tid = "_v3_accounts_accountID_orders_create"
+        uri, resp, data = fetchTestData(responses, tid)
+        uri = "{}/{}".format(api.api_url, uri).format(accountID=accountID)
+        r = orders.OrderCreate(accountID, data=data)
+        mock_post.register_uri('POST',
+                               uri,
+                               text=json.dumps(data),
+                               status_code=r.expected_status)
+        result = api.request(r)
+        self.assertTrue(result == data)
 
     @requests_mock.Mocker()
     def test__orders_list(self, mock_get):

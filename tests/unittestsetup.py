@@ -10,6 +10,18 @@ expiryDate = time.strftime("%Y-%m-%dT%H:%M:%S",
                            time.localtime(int(time.time() + 86400*days)))
 
 
+def fetchTestData(responses, k):
+    uri = responses[k]['url']
+    resp = responses[k]['response']
+    data = None
+    try:
+        data = responses[k]['body']
+    except:
+        pass
+
+    return (uri, resp, data)
+
+
 def auth():
     access_token = None
     account = None

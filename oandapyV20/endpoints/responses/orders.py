@@ -1,8 +1,51 @@
+# -*- encoding: utf-8 -*-
 """Responses.
 
 responses serve both testing purpose aswell as dynamic docstring replacement
 """
 responses = {
+    "_v3_accounts_accountID_orders_create": {
+        "url": "v3/accounts/{accountID}/orders",
+        "body": {
+                "order": {
+                    "stopLossOnFill": {
+                        "timeInForce": "GTC",
+                        "price": "1.22"
+                    },
+                    "units": "-100",
+                    "price": "1.2",
+                    "instrument": "EUR_USD",
+                    "timeInForce": "GTC",
+                    "type": "LIMIT",
+                    "positionFill": "DEFAULT"
+                }
+        },
+        "response": {
+            "orderCreateTransaction": {
+                "timeInForce": "GTC",
+                "triggerCondition": "TRIGGER_DEFAULT",
+                "positionFill": "DEFAULT",
+                "stopLossOnFill": {
+                    "timeInForce": "GTC",
+                    "price": "1.22000"
+                },
+                "userID": 1435156,
+                "id": "2304",
+                "batchID": "2304",
+                "instrument": "EUR_USD",
+                "reason": "CLIENT_ORDER",
+                "time": "2016-10-24T21:48:18.593753865Z",
+                "units": "-100",
+                "type": "LIMIT_ORDER",
+                "price": "1.20000",
+                "accountID": "101-004-1435156-001"
+            },
+            "relatedTransactionIDs": [
+                "2304"
+            ],
+            "lastTransactionID": "2304"
+        }
+    },
     "_v3_accounts_accountID_orders": {
         "url": "v3/accounts/{accountID}/orders",
         "response": {

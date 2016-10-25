@@ -31,15 +31,43 @@ class Orders(APIRequest):
                                      expected_status=self.EXPECTED_STATUS)
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders", "POST", 201)
 class OrderCreate(Orders):
-    """OrderCreate.
-
-    Create an Order for an Account.
-    """
+    """Create an Order for an Account."""
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, data):
+        """Instantiate an OrderCreate request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_orders_create_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderCreate(accountID, data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_accountID_orders_create_resp}
+
+        """
+        super(OrderCreate, self).__init__(accountID)
+        self.data = data
 
 
 @extendargs("params")

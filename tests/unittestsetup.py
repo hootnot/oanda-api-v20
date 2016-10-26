@@ -12,13 +12,18 @@ expiryDate = time.strftime("%Y-%m-%dT%H:%M:%S",
 
 def fetchTestData(responses, k):
     resp = responses[k]['response']
-    data = None
+    params, data = None, None
     try:
         data = responses[k]['body']
     except:
         pass
 
-    return (resp, data)
+    try:
+        params = responses[k]['params']
+    except:
+        pass
+
+    return (resp, data, params)
 
 
 def auth():

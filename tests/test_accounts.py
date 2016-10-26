@@ -83,27 +83,24 @@ class TestAccounts(unittest.TestCase):
     def test__get_account_summary(self, accID, status_code,
                                   fail=None, **kwargs):
         """get the summary of specified account."""
-        if not fail:
-            uri = 'https://test.com/v3/accounts/{}/summary'.format(accountID)
-            resp = responses["_v3_account_by_accountID_summary"]['response']
-            text = json.dumps(resp)
-        else:
-            uri = 'https://test.com/v3/accounts/{}/summary'.format(accID)
-            text = fail
-
-        kwargs['mock'].register_uri('GET',
-                                    uri,
-                                    text=text,
-                                    status_code=status_code)
-
+        tid = "_v3_account_by_accountID_summary"
+        resp, data = fetchTestData(responses, tid)
         if not accID:
             # hack to use the global accountID
             accID = accountID
         r = accounts.AccountSummary(accountID=accID)
+        text = fail
+        if not fail:
+            text = json.dumps(resp)
+
+        kwargs['mock'].register_uri('GET',
+                                    "{}/{}".format(api.api_url, r),
+                                    text=text,
+                                    status_code=status_code)
+
         if fail:
             # The test should raise an exception with code == fail
             oErr = None
-            s = None
             with self.assertRaises(V20Error) as oErr:
                 result = api.request(r)
 

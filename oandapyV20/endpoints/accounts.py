@@ -84,10 +84,31 @@ class AccountDetails(Accounts):
 
 @endpoint("v3/accounts/{accountID}/summary")
 class AccountSummary(Accounts):
-    """AccountSummary.
+    """Get a summary for a single Account that a client has access to."""
 
-    Get a summary for a single Account that a client has access to.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an AccountSummary request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.AccountSummary(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_account_by_accountID_summary_resp}
+
+        """
+        super(AccountSummary, self).__init__(accountID)
 
 
 @extendargs("params")

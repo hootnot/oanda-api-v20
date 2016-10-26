@@ -22,6 +22,8 @@ def dyndoc_insert(src):
             sub["{}_resp".format(k)] = mkblock(src[k]["response"])
             if "body" in src[k]:
                 sub["{}_body".format(k)] = mkblock(src[k]["body"])
+            if "params" in src[k]:
+                sub["{}_params".format(k)] = mkblock(src[k]["params"])
 
         obj.__doc__ = obj.__doc__.format(**sub)
         return obj

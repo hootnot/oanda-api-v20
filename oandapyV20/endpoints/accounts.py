@@ -170,7 +170,7 @@ class AccountChanges(Accounts):
         >>> import oandapyV20.endpoints.accounts as accounts
         >>> client = oandapyV20.API(access_token=...)
         >>> params = ...
-        >>> r = orders.AccountChanges(accountID=..., params=params)
+        >>> r = accounts.AccountChanges(accountID=..., params=params)
         >>> client.request(r)
         >>> print r.response
 

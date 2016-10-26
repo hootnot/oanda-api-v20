@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -45,6 +46,7 @@ class TestInstruments(unittest.TestCase):
             api = API(environment=environment,
                       access_token=access_token,
                       headers={"Content-Type": "application/json"})
+            api.api_url = "https://test.com"
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -53,16 +55,13 @@ class TestInstruments(unittest.TestCase):
     def test__instruments_candles(self, mock_get):
         """get the candle information for instruments."""
         instrument = "DE30_EUR"
-        uri = 'https://test.com/v3/instruments/{}/candles'.format(instrument)
-        resp = responses["_v3_instruments_instrument_candles"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
-        params = {"granularity": "M5",
-                  "count": 5}
+        tid = "_v3_instruments_instrument_candles"
+        resp, data, params = fetchTestData(responses, tid)
         r = instruments.InstrumentsCandles(instrument=instrument,
                                            params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
         self.assertTrue(result == resp)
 

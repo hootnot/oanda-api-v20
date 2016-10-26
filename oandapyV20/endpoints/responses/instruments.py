@@ -5,6 +5,11 @@ responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
     "_v3_instruments_instrument_candles": {
         "url": "/v3/instruments/{instrument}/candles",
+        "instrument": "DE30_EUR",
+        "params": {
+            "count": 5,
+            "granularity": "M5"
+        },
         "response": {
             "candles": [
                 {

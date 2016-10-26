@@ -23,7 +23,10 @@ def fetchTestData(responses, k):
     except:
         pass
 
-    return (resp, data, params)
+    if params:
+        return (resp, data, params)
+
+    return (resp, data)
 
 
 def auth():

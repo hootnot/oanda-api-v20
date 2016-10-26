@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -135,19 +136,33 @@ class TestAccounts(unittest.TestCase):
             primDev == "Contract For Difference" and
             "EUR_AUD" not in s_result)
 
+    @requests_mock.Mocker()
+    def test__account_changes(self, mock_get):
+        """get account state since ID of transaction."""
+        tid = "_v3_accounts_accountID_account_changes"
+        resp, data, params = fetchTestData(responses, tid)
+        r = accounts.AccountInstruments(accountID=accountID, params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
     def test__get_instruments_data_exception(self):
         """check for data parameter exception."""
         with self.assertRaises(TypeError) as oErr:
             r = accounts.AccountInstruments(accountID=accountID, data={})
 
-        self.assertEqual("__init__() got an unexpected keyword argument 'data'", "{}".format(oErr.exception))
+        self.assertEqual("__init__() got an unexpected keyword "
+                         "argument 'data'", "{}".format(oErr.exception))
 
     def test__get_instruments_params_exception(self):
         """check for params parameter exception."""
         with self.assertRaises(TypeError) as oErr:
             r = accounts.AccountConfiguration(accountID=accountID, params={})
 
-        self.assertEqual("__init__() got an unexpected keyword argument 'params'", "{}".format(oErr.exception))
+        self.assertEqual("__init__() got an unexpected keyword "
+                         "argument 'params'", "{}".format(oErr.exception))
 
 if __name__ == "__main__":
 

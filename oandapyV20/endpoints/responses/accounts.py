@@ -290,5 +290,80 @@ responses = {
         "body": {
             "marginRate": "0.05"
         }
+    },
+    "_v3_accounts_accountID_account_changes": {
+        "url": "/v3/accounts/{accountID}/changes",
+        "params": {
+            "sinceTransactionID": 2308
+        },
+        "response": {
+            "state": {
+                "trades": [],
+                "marginCloseoutNAV": "33848.2663",
+                "unrealizedPL": "0.0000",
+                "marginUsed": "0.0000",
+                "marginAvailable": "33848.2663",
+                "positions": [],
+                "marginCloseoutUnrealizedPL": "0.0000",
+                "marginCallMarginUsed": "0.0000",
+                "marginCallPercent": "0.00000",
+                "marginCloseoutPercent": "0.00000",
+                "NAV": "33848.2663",
+                "marginCloseoutMarginUsed": "0.0000",
+                "positionValue": "0.0000",
+                "orders": [],
+                "withdrawalLimit": "33848.2663"
+            },
+            "changes": {
+                "tradesReduced": [],
+                "tradesOpened": [],
+                "ordersFilled": [],
+                "transactions": [
+                  {
+                    "timeInForce": "GTC",
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "positionFill": "DEFAULT",
+                    "stopLossOnFill": {
+                      "timeInForce": "GTC",
+                      "price": "1.22000"
+                    },
+                    "userID": 1435156,
+                    "id": "2309",
+                    "batchID": "2309",
+                    "instrument": "EUR_USD",
+                    "reason": "CLIENT_ORDER",
+                    "time": "2016-10-25T21:07:21.065554321Z",
+                    "units": "-100",
+                    "type": "LIMIT_ORDER",
+                    "price": "1.20000",
+                    "accountID": "101-004-1435156-001"
+                  }
+                ],
+                "ordersCreated": [
+                  {
+                    "triggerCondition": "TRIGGER_DEFAULT",
+                    "partialFill": "DEFAULT_FILL",
+                    "price": "1.20000",
+                    "stopLossOnFill": {
+                      "timeInForce": "GTC",
+                      "price": "1.22000"
+                    },
+                    "createTime": "2016-10-25T21:07:21.065554321Z",
+                    "timeInForce": "GTC",
+                    "instrument": "EUR_USD",
+                    "state": "PENDING",
+                    "units": "-100",
+                    "id": "2309",
+                    "type": "LIMIT",
+                    "positionFill": "POSITION_DEFAULT"
+                  }
+                ],
+                "positions": [],
+                "ordersTriggered": [],
+                "ordersCancelled": [],
+                "tradesClosed": []
+            },
+            "lastTransactionID": "2309"
+        }
     }
 }

@@ -25,16 +25,6 @@ class Accounts(APIRequest):
             required.
 
 
-        data : dict (depends on the endpoint to access)
-            configuration details for the account in case of
-
-            requests involving the 'data'-parameter require headers to
-            be set: Content-Type: application/json)
-
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints
-
         Examples
         --------
 
@@ -145,7 +135,7 @@ class AccountConfiguration(Accounts):
     HEADERS = {"Content-Type": "application/json"}
 
 
-@extendargs("params")
+
 @endpoint("v3/accounts/{accountID}/changes")
 class AccountChanges(Accounts):
     """AccountChanges.
@@ -153,3 +143,36 @@ class AccountChanges(Accounts):
     Endpoint used to poll an Account for its current state and changes
     since a specified TransactionID.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an AccountChanges request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (optional)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_accountID_account_changes_params}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = ...
+        >>> r = orders.AccountChanges(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_account_changes_resp}
+
+        """
+        super(AccountChanges, self).__init__(accountID)
+        self.params = params

@@ -48,7 +48,6 @@ class Accounts(APIRequest):
         ::
 
             # get an account by accountID
-            # corresponding API endpoint: GET {_v3_account_by_accountID_url}
 
             import oandapyv20 as oandapy
             import oandapyv20.endpoints.accounts as accounts
@@ -62,27 +61,6 @@ class Accounts(APIRequest):
         response::
 
             {_v3_account_by_accountID_resp}
-
-        ::
-
-            # Set account configuration for account with id accountID
-            # corresponding API endpoint:
-            # PATCH {_v3_account_by_accountID_configuration_url}
-
-            import oandapyv20 as oandapy
-            import oandapyv20.endpoints.accounts as accounts
-
-            access_token = "..."
-            accountID = "101-004-1435156-002"
-            configuration = {_v3_account_by_accountID_configuration_body}
-            client = oandapy.API(access_token=access_token)
-
-            r = accounts.AccountConfiguration(accountID, data=configuration)
-            response = client.request(r)
-
-        response::
-
-            {_v3_account_by_accountID_configuration_resp}
 
         """
         endpoint = self.ENDPOINT.format(accountID=accountID)
@@ -124,16 +102,43 @@ class AccountInstruments(Accounts):
     """
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/configuration", "PATCH")
 class AccountConfiguration(Accounts):
-    """AccountConfiguration.
-
-    Set the client-configurable portions of an Account.
-    """
+    """Set the client-configurable portions of an Account."""
 
     HEADERS = {"Content-Type": "application/json"}
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, data):
+        """Instantiate an AccountConfiguration request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        data : dict (required)
+            json body to send
+
+
+        body example::
+
+            {_v3_accounts_accountID_account_config_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.AccountConfiguration(accountID, data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_accountID_account_config_resp}
+
+        """
+        super(AccountConfiguration, self).__init__(accountID)
+        self.data = data
 
 
 @endpoint("v3/accounts/{accountID}/changes")

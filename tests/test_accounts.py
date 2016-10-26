@@ -137,6 +137,18 @@ class TestAccounts(unittest.TestCase):
             "EUR_AUD" not in s_result)
 
     @requests_mock.Mocker()
+    def test__account_configuration(self, mock_req):
+        """set configurable parts of account."""
+        tid = "_v3_accounts_accountID_account_config"
+        resp, data = fetchTestData(responses, tid)
+        r = accounts.AccountConfiguration(accountID=accountID, data=data)
+        mock_req.register_uri('PATCH',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
     def test__account_changes(self, mock_get):
         """get account state since ID of transaction."""
         tid = "_v3_accounts_accountID_account_changes"

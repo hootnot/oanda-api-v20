@@ -273,8 +273,11 @@ responses = {
             "lastTransactionID": "2124"
         },
     },
-    "_v3_account_by_accountID_configuration": {
-        "url": "/v3/accounts/{}/configuration",
+    "_v3_accounts_accountID_account_config": {
+        "url": "/v3/accounts/{accountID}/configuration",
+        "body": {
+            "marginRate": "0.05"
+        },
         "response": {
             "lastTransactionID": "830",
             "clientConfigureTransaction": {
@@ -287,9 +290,6 @@ responses = {
                 "accountID": "101-004-1435156-001"
             }
         },
-        "body": {
-            "marginRate": "0.05"
-        }
     },
     "_v3_accounts_accountID_account_changes": {
         "url": "/v3/accounts/{accountID}/changes",

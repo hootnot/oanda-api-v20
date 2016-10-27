@@ -32,7 +32,7 @@ class Pricing(APIRequest):
         super(Pricing, self).__init__(endpoint, method=self.METHOD)
 
 
-@extendargs("params")
+
 @endpoint("v3/accounts/{accountID}/pricing")
 class PricingInfo(Pricing):
     """Pricing.
@@ -40,6 +40,40 @@ class PricingInfo(Pricing):
     Get pricing information for a specified list of Instruments within
     an account.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a PricingStream APIRequest instance.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            the accountID of the account.
+
+        params : dict (depends on the endpoint to access)
+            parameters for the request. This applies only the GET based
+            endpoints.
+
+        Example
+        -------
+
+        >>> import oandapyV20
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.pricing as pricing
+        >>> accountID = "..."
+        >>> api = API(access_token="...")
+        >>> params = {_v3_accounts_accountID_pricing_params}
+        >>> r = pricing.PricingInfo(accountID=accountID, params=params)
+        >>> rv = api.request(r)
+        >>> print r.response
+
+        Output::
+
+           {_v3_accounts_accountID_pricing_resp}
+
+        """
+        super(PricingInfo, self).__init__(accountID)
+        self.params = params
 
 
 @extendargs("params")

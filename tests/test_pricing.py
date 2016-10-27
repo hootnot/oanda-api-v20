@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -43,8 +44,8 @@ class TestPricing(unittest.TestCase):
                      "api": "https://test.com",
                      }})
             api = API(environment=environment,
-                      access_token=access_token,
-                      headers={"Content-Type": "application/json"})
+                      access_token=access_token)
+            api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
             exit(0)
@@ -52,17 +53,16 @@ class TestPricing(unittest.TestCase):
     @requests_mock.Mocker()
     def test__pricing(self, mock_get):
         """get the pricing information for instruments."""
-        uri = 'https://test.com/v3/accounts/{}/pricing'.format(accountID)
-        resp = responses["_v3_accounts_accountID_pricing"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
-        params = {"instruments": "EUR_USD,EUR_JPY"}
+        tid = "_v3_accounts_accountID_pricing"
+        resp, data, params = fetchTestData(responses, tid)
         r = pricing.PricingInfo(accountID, params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        s_result = json.dumps(result)
-        self.assertTrue("EUR_USD" in s_result and "EUR_JPY" in s_result)
+        instr = params["instruments"].split(",")
+        self.assertTrue(result["prices"][0]["instrument"] == instr[0] and
+                        result["prices"][1]["instrument"] == instr[1])
 
     @requests_mock.Mocker()
     def test__pricing_stream(self, mock_get):

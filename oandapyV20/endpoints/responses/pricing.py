@@ -5,6 +5,9 @@ responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
     "_v3_accounts_accountID_pricing": {
         "url": "v3/accounts/{accountID}/pricing",
+        "params": {
+            "instruments": "EUR_USD,EUR_JPY"
+        },
         "response": {
             "prices": [
                 {
@@ -125,4 +128,3 @@ responses = {
         }
     }
 }
-

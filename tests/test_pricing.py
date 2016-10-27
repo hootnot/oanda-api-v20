@@ -67,28 +67,26 @@ class TestPricing(unittest.TestCase):
     @requests_mock.Mocker()
     def test__pricing_stream(self, mock_get):
         """get the streaming pricing information for instruments."""
-        uri = 'https://test.com/v3/accounts/{}/pricing/stream'.format(accountID)
-        ticks = [{"a": 10}, {"b": 20}, {"c": 30}, {"d": 40}, {"e": 50}]
-        text = "\n".join([json.dumps(r) for r in ticks])
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
-        params = {"instruments": "EUR_USD,EUR_JPY"}
+        tid = "_v3_accounts_accountID_pricing_stream"
+        resp, data, params = fetchTestData(responses, tid)
+        text = "\n".join([json.dumps(t) for t in resp])
         r = pricing.PricingStream(accountID, params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=text)
         result = []
         n = 0
+        m = 3
         with self.assertRaises(StreamTerminated) as oErr:
             for rec in api.request(r):
-                result.append(json.dumps(rec))
+                result.append(rec)
                 n += 1
-                # terminate when we have 3 response lines
-                if n == 3:
+                # terminate when we have m response lines
+                if n == m:
                     r.terminate()
 
-        # the result containing 3 items, should equal the first 3 items
-        # of the ticks
-        self.assertTrue("\n".join(result) ==
-                        "\n".join(json.dumps(r) for r in ticks[0:3]))
+        # the result containing m items, should equal the first m items
+        self.assertTrue(result == resp[0:m])
 
     def test__pricing_stream_termination_1(self):
         """terminate a stream that does not exist."""

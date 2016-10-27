@@ -126,5 +126,130 @@ responses = {
                 }
             ]
         }
+    },
+    "_v3_accounts_accountID_pricing_stream": {
+        "url": "v3/accounts/{accountID}/pricing/stream",
+        "params": {
+            "instruments": "EUR_USD,EUR_JPY"
+        },
+        "response": [
+             {
+                "status": "tradeable",
+                "asks": [
+                    {
+                        "price": "114.312",
+                        "liquidity": 1000000
+                    },
+                    {
+                        "price": "114.313",
+                        "liquidity": 2000000
+                    },
+                    {
+                        "price": "114.314",
+                        "liquidity": 5000000
+                    },
+                    {
+                        "price": "114.316",
+                        "liquidity": 10000000
+                    }
+                ],
+                "closeoutBid": "114.291",
+                "bids": [
+                    {
+                        "price": "114.295",
+                        "liquidity": 1000000
+                    },
+                    {
+                        "price": "114.294",
+                        "liquidity": 2000000
+                    },
+                    {
+                        "price": "114.293",
+                        "liquidity": 5000000
+                    },
+                    {
+                        "price": "114.291",
+                        "liquidity": 10000000
+                    }
+                ],
+                "instrument": "EUR_JPY",
+                "time": "2016-10-27T08:38:43.094548890Z",
+                "closeoutAsk": "114.316"
+            },
+            {
+                "type": "HEARTBEAT",
+                "time": "2016-10-27T08:38:44.327443673Z"
+            },
+            {
+                "status": "tradeable",
+                "asks": [
+                    {
+                        "price": "1.09188",
+                        "liquidity": 10000000
+                    },
+                    {
+                        "price": "1.09190",
+                        "liquidity": 10000000
+                    }
+                ],
+                "closeoutBid": "1.09173",
+                "bids": [
+                    {
+                        "price": "1.09177",
+                        "liquidity": 10000000
+                    },
+                    {
+                        "price": "1.09175",
+                        "liquidity": 10000000
+                    }
+                ],
+                "instrument": "EUR_USD",
+                "time": "2016-10-27T08:38:45.664613867Z",
+                "closeoutAsk": "1.09192"
+            },
+            {
+                "status": "tradeable",
+                "asks": [
+                    {
+                        "price": "114.315",
+                        "liquidity": 1000000
+                    },
+                    {
+                        "price": "114.316",
+                        "liquidity": 2000000
+                    },
+                    {
+                        "price": "114.317",
+                        "liquidity": 5000000
+                    },
+                    {
+                        "price": "114.319",
+                        "liquidity": 10000000
+                    }
+                ],
+                "closeoutBid": "114.294",
+                "bids": [
+                    {
+                        "price": "114.298",
+                        "liquidity": 1000000
+                    },
+                    {
+                        "price": "114.297",
+                        "liquidity": 2000000
+                    },
+                    {
+                        "price": "114.296",
+                        "liquidity": 5000000
+                    },
+                    {
+                        "price": "114.294",
+                        "liquidity": 10000000
+                    }
+                ],
+                "instrument": "EUR_JPY",
+                "time": "2016-10-27T08:38:45.681572782Z",
+                "closeoutAsk": "114.319"
+            }
+        ]
     }
 }

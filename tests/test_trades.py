@@ -70,6 +70,18 @@ class TestTrades(unittest.TestCase):
         self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
+    def test__open_trades(self, mock_get):
+        """get the open trades information for an account."""
+        tid = "_v3_accounts_accountID_opentrades"
+        resp, data = fetchTestData(responses, tid)
+        r = trades.OpenTrades(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
     def test__trades_list_byids(self, mock_get):
         """get the trades information for an account."""
         uri = 'https://test.com/v3/accounts/{}/trades'.format(accountID)

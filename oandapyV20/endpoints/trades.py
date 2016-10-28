@@ -66,15 +66,34 @@ class TradesList(Trades):
 
         """
         super(TradesList, self).__init__(accountID)
-        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/openTrades")
 class OpenTrades(Trades):
-    """OpenTrades.
+    """Get the list of open Trades for an Account."""
 
-    Get the list of open Trades for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OpenTrades request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trades.OpenTrades(accountID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_opentrades_resp}
+
+        """
+        super(OpenTrades, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}")

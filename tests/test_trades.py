@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -42,9 +43,7 @@ class TestTrades(unittest.TestCase):
                      "stream": "https://test.com",
                      "api": "https://test.com",
                      }})
-            api = API(environment=environment,
-                      access_token=access_token,
-                      headers={"Content-Type": "application/json"})
+            api = API(environment=environment, access_token=access_token)
             api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
@@ -61,16 +60,14 @@ class TestTrades(unittest.TestCase):
     @requests_mock.Mocker()
     def test__trades_list(self, mock_get):
         """get the trades information for an account."""
-        uri = 'https://test.com/v3/accounts/{}/trades'.format(accountID)
-        resp = responses["_v3_accounts_accountID_trades"]['response']
-        text = json.dumps(resp)
+        tid = "_v3_accounts_accountID_trades"
+        resp, data, params = fetchTestData(responses, tid)
+        r = trades.TradesList(accountID, params=params)
         mock_get.register_uri('GET',
-                              uri,
-                              text=text)
-        r = trades.TradesList(accountID)
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(len(result['trades']) == 2 and
-                        result['trades'][0]['instrument'] == "DE30_EUR")
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
     def test__trades_list_byids(self, mock_get):

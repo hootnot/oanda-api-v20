@@ -30,13 +30,43 @@ class Trades(APIRequest):
         super(Trades, self).__init__(endpoint, method=self.METHOD)
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/trades")
 class TradesList(Trades):
-    """TradesList.
+    """Get a list of trades for an Account."""
 
-    Get a list of trades for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a TradesList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (optional)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_accountID_trades_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_accountID_trades_params}
+        >>> r = trades.TradesList(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_trades_resp}
+
+        """
+        super(TradesList, self).__init__(accountID)
+        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/openTrades")

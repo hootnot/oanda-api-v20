@@ -62,6 +62,18 @@ class TestPositions(unittest.TestCase):
         result = api.request(r)
         self.assertTrue(resp == result)
 
+    @requests_mock.Mocker()
+    def test__openpositions_list(self, mock_get):
+        """get the openpositions list for an account."""
+        tid = "_v3_accounts_accountID_openpositions"
+        resp, data = fetchTestData(responses, tid)
+        r = positions.OpenPositions(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(resp == result)
+
 
 if __name__ == "__main__":
 

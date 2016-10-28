@@ -72,6 +72,31 @@ class OpenPositions(Positions):
     in an Account that currently has a Trade opened for it.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OpenPositions request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.OpenPositions(accountID=accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_openpositions_resp}
+
+        """
+        super(OpenPositions, self).__init__(accountID)
+
 
 @endpoint("v3/accounts/{accountID}/positions/{instrument}")
 class PositionDetails(Positions):

@@ -69,5 +69,57 @@ responses = {
             ],
             "lastTransactionID": "2124"
         }
+    },
+    "_v3_accounts_accountID_openpositions": {
+        "url": "v3/accounts/{accountID}/positions",
+        "response": {
+            "positions": [
+                {
+                    "short": {
+                        "units": "0",
+                        "resettablePL": "-14164.3000",
+                        "unrealizedPL": "0.0000",
+                        "pl": "-14164.3000"
+                    },
+                    "unrealizedPL": "-284.0000",
+                    "long": {
+                        "unrealizedPL": "-284.0000",
+                        "units": "10",
+                        "resettablePL": "404.5000",
+                        "tradeIDs": [
+                            "2315"
+                        ],
+                        "averagePrice": "10678.3",
+                        "pl": "404.5000"
+                    },
+                    "instrument": "DE30_EUR",
+                    "resettablePL": "-13759.8000",
+                    "pl": "-13759.8000"
+                },
+                {
+                    "short": {
+                        "unrealizedPL": "-0.0738",
+                        "units": "-100",
+                        "resettablePL": "0.0000",
+                        "tradeIDs": [
+                            "2323"
+                        ],
+                        "averagePrice": "1.09843",
+                        "pl": "0.0000"
+                    },
+                    "unrealizedPL": "-0.0738",
+                    "long": {
+                        "units": "0",
+                        "resettablePL": "-44.6272",
+                        "unrealizedPL": "0.0000",
+                        "pl": "-44.6272"
+                    },
+                    "instrument": "EUR_USD",
+                    "resettablePL": "-44.6272",
+                    "pl": "-44.6272"
+                }
+            ],
+            "lastTransactionID": "2327"
+        }
     }
 }

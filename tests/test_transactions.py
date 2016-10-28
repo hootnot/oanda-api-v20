@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -53,15 +54,14 @@ class TestTransactions(unittest.TestCase):
     @requests_mock.Mocker()
     def test__transactions(self, mock_get):
         """get the transactions information for an account."""
-        uri = 'https://test.com/v3/accounts/{}/transactions'.format(accountID)
-        resp = responses["_v3_accounts_accountID_transactions"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
+        tid = "_v3_accounts_accountID_transactions"
+        resp, data, params = fetchTestData(responses, tid)
         r = transactions.TransactionList(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(len(result['pages']) > 0)
+        self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
     def test__transaction_stream(self, mock_get):

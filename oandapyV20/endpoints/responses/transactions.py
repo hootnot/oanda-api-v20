@@ -5,6 +5,9 @@ responses serve both testing purpose aswell as dynamic docstring replacement
 responses = {
     "_v3_accounts_accountID_transactions": {
         "url": "v3/accounts/{accountID}/transactions",
+        "params": {
+            "pageSize": 200
+        },
         "response": {
             "count": 2124,
             "from": "2016-06-24T21:03:50.914647476Z",

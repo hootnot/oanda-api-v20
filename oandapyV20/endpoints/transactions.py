@@ -38,7 +38,6 @@ class Transactions(APIRequest):
                                            method=self.METHOD)
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/transactions")
 class TransactionList(Transactions):
     """TransactionList.
@@ -46,6 +45,39 @@ class TransactionList(Transactions):
     Get a list of Transactions pages that satisfy a time-based Transaction
     query.
     """
+#            {_v3_account_by_accountID_instruments_params}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a TransactionList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (optional)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+           {_v3_accounts_accountID_transactions_params}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.TransactionList(accountID)  # params optional
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+           {_v3_accounts_accountID_transactions_resp}
+
+        """
+        super(TransactionList, self).__init__(accountID)
+        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/transactions/{transactionID}")

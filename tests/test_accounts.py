@@ -150,7 +150,7 @@ class TestAccounts(unittest.TestCase):
         """get account state since ID of transaction."""
         tid = "_v3_accounts_accountID_account_changes"
         resp, data, params = fetchTestData(responses, tid)
-        r = accounts.AccountInstruments(accountID=accountID, params=params)
+        r = accounts.AccountChanges(accountID=accountID, params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))

@@ -30,22 +30,6 @@ class Accounts(APIRequest):
 
         ::
 
-            # get all accounts
-            # corresponding API endpoint: GET {_v3_accounts_url}
-
-            import oandapyv20 as oandapy
-            import oandapyv20.endpoints.accounts as accounts
-
-            access_token = "..."
-            client = oandapy.API(access_token=access_token)
-            r = accounts.AccountList()
-            response = client.request(r)
-
-        response::
-
-            {_v3_accounts_resp}
-
-        ::
 
             # get an account by accountID
 
@@ -70,6 +54,24 @@ class Accounts(APIRequest):
 @endpoint("v3/accounts")
 class AccountList(Accounts):
     """Get a list of all Accounts authorized for the provided token."""
+
+    @dyndoc_insert(responses)
+    def __init__(self):
+        """Instantiate an AccountList request.
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.AccountList()
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_resp}
+
+        """
+        super(AccountList, self).__init__()
 
 
 @endpoint("v3/accounts/{accountID}")

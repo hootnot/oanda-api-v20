@@ -53,16 +53,16 @@ class TestAccounts(unittest.TestCase):
             exit(0)
 
     @requests_mock.Mocker()
-    def test__get_accounts(self, mock_get):
+    def test__account_list(self, mock_req):
         """get the list of accounts."""
-        text = json.dumps(responses["_v3_accounts"]['response'])
-        mock_get.register_uri('GET',
-                              'https://test.com/v3/accounts',
-                              text=text)
+        tid = "_v3_accounts"
+        resp, data = fetchTestData(responses, tid)
         r = accounts.AccountList()
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        count = len(result['accounts'])
-        self.assertGreaterEqual(count, 1)
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
     def test__get_account(self, mock_get):

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 """Handle trades endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.trades import definitions    # flake8: noqa
 from .responses.trades import responses
 
@@ -232,12 +232,50 @@ class TradeClientExtensions(Trades):
         self.data = data
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
 class TradeCRCDO(Trades):
-    """TradeCRCDO.
-
-    Trade Create Replace Cancel Dependent Orders.
-    """
+    """Trade Create Replace Cancel Dependent Orders."""
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data):
+        """Instantiate a TradeClientExtensions request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to update client extensions for.
+
+        data : dict (required)
+            clientextension data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_crcdo_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> accountID = ...
+        >>> tradeID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_crcdo_body}
+        >>> r = trades.TradeCRCDO(accountID=accountID,
+        >>>                       tradeID=tradeID,
+        >>>                       data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_crcdo_resp}
+
+        """
+        super(TradeCRCDO, self).__init__(accountID, tradeID)
+        self.data = data

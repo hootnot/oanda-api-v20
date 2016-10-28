@@ -158,5 +158,65 @@ responses = {
             ],
             "lastTransactionID": "2319"
         }
+    },
+    "_v3_account_accountID_trades_crcdo": {
+        "url": "v3/accounts/{accountID}/trades/{tradeID}/close",
+        "body": {
+            "takeProfit": {
+                "timeInForce": "GTC",
+                "price": "1.05"
+            },
+            "stopLoss": {
+                "timeInForce": "GTC",
+                "price": "1.10"
+            }
+        },
+        "response": {
+            "stopLossOrderTransaction": {
+                "timeInForce": "GTC",
+                "triggerCondition": "TRIGGER_DEFAULT",
+                "replacesOrderID": "2324",
+                "tradeID": "2323",
+                "price": "1.10000",
+                "userID": 1435156,
+                "batchID": "2325",
+                "reason": "REPLACEMENT",
+                "time": "2016-10-28T21:00:19.978476830Z",
+                "cancellingTransactionID": "2326",
+                "type": "STOP_LOSS_ORDER",
+                "id": "2327",
+                "accountID": "101-004-1435156-001"
+            },
+            "takeProfitOrderTransaction": {
+                "timeInForce": "GTC",
+                "triggerCondition": "TRIGGER_DEFAULT",
+                "tradeID": "2323",
+                "price": "1.05000",
+                "userID": 1435156,
+                "batchID": "2325",
+                "reason": "CLIENT_ORDER",
+                "time": "2016-10-28T21:00:19.978476830Z",
+                "type": "TAKE_PROFIT_ORDER",
+                "id": "2325",
+                "accountID": "101-004-1435156-001"
+            },
+            "relatedTransactionIDs": [
+                "2325",
+                "2326",
+                "2327"
+            ],
+            "lastTransactionID": "2327",
+            "stopLossOrderCancelTransaction": {
+                "orderID": "2324",
+                "replacedByOrderID": "2327",
+                "userID": 1435156,
+                "batchID": "2325",
+                "reason": "CLIENT_REQUEST_REPLACED",
+                "time": "2016-10-28T21:00:19.978476830Z",
+                "type": "ORDER_CANCEL",
+                "id": "2326",
+                "accountID": "101-004-1435156-001"
+            }
+        }
     }
 }

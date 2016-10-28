@@ -136,7 +136,7 @@ class TransactionIDRange(Transactions):
         >>> import oandapyV20.endpoints.transactions as trans
         >>> client = oandapyV20.API(access_token=...)
         >>> params = {_v3_accounts_transaction_idrange_params}
-        >>> r = accounts.AccountInstruments(accountID=..., params=params)
+        >>> r = trans.TransactionIDRange(accountID=..., params=params)
         >>> client.request(r)
         >>> print r.response
 

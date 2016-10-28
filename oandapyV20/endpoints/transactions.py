@@ -94,28 +94,62 @@ class TransactionDetails(Transactions):
         transactionID : string (required)
             id of the transaction
 
+
         >>> import oandapyV20
-        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> import oandapyV20.endpoints.transactions as trans
         >>> client = oandapyV20.API(access_token=...)
-        >>> r = accounts.TransactionDetails(accountID=..., transactionID=...)
+        >>> r = trans.TransactionDetails(accountID=..., transactionID=...)
         >>> client.request(r)
         >>> print r.response
 
         Output::
 
-            {_v3_accounts_transaction_details_resp}
+           {_v3_accounts_transaction_details_resp}
 
         """
         super(TransactionDetails, self).__init__(accountID, transactionID)
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/transactions/idrange")
 class TransactionIDRange(Transactions):
     """TransactionIDRange.
 
     Get a range of Transactions for an Account based on Transaction IDs.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionIDRange request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (required)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_transaction_idrange_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_transaction_idrange_params}
+        >>> r = accounts.AccountInstruments(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_transaction_idrange_resp}
+
+        """
+        super(TransactionIDRange, self).__init__(accountID)
+        self.params = params
 
 
 @extendargs("params")

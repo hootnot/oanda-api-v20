@@ -98,10 +98,34 @@ class OpenTrades(Trades):
 
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}")
 class TradeDetails(Trades):
-    """TradeDetails.
+    """Get the details of a specific Trade in an Account."""
 
-    Get the details of a specific Trade in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID):
+        """Instantiate a TradeDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.TradeDetails(accountID=..., tradeID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_details_resp}
+
+        """
+        super(TradeDetails, self).__init__(accountID, tradeID)
 
 
 @extendargs("data")

@@ -88,6 +88,7 @@ class OpenTrades(Trades):
         >>> client.request(r)
         >>> print r.response
 
+
         Output::
 
             {_v3_accounts_accountID_opentrades_resp}
@@ -119,6 +120,7 @@ class TradeDetails(Trades):
         >>> r = accounts.TradeDetails(accountID=..., tradeID=...)
         >>> client.request(r)
         >>> print r.response
+
 
         Output::
 

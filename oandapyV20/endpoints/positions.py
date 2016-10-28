@@ -6,7 +6,7 @@ from .responses.positions import responses
 
 @abstractclass
 class Positions(APIRequest):
-    """Positions - class to handle the 'positions' endpoints."""
+    """Positions - abstractbase class to handle the 'positions' endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"

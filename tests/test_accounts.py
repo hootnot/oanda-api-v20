@@ -112,27 +112,16 @@ class TestAccounts(unittest.TestCase):
                             result["account"]["currency"] == account_cur)
 
     @requests_mock.Mocker()
-    def test__get_instruments(self, mock_get):
+    def test__account_instruments(self, mock_req):
         """get the instruments of specified account."""
-        uri = 'https://test.com/v3/accounts/{}/instruments'.format(accountID)
-        respKey = "_v3_account_by_accountID_instruments"
-        text = json.dumps(responses[respKey]['response'])
-        mock_get.register_uri('GET', uri, text=text)
-        r = accounts.AccountInstruments(accountID=accountID)
+        tid = "_v3_account_by_accountID_instruments"
+        resp, data, params = fetchTestData(responses, tid)
+        r = accounts.AccountInstruments(accountID=accountID, params=params)
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        dax = None
-        for instr in result["instruments"]:
-            if instr["name"] == "DE30_EUR":
-                dax = instr
-                break
-
-        s_result = json.dumps(result)
-        primDev = primitives.definitions["InstrumentType"][dax["type"]]
-        self.assertTrue(
-            dax is not None and
-            dax["type"] == "CFD" and
-            primDev == "Contract For Difference" and
-            "EUR_AUD" not in s_result)
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
     def test__account_configuration(self, mock_req):

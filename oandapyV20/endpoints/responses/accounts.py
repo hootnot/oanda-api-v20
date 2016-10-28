@@ -183,6 +183,10 @@ responses = {
     },
     "_v3_account_by_accountID_instruments": {
         "url": "/v3/accounts/{accountID}/instuments",
+        "params": {
+            "instruments": "EU50_EUR,EUR_USD,US30_USD,"
+                           "FR40_EUR,EUR_CHF,DE30_EUR"
+        },
         "response": {
             "instruments": [
                 {

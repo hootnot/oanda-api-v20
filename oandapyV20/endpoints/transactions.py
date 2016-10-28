@@ -45,7 +45,6 @@ class TransactionList(Transactions):
     Get a list of Transactions pages that satisfy a time-based Transaction
     query.
     """
-#            {_v3_account_by_accountID_instruments_params}
 
     @dyndoc_insert(responses)
     def __init__(self, accountID, params=None):

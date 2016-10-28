@@ -39,7 +39,7 @@ responses = {
         }
     },
     "_v3_accounts_accountID_opentrades": {
-        "url": "v3/accounts/{accountID}/trades",
+        "url": "v3/accounts/{accountID}/openTrades",
         "response": {
             "trades": [
                 {

@@ -65,15 +65,16 @@ class TestAccounts(unittest.TestCase):
         self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
-    def test__get_account(self, mock_get):
+    def test__account_details(self, mock_req):
         """get the details of specified account."""
-        uri = 'https://test.com/v3/accounts/{}'.format(accountID)
-        text = json.dumps(responses["_v3_account_by_accountID"]['response'])
-        mock_get.register_uri('GET', uri, text=text)
+        tid = "_v3_account_by_accountID"
+        resp, data = fetchTestData(responses, tid)
         r = accounts.AccountDetails(accountID=accountID)
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        s_result = json.dumps(result)
-        self.assertTrue(accountID in s_result)
+        self.assertTrue(result == resp)
 
     @parameterized.expand([
                        (None, 200),

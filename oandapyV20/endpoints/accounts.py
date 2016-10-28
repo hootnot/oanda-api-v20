@@ -68,7 +68,7 @@ class AccountList(Accounts):
 
         ::
 
-            {_v3_accounts_resp}
+            {_v3_account_by_accountID_resp}
 
         """
         super(AccountList, self).__init__()
@@ -82,6 +82,30 @@ class AccountDetails(Accounts):
     to. Full pending Order, open Trade and open Position representations are
     provided.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an AccountDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.AccountDetails(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_account_by_accountID_summary_resp}
+
+        """
+        super(AccountDetails, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/summary")

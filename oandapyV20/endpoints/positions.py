@@ -38,6 +38,31 @@ class PositionList(Positions):
     instrument that has had a position during the lifetime of the Account.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate a PositionList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.PositionList(accountID=accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_positions_resp}
+
+        """
+        super(PositionList, self).__init__(accountID)
+
 
 @endpoint("v3/accounts/{accountID}/openPositions")
 class OpenPositions(Positions):

@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -43,8 +44,7 @@ class TestPositions(unittest.TestCase):
                      "api": "https://test.com",
                      }})
             api = API(environment=environment,
-                      access_token=access_token,
-                      headers={"Content-Type": "application/json"})
+                      access_token=access_token)
             api.api_url = 'https://test.com'
         except Exception as e:
             print("%s" % e)
@@ -53,18 +53,14 @@ class TestPositions(unittest.TestCase):
     @requests_mock.Mocker()
     def test__positions_list(self, mock_get):
         """get the positions list for an account."""
-        uri = 'https://test.com/v3/accounts/{}/positions'.format(accountID)
-        resp = responses["_v3_accounts_accountID_positions"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
+        tid = "_v3_accounts_accountID_positions"
+        resp, data = fetchTestData(responses, tid)
         r = positions.PositionList(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        pos1 = result['positions'][1]
-        self.assertTrue(pos1["instrument"] == "DE30_EUR" and
-                        int(pos1["short"]["units"]) == -20 and
-                        result["lastTransactionID"] == "2124")
+        self.assertTrue(resp == result)
 
 
 if __name__ == "__main__":

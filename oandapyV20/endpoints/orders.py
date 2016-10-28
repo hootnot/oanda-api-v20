@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.orders import definitions    # flake8: noqa
 from .responses.orders import responses
 

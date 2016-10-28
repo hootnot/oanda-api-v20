@@ -24,28 +24,6 @@ class Accounts(APIRequest):
             all accounts. For all other requests to the endpoint it is
             required.
 
-
-        Examples
-        --------
-
-        ::
-
-
-            # get an account by accountID
-
-            import oandapyv20 as oandapy
-            import oandapyv20.endpoints.accounts as accounts
-
-            access_token = "..."
-            accountID = "101-004-1435156-002"
-            client = oandapy.API(access_token=access_token)
-            r = accounts.AccountDetails(accountID)
-            response = client.request(r)
-
-        response::
-
-            {_v3_account_by_accountID_resp}
-
         """
         endpoint = self.ENDPOINT.format(accountID=accountID)
         super(Accounts, self).__init__(endpoint, method=self.METHOD)

@@ -152,14 +152,47 @@ class TransactionIDRange(Transactions):
         self.params = params
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/transactions/sinceid")
-class TransactionSinceID(Transactions):
-    """TransactionSinceID.
+class TransactionsSinceID(Transactions):
+    """TransactionsSinceID.
 
     Get a range of Transactions for an Account starting at (but not including)
     a provided Transaction ID.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionsSince request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (required)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_transaction_sinceid_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_transaction_sinceid_params}
+        >>> r = trans.TransactionsSinceID(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_transaction_sinceid_resp}
+
+        """
+        super(TransactionsSinceID, self).__init__(accountID)
+        self.params = params
 
 
 @extendargs("params")

@@ -94,6 +94,18 @@ class TestTrades(unittest.TestCase):
         self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
+    def test__trade_close(self, mock_put):
+        """close trade by id ."""
+        tid = "_v3_account_accountID_trades_close"
+        resp, data = fetchTestData(responses, tid)
+        r = trades.TradeClose(accountID, tradeID=2315)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
     def test__trades_list_byids(self, mock_get):
         """get the trades information for an account."""
         uri = 'https://test.com/v3/accounts/{}/trades'.format(accountID)

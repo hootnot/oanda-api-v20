@@ -76,5 +76,59 @@ responses = {
                 "id": "2315"
             }
         }
+    },
+    "_v3_account_accountID_trades_close": {
+        "url": "v3/accounts/{accountID}/trades/{tradeID}/close",
+        "body": {
+            "units": 100
+        },
+        "response": {
+            "orderFillTransaction": {
+                "orderID": "2316",
+                "financing": "0.0000",
+                "instrument": "EUR_USD",
+                "price": "1.09289",
+                "userID": 1435156,
+                "batchID": "2316",
+                "accountBalance": "33848.1208",
+                "reason": "MARKET_ORDER_TRADE_CLOSE",
+                "tradesClosed": [
+                    {
+                        "units": "-100",
+                        "financing": "0.0000",
+                        "realizedPL": "-0.1455",
+                        "tradeID": "2313"
+                    }
+                ],
+                "time": "2016-10-28T15:11:58.023004583Z",
+                "units": "-100",
+                "type": "ORDER_FILL",
+                "id": "2317",
+                "pl": "-0.1455",
+                "accountID": "101-004-1435156-001"
+            },
+            "orderCreateTransaction": {
+                "timeInForce": "FOK",
+                "positionFill": "REDUCE_ONLY",
+                "userID": 1435156,
+                "batchID": "2316",
+                "instrument": "EUR_USD",
+                "reason": "TRADE_CLOSE",
+                "tradeClose": {
+                    "units": "100",
+                    "tradeID": "2313"
+                },
+                "time": "2016-10-28T15:11:58.023004583Z",
+                "units": "-100",
+                "type": "MARKET_ORDER",
+                "id": "2316",
+                "accountID": "101-004-1435156-001"
+            },
+            "relatedTransactionIDs": [
+                "2316",
+                "2317"
+            ],
+            "lastTransactionID": "2317"
+        }
     }
 }

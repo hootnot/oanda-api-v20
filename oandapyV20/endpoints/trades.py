@@ -81,6 +81,7 @@ class OpenTrades(Trades):
         accountID : string (required)
             id of the account to perform the request on.
 
+
         >>> import oandapyV20
         >>> import oandapyV20.endpoints.trades as trades
         >>> client = oandapyV20.API(access_token=...)
@@ -130,7 +131,6 @@ class TradeDetails(Trades):
         super(TradeDetails, self).__init__(accountID, tradeID)
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
 class TradeClose(Trades):
     """TradeClose.
@@ -139,6 +139,44 @@ class TradeClose(Trades):
     """
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data=None):
+        """Instantiate a TradeClose request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to close.
+
+        data : dict (optional)
+            data to send, use this to close a trade partially. Check
+            developer.oanda.com for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_close_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_close_body}
+        >>> r = trades.TradeClose(accountID=..., data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_close_resp}
+
+        """
+        super(TradeClose, self).__init__(accountID, tradeID)
+        self.data = data
 
 
 @extendargs("data")

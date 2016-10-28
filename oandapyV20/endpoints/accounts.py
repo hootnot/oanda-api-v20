@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 """Handle account endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.accounts import definitions    # flake8: noqa
 from .responses.accounts import responses
 

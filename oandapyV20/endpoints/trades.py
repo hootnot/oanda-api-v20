@@ -8,7 +8,7 @@ from .responses.trades import responses
 
 @abstractclass
 class Trades(APIRequest):
-    """Trades - class to handle the trades endpoints."""
+    """Trades - abstract baseclass to handle the trades endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -25,13 +25,6 @@ class Trades(APIRequest):
         tradeID : string
             ID of the trade
 
-        data : dict (optional)
-            configuration details for request depending on the operation
-            to be performed.
-
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, tradeID=tradeID)
         super(Trades, self).__init__(endpoint, method=self.METHOD)

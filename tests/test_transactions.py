@@ -64,6 +64,19 @@ class TestTransactions(unittest.TestCase):
         self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
+    def test__transactions_details(self, mock_get):
+        """get the transactions details for a transaction."""
+        tid = "_v3_accounts_transaction_details"
+        resp, data = fetchTestData(responses, tid)
+        transactionID = 2304
+        r = transactions.TransactionDetails(accountID, transactionID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(resp == r.response)
+
+    @requests_mock.Mocker()
     def test__transaction_stream(self, mock_get):
         """get the streaming transaction information."""
         uri = 'https://test.com/v3/accounts/{}/transactions/stream'.format(accountID)

@@ -8,7 +8,6 @@ from .responses.transactions import responses
 from types import GeneratorType
 
 
-
 @abstractclass
 class Transactions(APIRequest):
     """Transactions - class to handle the transaction endpoints."""
@@ -81,10 +80,33 @@ class TransactionList(Transactions):
 
 @endpoint("v3/accounts/{accountID}/transactions/{transactionID}")
 class TransactionDetails(Transactions):
-    """TransactionDetails.
+    """Get the details of a single Account Transaction."""
 
-    Get the details of a single Account Transaction.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, transactionID):
+        """Instantiate a TransactionDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        transactionID : string (required)
+            id of the transaction
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.TransactionDetails(accountID=..., transactionID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_transaction_details_resp}
+
+        """
+        super(TransactionDetails, self).__init__(accountID, transactionID)
 
 
 @extendargs("params")

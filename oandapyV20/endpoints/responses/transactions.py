@@ -61,5 +61,30 @@ responses = {
                 "101-004-1435156-001/transactions/idrange?from=2101&to=2124"
             ]
         }
+    },
+    "_v3_accounts_transaction_details": {
+        "url": "v3/accounts/{accountID}/transactions/{transactionID}",
+        "response": {
+            "transaction": {
+                "timeInForce": "GTC",
+                "triggerCondition": "TRIGGER_DEFAULT",
+                "positionFill": "DEFAULT",
+                "stopLossOnFill": {
+                    "timeInForce": "GTC",
+                    "price": "1.22000"
+                },
+                "userID": 1435156,
+                "id": "2304",
+                "batchID": "2304",
+                "instrument": "EUR_USD",
+                "reason": "CLIENT_ORDER",
+                "time": "2016-10-24T21:48:18.593753865Z",
+                "units": "-100",
+                "type": "LIMIT_ORDER",
+                "price": "1.20000",
+                "accountID": "101-004-1435156-001"
+            },
+            "lastTransactionID": "2311"
+        }
     }
 }

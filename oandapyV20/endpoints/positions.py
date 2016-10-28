@@ -20,12 +20,9 @@ class Positions(APIRequest):
         accountID : string (required)
             the id of the account to perform the request on.
 
-        instrument : string
+        instrument : string (optional)
             the instrument for the Positions request
 
-        data : dict
-            configuration details for the request, depending on the operation
-            choosen this parameter may be required.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID,
                                         instrument=instrument)

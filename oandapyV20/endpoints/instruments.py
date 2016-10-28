@@ -54,7 +54,7 @@ class InstrumentsCandles(Instruments):
         Candle data example::
 
         >>> import oandapyV20
-        >>> import oandapyV20.endpointsinstruments as instruments
+        >>> import oandapyV20.endpoints.instruments as instruments
         >>> client = oandapyV20.API(access_token=...)
         >>> params = ...
         >>> r = instruments.InstrumentsCandles(instrument="DE30_EUR",

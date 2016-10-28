@@ -2,7 +2,7 @@
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
 from ..exceptions import StreamTerminated
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.transactions import definitions    # flake8: noqa
 from .responses.transactions import responses
 from types import GeneratorType
@@ -195,7 +195,6 @@ class TransactionsSinceID(Transactions):
         self.params = params
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/transactions/stream")
 class TransactionsStream(Transactions):
     """TransactionsStream.
@@ -206,7 +205,50 @@ class TransactionsStream(Transactions):
 
     STREAM = True
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionsStream request.
+
+        Performing this request will result in a generator yielding
+        transactions.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trans.TransactionsStream(accountID=...)
+        >>> rv = client.request(r)
+        >>> maxrecs = 5
+        >>> try:
+        >>>     for T in r.response:  # or rv ...
+        >>>         print json.dumps(R, indent=4), ","
+        >>>         maxrecs -= 1
+        >>>         if maxrecs == 0:
+        >>>             r.terminate("Got them all")
+        >>> except StreamTerminated as e:
+        >>>    print("Finished: {{msg}}".format(msg=e))
+
+        Output::
+
+            {_v3_accounts_transactions_stream_ciresp}
+
+            Finished: Got them all
+
+        """
+        super(TransactionsStream, self).__init__(accountID)
+        self.params = params
+
     def terminate(self, message=""):
+        """terminate the stream.
+
+        Calling this method will stop the generator yielding transaction
+        records. A message can be passed optionally.
+        """
         if not isinstance(self.response, GeneratorType):
             raise ValueError("request does not contain a stream response")
 

@@ -221,5 +221,35 @@ responses = {
                 }
             ]
         }
+    },
+    "_v3_accounts_transactions_stream": {
+        "url": "v3/accounts/{accountID}/transactions/stream",
+        "response": [
+            {
+                "type": "HEARTBEAT",
+                "lastTransactionID": "2311",
+                "time": "2016-10-28T11:56:12.002855862Z"
+            },
+            {
+                "type": "HEARTBEAT",
+                "lastTransactionID": "2311",
+                "time": "2016-10-28T11:56:17.059535527Z"
+            },
+            {
+                "type": "HEARTBEAT",
+                "lastTransactionID": "2311",
+                "time": "2016-10-28T11:56:22.142256403Z"
+            },
+            {
+                "type": "HEARTBEAT",
+                "lastTransactionID": "2311",
+                "time": "2016-10-28T11:56:27.238853774Z"
+            },
+            {
+                "type": "HEARTBEAT",
+                "lastTransactionID": "2311",
+                "time": "2016-10-28T11:56:32.289316796Z"
+            }
+        ]
     }
 }

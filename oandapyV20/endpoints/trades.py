@@ -179,7 +179,6 @@ class TradeClose(Trades):
         self.data = data
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
 class TradeClientExtensions(Trades):
     """TradeClientExtensions.
@@ -189,6 +188,48 @@ class TradeClientExtensions(Trades):
     """
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data=None):
+        """Instantiate a TradeClientExtensions request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to update client extensions for.
+
+        data : dict (required)
+            clientextension data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_cltext_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> accountID = ...
+        >>> tradeID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_cltext_body}
+        >>> r = trades.TradeClientExtensions(accountID=accountID,
+        >>>                                  tradeID=tradeID,
+        >>>                                  data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_cltext_resp}
+
+        """
+        super(TradeClientExtensions, self).__init__(accountID, tradeID)
+        self.data = data
 
 
 @extendargs("data")

@@ -130,5 +130,33 @@ responses = {
             ],
             "lastTransactionID": "2317"
         }
+    },
+    "_v3_account_accountID_trades_cltext": {
+        "url": "v3/accounts/{accountID}/trades/{tradeID}/close",
+        "body": {
+            "clientExtensions": {
+                "comment": "myComment",
+                "id": "myID2315",
+            }
+        },
+        "response": {
+            "tradeClientExtensionsModifyTransaction": {
+                "tradeID": "2315",
+                "userID": 1435156,
+                "batchID": "2319",
+                "time": "2016-10-28T20:32:39.356516787Z",
+                "tradeClientExtensionsModify": {
+                    "comment": "myComment",
+                    "id": "myID2315"
+                },
+                "type": "TRADE_CLIENT_EXTENSIONS_MODIFY",
+                "id": "2319",
+                "accountID": "101-004-1435156-001"
+            },
+            "relatedTransactionIDs": [
+                "2319"
+            ],
+            "lastTransactionID": "2319"
+        }
     }
 }

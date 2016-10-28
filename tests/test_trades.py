@@ -106,6 +106,18 @@ class TestTrades(unittest.TestCase):
         self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
+    def test__trade_cltext(self, mock_put):
+        """trade client extensions."""
+        tid = "_v3_account_accountID_trades_cltext"
+        resp, data = fetchTestData(responses, tid)
+        r = trades.TradeClientExtensions(accountID, tradeID=2315, data=data)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
     def test__trades_list_byids(self, mock_get):
         """get the trades information for an account."""
         uri = 'https://test.com/v3/accounts/{}/trades'.format(accountID)

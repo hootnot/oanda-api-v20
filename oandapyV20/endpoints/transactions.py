@@ -63,9 +63,9 @@ class TransactionList(Transactions):
            {_v3_accounts_accountID_transactions_params}
 
         >>> import oandapyV20
-        >>> import oandapyV20.endpoints.accounts as accounts
+        >>> import oandapyV20.endpoints.transactions as trans
         >>> client = oandapyV20.API(access_token=...)
-        >>> r = accounts.TransactionList(accountID)  # params optional
+        >>> r = trans.TransactionList(accountID)  # params optional
         >>> client.request(r)
         >>> print r.response
 

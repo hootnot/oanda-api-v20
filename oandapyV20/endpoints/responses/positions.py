@@ -121,5 +121,33 @@ responses = {
             ],
             "lastTransactionID": "2327"
         }
+    },
+    "_v3_accounts_accountID_positiondetails": {
+        "url": "v3/accounts/{accountID}/positions",
+        "response": {
+            "position": {
+                "short": {
+                    "unrealizedPL": "-0.0738",
+                    "units": "-100",
+                    "resettablePL": "0.0000",
+                    "tradeIDs": [
+                        "2323"
+                    ],
+                    "averagePrice": "1.09843",
+                    "pl": "0.0000"
+                },
+                "unrealizedPL": "-0.0738",
+                "long": {
+                    "units": "0",
+                    "resettablePL": "-44.6272",
+                    "unrealizedPL": "0.0000",
+                    "pl": "-44.6272"
+                },
+                "instrument": "EUR_USD",
+                "resettablePL": "-44.6272",
+                "pl": "-44.6272"
+            },
+            "lastTransactionID": "2327"
+        }
     }
 }

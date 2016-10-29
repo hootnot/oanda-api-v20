@@ -106,6 +106,35 @@ class PositionDetails(Positions):
     position may be open or not.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, instrument):
+        """Instantiate a PositionDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        instrument : string (required)
+            id of the instrument to get the position details for.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> instrument = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.PositionDetails(accountID=accountID, instrument)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_positiondetails_resp}
+
+        """
+        super(PositionDetails, self).__init__(accountID, instrument)
+
 
 @extendargs("data")
 @endpoint("v3/accounts/{accountID}/positions/{instrument}/close", "PUT")

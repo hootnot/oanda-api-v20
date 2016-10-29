@@ -74,6 +74,18 @@ class TestPositions(unittest.TestCase):
         result = api.request(r)
         self.assertTrue(resp == result)
 
+    @requests_mock.Mocker()
+    def test__positiondetails(self, mock_get):
+        """get the details of a single instrument's position."""
+        tid = "_v3_accounts_accountID_positiondetails"
+        resp, data = fetchTestData(responses, tid)
+        r = positions.PositionDetails(accountID, instrument="EUR_USD")
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(resp == result)
+
 
 if __name__ == "__main__":
 

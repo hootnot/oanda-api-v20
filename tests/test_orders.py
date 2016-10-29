@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -59,48 +60,116 @@ class TestOrders(unittest.TestCase):
         self.assertTrue("Use of abstract base class" in "{}".format(bcErr))
 
     @requests_mock.Mocker()
-    def test__orders_list(self, mock_get):
-        """get the orders information for an account."""
-        uri = 'https://test.com/v3/accounts/{}/orders'.format(accountID)
-        resp = responses["_v3_accounts_accountID_orders"]['response']
-        text = json.dumps(resp)
-        mock_get.register_uri('GET',
-                              uri,
-                              text=text)
-        r = orders.OrderList(accountID)
+    def test__order_create(self, mock_post):
+        """order create."""
+        tid = "_v3_accounts_accountID_orders_create"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderCreate(accountID, data=data)
+        mock_post.register_uri('POST',
+                               "{}/{}".format(api.api_url, r),
+                               text=json.dumps(resp),
+                               status_code=r.expected_status)
         result = api.request(r)
-        self.assertTrue(len(result['orders']) == 1 and
-                        result['orders'][0]['instrument'] == "EUR_USD")
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
-    def test__order_replace(self, mock_get):
-        """test replacing an order."""
-        orderID = "2125"
-        # to replace with
-        tmp = {"order": {
-                   "units": "-50000",
-                   "type": "LIMIT",
-                   "instrument": "EUR_USD",
-                   "price": "1.25",
-                }
-               }
-
-        uri = 'https://test.com/v3/accounts/{}/orders/{}'.format(accountID,
-                                                                 orderID)
-        resp = responses["_v3_accounts_accountID_order_replace"]['response']
-        text = json.dumps(resp)
-        r = orders.OrderReplace(accountID, orderID, data=tmp)
-        mock_get.register_uri('PUT',
-                              uri,
-                              text=text,
-                              status_code=r._expected_status)
+    def test__order_clientextensions(self, mock_put):
+        """set order client extensions."""
+        tid = "_v3_accounts_accountID_order_clientextensions"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderClientExtensions(accountID, orderID="2304", data=data)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp),
+                              status_code=r.expected_status)
         result = api.request(r)
-        self.assertTrue(len(result['orders']) == 1 and
-                        result['orders'][0]['units'] == tmp["order"]["units"])
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
+    def test__orders_pending(self, mock_get):
+        """get the orders pending for an account."""
+        tid = "_v3_accounts_accountID_orders_pending"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrdersPending(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp),
+                              status_code=r.expected_status)
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
+    def test__orders_list(self, mock_get):
+        """get the orders for an account."""
+        tid = "_v3_accounts_accountID_orders_list"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderList(accountID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(
+            len(result['orders']) == len(resp['orders']) and
+            result['orders'][0]['instrument'] ==
+            resp['orders'][0]['instrument'])
+
+    @requests_mock.Mocker()
+    def test__order_details(self, mock_get):
+        """details of an order."""
+        orderID = "2309"
+        tid = "_v3_accounts_accountID_order_details"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderDetails(accountID, orderID=orderID)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        result = result["order"]
+        self.assertTrue(result['id'] == orderID and
+                        result['units'] == resp["order"]["units"])
+
+    @requests_mock.Mocker()
+    def test__order_cancel(self, mock_get):
+        """cancel an order."""
+        orderID = "2307"
+        tid = "_v3_accounts_accountID_order_cancel"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderCancel(accountID, orderID=orderID)
+        mock_get.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        result = result["orderCancelTransaction"]
+        self.assertTrue(result['orderID'] == orderID and
+                        result['reason'] == "CLIENT_REQUEST" and
+                        result['type'] == "ORDER_CANCEL")
+
+    @requests_mock.Mocker()
+    def test__order_replace(self, mock_put):
+        """replace an order."""
+        orderID = "2304"
+        # to replace with data
+        tid = "_v3_accounts_accountID_order_replace"
+        resp, data = fetchTestData(responses, tid)
+        r = orders.OrderReplace(accountID, orderID, data=data)
+        mock_put.register_uri('PUT',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp),
+                              status_code=r.expected_status)
+        result = api.request(r)
+        self.assertTrue(
+          "orderCreateTransaction" in result and
+          "orderCancelTransaction" in result and
+          result["orderCancelTransaction"]["orderID"] == orderID and
+          result["orderCreateTransaction"]["replacesOrderID"] == orderID and
+          result["orderCreateTransaction"]["units"] ==
+          data["order"]['units'] and
+          result["orderCreateTransaction"]["price"] ==
+          data["order"]['price'])
 
     @requests_mock.Mocker()
     def test__order_replace_wrong_status_exception(self, mock_get):
-        """test replacing an order with success but wrong status_code."""
+        """replacing an order with success but wrong status_code."""
         orderID = "2125"
         # to replace with
         tmp = {"order": {

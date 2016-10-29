@@ -1,3 +1,4 @@
+# -*- encoding: UTF-8 -*-
 """decorators."""
 
 
@@ -6,24 +7,48 @@ def dyndoc_insert(src):
     # manipulating docstrings this way is tricky due to indentation
     # the JSON needs leading whitespace to be interpreted correctly
     import json
+    import re
 
-    def mkblock(d):
+    def mkblock(d, flag=0):
         # response, pretty formatted
         v = json.dumps(d, indent=2)
+        if flag == 1:
+            # strip the '[' and ']' in case of a list holding items
+            # that stand on their own (example: tick records from a stream)
+            nw = re.findall('.*?\[(.*)\]', v, flags=re.S)
+            v = nw[0]
         # add leading whitespace for each line and start with a newline
         return "\n{}".format("".join(["{0:>16}{1}\n".format("", L)
                              for L in v.split('\n')]))
 
     def dec(obj):
+        allSlots = re.findall("\{(_v3.*?)\}", obj.__doc__)
+        docsub = {}
         sub = {}
-        for k in src.keys():
-            # url
-            sub["{}_url".format(k)] = src[k]["url"]
-            sub["{}_resp".format(k)] = mkblock(src[k]["response"])
-            if "body" in src[k]:
-                sub["{}_body".format(k)] = mkblock(src[k]["body"])
+        for k in allSlots:
+            p = re.findall("^(_v3.*)_(.*)", k)
+            p = list(*p)
+            sub.update({p[1]: p[0]})
 
-        obj.__doc__ = obj.__doc__.format(**sub)
+        for v in sub.values():
+            for k in sub.keys():
+                docsub["{}_url".format(v)] = "{}".format(src[v]["url"])
+                if "resp" == k:
+                    docsub.update({"{}_resp".format(v):
+                                   mkblock(src[v]["response"])})
+                if "body" == k:
+                    docsub.update({"{}_body".format(v):
+                                   mkblock(src[v]["body"])})
+
+                if "params" == k:
+                    docsub.update({"{}_params".format(v):
+                                   mkblock(src[v]["params"])})
+                if "ciresp" == k:
+                    docsub.update({"{}_ciresp".format(v):
+                                   mkblock(src[v]["response"], 1)})
+
+        obj.__doc__ = obj.__doc__.format(**docsub)
+
         return obj
 
     return dec

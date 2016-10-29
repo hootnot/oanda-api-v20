@@ -1,48 +1,14 @@
 # -*- encoding: utf-8 -*-
 """Handle trades endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.trades import definitions    # flake8: noqa
-
-responses = {
-    "_v3_accounts_accountID_trades": {
-        "url": "v3/accounts/101-004-1435156-001/trades",
-        "response": {
-            "trades": [
-                {
-                    "financing": "-1.8516",
-                    "openTime": "2016-10-04T08:51:40.444453952Z",
-                    "price": "10581.5",
-                    "unrealizedPL": "250.0000",
-                    "realizedPL": "0.0000",
-                    "instrument": "DE30_EUR",
-                    "state": "OPEN",
-                    "initialUnits": "-10",
-                    "currentUnits": "-10",
-                    "id": "2123"
-                },
-                {
-                    "financing": "-1.8516",
-                    "openTime": "2016-10-04T08:51:40.214522674Z",
-                    "price": "10581.5",
-                    "unrealizedPL": "250.0000",
-                    "realizedPL": "0.0000",
-                    "instrument": "DE30_EUR",
-                    "state": "OPEN",
-                    "initialUnits": "-10",
-                    "currentUnits": "-10",
-                    "id": "2121"
-                }
-            ],
-            "lastTransactionID": "2124"
-        }
-    }
-}
+from .responses.trades import responses
 
 
 @abstractclass
 class Trades(APIRequest):
-    """Trades - class to handle the trades endpoints."""
+    """Trades - abstract baseclass to handle the trades endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -59,44 +25,112 @@ class Trades(APIRequest):
         tradeID : string
             ID of the trade
 
-        data : dict (optional)
-            configuration details for request depending on the operation
-            to be performed.
-
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, tradeID=tradeID)
         super(Trades, self).__init__(endpoint, method=self.METHOD)
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/trades")
 class TradesList(Trades):
-    """TradesList.
+    """Get a list of trades for an Account."""
 
-    Get a list of trades for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a TradesList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (optional)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_accountID_trades_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_accountID_trades_params}
+        >>> r = trades.TradesList(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_trades_resp}
+
+        """
+        super(TradesList, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/openTrades")
 class OpenTrades(Trades):
-    """OpenTrades.
+    """Get the list of open Trades for an Account."""
 
-    Get the list of open Trades for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OpenTrades request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trades.OpenTrades(accountID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_opentrades_resp}
+
+        """
+        super(OpenTrades, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}")
 class TradeDetails(Trades):
-    """TradeDetails.
+    """Get the details of a specific Trade in an Account."""
 
-    Get the details of a specific Trade in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID):
+        """Instantiate a TradeDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade.
 
 
-@extendargs("data")
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = accounts.TradeDetails(accountID=..., tradeID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_account_accountID_trades_details_resp}
+
+        """
+        super(TradeDetails, self).__init__(accountID, tradeID)
+
+
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/close", "PUT")
 class TradeClose(Trades):
     """TradeClose.
@@ -106,8 +140,45 @@ class TradeClose(Trades):
 
     HEADERS = {"Content-Type": "application/json"}
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data=None):
+        """Instantiate a TradeClose request.
 
-@extendargs("data")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to close.
+
+        data : dict (optional)
+            data to send, use this to close a trade partially. Check
+            developer.oanda.com for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_close_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_close_body}
+        >>> r = trades.TradeClose(accountID=..., data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_close_resp}
+
+        """
+        super(TradeClose, self).__init__(accountID, tradeID)
+        self.data = data
+
+
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/clientExtensions", "PUT")
 class TradeClientExtensions(Trades):
     """TradeClientExtensions.
@@ -118,13 +189,93 @@ class TradeClientExtensions(Trades):
 
     HEADERS = {"Content-Type": "application/json"}
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data=None):
+        """Instantiate a TradeClientExtensions request.
 
-@extendargs("data")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to update client extensions for.
+
+        data : dict (required)
+            clientextension data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_cltext_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> accountID = ...
+        >>> tradeID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_cltext_body}
+        >>> r = trades.TradeClientExtensions(accountID=accountID,
+        >>>                                  tradeID=tradeID,
+        >>>                                  data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_cltext_resp}
+
+        """
+        super(TradeClientExtensions, self).__init__(accountID, tradeID)
+        self.data = data
+
+
 @endpoint("v3/accounts/{accountID}/trades/{tradeID}/orders", "PUT")
 class TradeCRCDO(Trades):
-    """TradeCRCDO.
-
-    Trade Create Replace Cancel Dependent Orders.
-    """
+    """Trade Create Replace Cancel Dependent Orders."""
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, tradeID, data):
+        """Instantiate a TradeClientExtensions request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        tradeID : string (required)
+            id of the trade to update client extensions for.
+
+        data : dict (required)
+            clientextension data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_account_accountID_trades_crcdo_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.trades as trades
+        >>> accountID = ...
+        >>> tradeID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_account_accountID_trades_crcdo_body}
+        >>> r = trades.TradeCRCDO(accountID=accountID,
+        >>>                       tradeID=tradeID,
+        >>>                       data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_account_accountID_trades_crcdo_resp}
+
+        """
+        super(TradeCRCDO, self).__init__(accountID, tradeID)
+        self.data = data

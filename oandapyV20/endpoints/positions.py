@@ -1,81 +1,12 @@
 """Handle position endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
-
-responses = {
-    "_v3_accounts_accountID_positions": {
-        "url": "v3/accounts/{accountID}/positions",
-        "response": {
-            "positions": [
-                {
-                    "short": {
-                        "units": "0",
-                        "resettablePL": "-272.6805",
-                        "unrealizedPL": "0.0000",
-                        "pl": "-272.6805"
-                    },
-                    "unrealizedPL": "0.0000",
-                    "long": {
-                        "units": "0",
-                        "resettablePL": "0.0000",
-                        "unrealizedPL": "0.0000",
-                        "pl": "0.0000"
-                    },
-                    "instrument": "EUR_GBP",
-                    "resettablePL": "-272.6805",
-                    "pl": "-272.6805"
-                },
-                {
-                    "short": {
-                        "unrealizedPL": "870.0000",
-                        "units": "-20",
-                        "resettablePL": "-13959.3000",
-                        "tradeIDs": [
-                            "2121",
-                            "2123"
-                        ],
-                        "averagePrice": "10581.5",
-                        "pl": "-13959.3000"
-                    },
-                    "unrealizedPL": "870.0000",
-                    "long": {
-                        "units": "0",
-                        "resettablePL": "404.5000",
-                        "unrealizedPL": "0.0000",
-                        "pl": "404.5000"
-                    },
-                    "instrument": "DE30_EUR",
-                    "resettablePL": "-13554.8000",
-                    "pl": "-13554.8000"
-                },
-                {
-                    "short": {
-                        "units": "0",
-                        "resettablePL": "0.0000",
-                        "unrealizedPL": "0.0000",
-                        "pl": "0.0000"
-                    },
-                    "unrealizedPL": "0.0000",
-                    "long": {
-                        "units": "0",
-                        "resettablePL": "-12.8720",
-                        "unrealizedPL": "0.0000",
-                        "pl": "-12.8720"
-                    },
-                    "instrument": "EUR_USD",
-                    "resettablePL": "-12.8720",
-                    "pl": "-12.8720"
-                }
-            ],
-            "lastTransactionID": "2124"
-        }
-    }
-}
+from .decorators import dyndoc_insert, endpoint, abstractclass
+from .responses.positions import responses
 
 
 @abstractclass
 class Positions(APIRequest):
-    """Positions - class to handle the 'positions' endpoints."""
+    """Positions - abstractbase class to handle the 'positions' endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -89,12 +20,9 @@ class Positions(APIRequest):
         accountID : string (required)
             the id of the account to perform the request on.
 
-        instrument : string
+        instrument : string (optional)
             the instrument for the Positions request
 
-        data : dict
-            configuration details for the request, depending on the operation
-            choosen this parameter may be required.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID,
                                         instrument=instrument)
@@ -110,6 +38,31 @@ class PositionList(Positions):
     instrument that has had a position during the lifetime of the Account.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate a PositionList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.PositionList(accountID=accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_positions_resp}
+
+        """
+        super(PositionList, self).__init__(accountID)
+
 
 @endpoint("v3/accounts/{accountID}/openPositions")
 class OpenPositions(Positions):
@@ -118,6 +71,31 @@ class OpenPositions(Positions):
     List all open Positions for an Account. An open Position is a Position
     in an Account that currently has a Trade opened for it.
     """
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OpenPositions request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.OpenPositions(accountID=accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_openpositions_resp}
+
+        """
+        super(OpenPositions, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/positions/{instrument}")
@@ -128,13 +106,80 @@ class PositionDetails(Positions):
     position may be open or not.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, instrument):
+        """Instantiate a PositionDetails request.
 
-@extendargs("data")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        instrument : string (required)
+            id of the instrument to get the position details for.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> instrument = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = positions.PositionDetails(accountID=accountID, instrument)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_positiondetails_resp}
+
+        """
+        super(PositionDetails, self).__init__(accountID, instrument)
+
+
 @endpoint("v3/accounts/{accountID}/positions/{instrument}/close", "PUT")
 class PositionClose(Positions):
-    """PositionClose.
-
-    Closeout the open Position for a specific instrument in an Account.
-    """
+    """Closeout the open Position regarding instrument in an Account."""
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, instrument, data):
+        """Instantiate a PositionClose request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        instrument : string (required)
+            instrument to close partially or fully.
+
+        data : dict (required)
+            closeout specification data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_accounts_accountID_position_close_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> instrument = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_accounts_accountID_position_close_body}
+        >>> r = positions.PositionClose(accountID=accountID,
+        >>>                             instrument=instrument,
+        >>>                             data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_position_close_resp}
+
+        """
+        super(PositionClose, self).__init__(accountID, instrument)
+        self.data = data

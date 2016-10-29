@@ -1,64 +1,14 @@
 # -*- encoding: utf-8 -*-
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.orders import definitions    # flake8: noqa
-
-# responses serve both testing purpose aswell as dynamic docstring replacement
-responses = {
-    "_v3_accounts_accountID_orders": {
-        "url": "v3/accounts/{accountID}/orders",
-        "response": {
-            "orders": [
-                {
-                    "triggerCondition": "TRIGGER_DEFAULT",
-                    "partialFill": "DEFAULT_FILL",
-                    "price": "1.20000",
-                    "stopLossOnFill": {
-                        "timeInForce": "GTC",
-                        "price": "1.22000"
-                    },
-                    "createTime": "2016-10-05T10:25:47.627003645Z",
-                    "timeInForce": "GTC",
-                    "instrument": "EUR_USD",
-                    "state": "PENDING",
-                    "units": "-100",
-                    "id": "2125",
-                    "type": "LIMIT",
-                    "positionFill": "POSITION_DEFAULT"
-                }
-            ],
-            "lastTransactionID": "2129"
-        }
-    },
-    "_v3_accounts_accountID_order_replace": {
-        "url": "v3/accounts/{accountID}/orders",
-        "response": {
-            "orders": [
-                {
-                    "triggerCondition": "TRIGGER_DEFAULT",
-                    "replacesOrderID": "2125",
-                    "partialFill": "DEFAULT_FILL",
-                    "price": "1.25000",
-                    "createTime": "2016-10-05T10:52:43.742347417Z",
-                    "timeInForce": "GTC",
-                    "instrument": "EUR_USD",
-                    "state": "PENDING",
-                    "units": "-50000",
-                    "id": "2133",
-                    "type": "LIMIT",
-                    "positionFill": "POSITION_DEFAULT"
-                }
-            ],
-            "lastTransactionID": "2133"
-        }
-    }
-}
+from .responses.orders import responses
 
 
 @abstractclass
 class Orders(APIRequest):
-    """Orders - class to handle the orders endpoints."""
+    """Orders - abstract base class to handle the orders endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -75,57 +25,152 @@ class Orders(APIRequest):
 
         orderID : string
             id of the order to perform the request for.
-
-        data : dict (optional)
-            configuration details for the order in case of a request
-            to create or modify an order.
-
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints.
         """
         endpoint = self.ENDPOINT.format(accountID=accountID, orderID=orderID)
         super(Orders, self).__init__(endpoint, method=self.METHOD,
                                      expected_status=self.EXPECTED_STATUS)
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/orders", "POST", 201)
 class OrderCreate(Orders):
-    """OrderCreate.
-
-    Create an Order for an Account.
-    """
+    """Create an Order for an Account."""
 
     HEADERS = {"Content-Type": "application/json"}
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, data):
+        """Instantiate an OrderCreate request.
 
-@extendargs("params")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_orders_create_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderCreate(accountID, data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_accountID_orders_create_resp}
+
+        """
+        super(OrderCreate, self).__init__(accountID)
+        self.data = data
+
+
 @endpoint("v3/accounts/{accountID}/orders")
 class OrderList(Orders):
-    """OrderList.
+    """Create an Order for an Account."""
 
-    Create an Order for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an OrderList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict
+            optional request query parameters, check developer.oanda.com
+            for details
+
+
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderList(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_orders_list_resp}
+
+        """
+        super(OrderList, self).__init__(accountID)
+        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/pendingOrders")
 class OrdersPending(Orders):
-    """OrdersPending.
+    """List all pending Orders in an Account."""
 
-    Create an Order for an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID):
+        """Instantiate an OrdersPending request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrdersPending(accountID)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_orders_pending_resp}
+
+        """
+        super(OrdersPending, self).__init__(accountID)
 
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}")
 class OrderDetails(Orders):
-    """OrderDetails.
+    """Get details for a single Order in an Account."""
 
-    Get details for a single Order in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID):
+        """Instantiate an OrderDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
 
 
-@extendargs("data")
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderDetails(accountID=..., orderID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_order_details_resp}
+
+        """
+        super(OrderDetails, self).__init__(accountID, orderID)
+
+
 @endpoint("v3/accounts/{accountID}/orders/{orderID}", "PUT", 201)
 class OrderReplace(Orders):
     """OrderReplace.
@@ -136,22 +181,120 @@ class OrderReplace(Orders):
 
     HEADERS = {"Content-Type": "application/json"}
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID, data):
+        """Instantiate an OrderReplace request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_order_replace_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_accounts_accountID_order_replace_body}
+        >>> r = orders.OrderReplace(accountID=..., orderID=..., data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_order_replace_resp}
+
+        """
+        super(OrderReplace, self).__init__(accountID, orderID)
+        self.data = data
+
 
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/cancel", "PUT")
 class OrderCancel(Orders):
-    """OrderCancel.
+    """Cancel a pending Order in an Account."""
 
-    Cancel a pending Order in an Account.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID):
+        """Instantiate an OrdersCancel request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the account to perform the request on.
 
 
-@extendargs("data")
+        Example::
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderCancel(accountID= ..., orderID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+
+        Output::
+
+            {_v3_accounts_accountID_order_cancel_resp}
+
+        """
+        super(OrderCancel, self).__init__(accountID, orderID)
+
+
 @endpoint("v3/accounts/{accountID}/orders/{orderID}/clientExtensions", "PUT")
 class OrderClientExtensions(Orders):
-    """OrderClientExtensions.
+    """Update the Client Extensions for an Order in an Account.
 
-    Update the Client Extensions for an Order in an Account. Do not set,
-    modify or delete clientExtensions if your account is associated with MT4.
+    .. warning::
+        Do not set, modify or delete clientExtensions if your account
+        is associated with MT4.
     """
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, orderID, data):
+        """Instantiate an OrderCreate request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        orderID : string (required)
+            id of the order to perform the request on.
+
+        data : JSON (required)
+            json orderbody to send
+
+
+        Orderbody example::
+
+            {_v3_accounts_accountID_order_clientextensions_body}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = orders.OrderClientExtensions(accountID, orderID, data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        ::
+
+            {_v3_accounts_accountID_order_clientextensions_resp}
+
+        """
+        super(OrderClientExtensions, self).__init__(accountID, orderID)
+        self.data = data

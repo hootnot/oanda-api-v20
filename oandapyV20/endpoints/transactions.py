@@ -2,73 +2,15 @@
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
 from ..exceptions import StreamTerminated
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .definitions.transactions import definitions    # flake8: noqa
+from .responses.transactions import responses
 from types import GeneratorType
-
-responses = {
-    "_v3_accounts_accountID_transactions": {
-        "url": "v3/accounts/{accountID}/transactions",
-        "response": {
-            "count": 2124,
-            "from": "2016-06-24T21:03:50.914647476Z",
-            "lastTransactionID": "2124",
-            "pageSize": 100,
-            "to": "2016-10-05T06:54:14.025946546Z",
-            "pages": [
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1&to=100",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=101&to=200",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=201&to=300",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=301&to=400",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=401&to=500",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=501&to=600",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=601&to=700",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=701&to=800",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=801&to=900",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=901&to=1000",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1001&to=1100",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1101&to=1200",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1201&to=1300",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1301&to=1400",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1401&to=1500",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1501&to=1600",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1601&to=1700",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1701&to=1800",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1801&to=1900",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=1901&to=2000",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=2001&to=2100",
-                "https://api-fxpractice.oanda.com/v3/accounts/"
-                "101-004-1435156-001/transactions/idrange?from=2101&to=2124"
-            ]
-        }
-    }
-}
 
 
 @abstractclass
 class Transactions(APIRequest):
-    """Transactions - class to handle the transaction endpoints."""
+    """Transactions - abstract baseclass to handle transaction endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
@@ -85,9 +27,6 @@ class Transactions(APIRequest):
         transactionID : string
             the id of the transaction
 
-        params : dict (depends on the endpoint to access)
-            parameters for the request. This applies only the GET based
-            endpoints
         """
         endpoint = self.ENDPOINT.format(accountID=accountID,
                                         transactionID=transactionID)
@@ -95,7 +34,6 @@ class Transactions(APIRequest):
                                            method=self.METHOD)
 
 
-@extendargs("params")
 @endpoint("v3/accounts/{accountID}/transactions")
 class TransactionList(Transactions):
     """TransactionList.
@@ -104,16 +42,71 @@ class TransactionList(Transactions):
     query.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a TransactionList request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (optional)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+           {_v3_accounts_accountID_transactions_params}
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trans.TransactionList(accountID)  # params optional
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+           {_v3_accounts_accountID_transactions_resp}
+
+        """
+        super(TransactionList, self).__init__(accountID)
+        self.params = params
+
 
 @endpoint("v3/accounts/{accountID}/transactions/{transactionID}")
 class TransactionDetails(Transactions):
-    """TransactionDetails.
+    """Get the details of a single Account Transaction."""
 
-    Get the details of a single Account Transaction.
-    """
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, transactionID):
+        """Instantiate a TransactionDetails request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        transactionID : string (required)
+            id of the transaction
 
 
-@extendargs("params")
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trans.TransactionDetails(accountID=..., transactionID=...)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+           {_v3_accounts_transaction_details_resp}
+
+        """
+        super(TransactionDetails, self).__init__(accountID, transactionID)
+
+
 @endpoint("v3/accounts/{accountID}/transactions/idrange")
 class TransactionIDRange(Transactions):
     """TransactionIDRange.
@@ -121,18 +114,84 @@ class TransactionIDRange(Transactions):
     Get a range of Transactions for an Account based on Transaction IDs.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionIDRange request.
 
-@extendargs("params")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (required)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_transaction_idrange_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_transaction_idrange_params}
+        >>> r = trans.TransactionIDRange(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_transaction_idrange_resp}
+
+        """
+        super(TransactionIDRange, self).__init__(accountID)
+        self.params = params
+
+
 @endpoint("v3/accounts/{accountID}/transactions/sinceid")
-class TransactionSinceID(Transactions):
-    """TransactionSinceID.
+class TransactionsSinceID(Transactions):
+    """TransactionsSinceID.
 
     Get a range of Transactions for an Account starting at (but not including)
     a provided Transaction ID.
     """
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionsSince request.
 
-@extendargs("params")
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        params : dict (required)
+            query params to send, check developer.oanda.com for details.
+
+
+        Query Params example::
+
+            {_v3_accounts_transaction_sinceid_params}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> params = {_v3_accounts_transaction_sinceid_params}
+        >>> r = trans.TransactionsSinceID(accountID=..., params=params)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_transaction_sinceid_resp}
+
+        """
+        super(TransactionsSinceID, self).__init__(accountID)
+        self.params = params
+
+
 @endpoint("v3/accounts/{accountID}/transactions/stream")
 class TransactionsStream(Transactions):
     """TransactionsStream.
@@ -143,7 +202,50 @@ class TransactionsStream(Transactions):
 
     STREAM = True
 
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate an TransactionsStream request.
+
+        Performing this request will result in a generator yielding
+        transactions.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.transactions as trans
+        >>> client = oandapyV20.API(access_token=...)
+        >>> r = trans.TransactionsStream(accountID=...)
+        >>> rv = client.request(r)
+        >>> maxrecs = 5
+        >>> try:
+        >>>     for T in r.response:  # or rv ...
+        >>>         print json.dumps(R, indent=4), ","
+        >>>         maxrecs -= 1
+        >>>         if maxrecs == 0:
+        >>>             r.terminate("Got them all")
+        >>> except StreamTerminated as e:
+        >>>    print("Finished: {{msg}}".format(msg=e))
+
+        Output::
+
+            {_v3_accounts_transactions_stream_ciresp}
+
+            Finished: Got them all
+
+        """
+        super(TransactionsStream, self).__init__(accountID)
+        self.params = params
+
     def terminate(self, message=""):
+        """terminate the stream.
+
+        Calling this method will stop the generator yielding transaction
+        records. A message can be passed optionally.
+        """
         if not isinstance(self.response, GeneratorType):
             raise ValueError("request does not contain a stream response")
 

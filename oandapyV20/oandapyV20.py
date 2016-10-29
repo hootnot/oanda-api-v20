@@ -164,6 +164,10 @@ class API(object):
 
         headers : dict (optional)
             Provide request headers to be set for a request.
+
+
+        .. note::
+
             There is no need to set the 'Content-Type: application/json'
             for the endpoints that require this header. The API-request
             classes covering those endpoints will take care of the header.
@@ -176,6 +180,11 @@ class API(object):
 
             See specs of the requests module for full details of possible
             parameters.
+
+        .. warning::
+            parameters belonging to a request need to be set on the
+            requestinstance and are NOT passed via the client.
+
         """
         logger.info("setting up API-client for environment %s", environment)
         try:

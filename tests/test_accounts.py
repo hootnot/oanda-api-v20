@@ -3,6 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
+from .unittestsetup import fetchTestData
 import requests_mock
 
 
@@ -52,27 +53,28 @@ class TestAccounts(unittest.TestCase):
             exit(0)
 
     @requests_mock.Mocker()
-    def test__get_accounts(self, mock_get):
+    def test__account_list(self, mock_req):
         """get the list of accounts."""
-        text = json.dumps(responses["_v3_accounts"]['response'])
-        mock_get.register_uri('GET',
-                              'https://test.com/v3/accounts',
-                              text=text)
+        tid = "_v3_accounts"
+        resp, data = fetchTestData(responses, tid)
         r = accounts.AccountList()
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        count = len(result['accounts'])
-        self.assertGreaterEqual(count, 1)
+        self.assertTrue(result == resp)
 
     @requests_mock.Mocker()
-    def test__get_account(self, mock_get):
+    def test__account_details(self, mock_req):
         """get the details of specified account."""
-        uri = 'https://test.com/v3/accounts/{}'.format(accountID)
-        text = json.dumps(responses["_v3_account_by_accountID"]['response'])
-        mock_get.register_uri('GET', uri, text=text)
+        tid = "_v3_account_by_accountID"
+        resp, data = fetchTestData(responses, tid)
         r = accounts.AccountDetails(accountID=accountID)
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        s_result = json.dumps(result)
-        self.assertTrue(accountID in s_result)
+        self.assertTrue(result == resp)
 
     @parameterized.expand([
                        (None, 200),
@@ -82,27 +84,24 @@ class TestAccounts(unittest.TestCase):
     def test__get_account_summary(self, accID, status_code,
                                   fail=None, **kwargs):
         """get the summary of specified account."""
-        if not fail:
-            uri = 'https://test.com/v3/accounts/{}/summary'.format(accountID)
-            resp = responses["_v3_account_by_accountID_summary"]['response']
-            text = json.dumps(resp)
-        else:
-            uri = 'https://test.com/v3/accounts/{}/summary'.format(accID)
-            text = fail
-
-        kwargs['mock'].register_uri('GET',
-                                    uri,
-                                    text=text,
-                                    status_code=status_code)
-
+        tid = "_v3_account_by_accountID_summary"
+        resp, data = fetchTestData(responses, tid)
         if not accID:
             # hack to use the global accountID
             accID = accountID
         r = accounts.AccountSummary(accountID=accID)
+        text = fail
+        if not fail:
+            text = json.dumps(resp)
+
+        kwargs['mock'].register_uri('GET',
+                                    "{}/{}".format(api.api_url, r),
+                                    text=text,
+                                    status_code=status_code)
+
         if fail:
             # The test should raise an exception with code == fail
             oErr = None
-            s = None
             with self.assertRaises(V20Error) as oErr:
                 result = api.request(r)
 
@@ -113,41 +112,56 @@ class TestAccounts(unittest.TestCase):
                             result["account"]["currency"] == account_cur)
 
     @requests_mock.Mocker()
-    def test__get_instruments(self, mock_get):
+    def test__account_instruments(self, mock_req):
         """get the instruments of specified account."""
-        uri = 'https://test.com/v3/accounts/{}/instruments'.format(accountID)
-        respKey = "_v3_account_by_accountID_instruments"
-        text = json.dumps(responses[respKey]['response'])
-        mock_get.register_uri('GET', uri, text=text)
-        r = accounts.AccountInstruments(accountID=accountID)
+        tid = "_v3_account_by_accountID_instruments"
+        resp, data, params = fetchTestData(responses, tid)
+        r = accounts.AccountInstruments(accountID=accountID, params=params)
+        mock_req.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
         result = api.request(r)
-        dax = None
-        for instr in result["instruments"]:
-            if instr["name"] == "DE30_EUR":
-                dax = instr
-                break
+        self.assertTrue(result == resp)
 
-        s_result = json.dumps(result)
-        primDev = primitives.definitions["InstrumentType"][dax["type"]]
-        self.assertTrue(
-            dax is not None and
-            dax["type"] == "CFD" and
-            primDev == "Contract For Difference" and
-            "EUR_AUD" not in s_result)
+    @requests_mock.Mocker()
+    def test__account_configuration(self, mock_req):
+        """set configurable parts of account."""
+        tid = "_v3_accounts_accountID_account_config"
+        resp, data = fetchTestData(responses, tid)
+        r = accounts.AccountConfiguration(accountID=accountID, data=data)
+        mock_req.register_uri('PATCH',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+    @requests_mock.Mocker()
+    def test__account_changes(self, mock_get):
+        """get account state since ID of transaction."""
+        tid = "_v3_accounts_accountID_account_changes"
+        resp, data, params = fetchTestData(responses, tid)
+        r = accounts.AccountChanges(accountID=accountID, params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
 
     def test__get_instruments_data_exception(self):
         """check for data parameter exception."""
         with self.assertRaises(TypeError) as oErr:
             r = accounts.AccountInstruments(accountID=accountID, data={})
 
-        self.assertEqual("__init__() got an unexpected keyword argument 'data'", "{}".format(oErr.exception))
+        self.assertEqual("__init__() got an unexpected keyword "
+                         "argument 'data'", "{}".format(oErr.exception))
 
     def test__get_instruments_params_exception(self):
         """check for params parameter exception."""
         with self.assertRaises(TypeError) as oErr:
             r = accounts.AccountConfiguration(accountID=accountID, params={})
 
-        self.assertEqual("__init__() got an unexpected keyword argument 'params'", "{}".format(oErr.exception))
+        self.assertEqual("__init__() got an unexpected keyword "
+                         "argument 'params'", "{}".format(oErr.exception))
 
 if __name__ == "__main__":
 

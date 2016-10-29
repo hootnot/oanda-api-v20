@@ -31,6 +31,10 @@ class APIRequest(object):
         self.method = method
 
     @property
+    def expected_status(self):
+        return self._expected_status
+
+    @property
     def status_code(self):
         return self._status_code
 

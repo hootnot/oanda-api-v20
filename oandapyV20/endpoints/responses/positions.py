@@ -123,7 +123,7 @@ responses = {
         }
     },
     "_v3_accounts_accountID_positiondetails": {
-        "url": "v3/accounts/{accountID}/positions",
+        "url": "v3/accounts/{accountID}/positions/{instrument}",
         "response": {
             "position": {
                 "short": {
@@ -148,6 +148,66 @@ responses = {
                 "pl": "-44.6272"
             },
             "lastTransactionID": "2327"
+        }
+    },
+    "_v3_accounts_accountID_position_close": {
+        "url": "v3/accounts/{accountID}/positions/{instrument}/close",
+        "body": {
+            "longUnits": "ALL"
+        },
+        "response": {
+            "lastTransactionID": "6391",
+            "longOrderCreateTransaction": {
+                "accountID": "<ACCOUNT>",
+                "batchID": "6390",
+                "id": "6390",
+                "instrument": "EUR_USD",
+                "longPositionCloseout": {
+                    "instrument": "EUR_USD",
+                    "units": "ALL"
+                },
+                "positionFill": "REDUCE_ONLY",
+                "reason": "POSITION_CLOSEOUT",
+                "time": "2016-06-22T18:41:35.034041665Z",
+                "timeInForce": "FOK",
+                "type": "MARKET_ORDER",
+                "units": "-251",
+                "userID": "<USERID>"
+            },
+            "longOrderFillTransaction": {
+                "accountBalance": "43650.69807",
+                "accountID": "<ACCOUNT>",
+                "batchID": "6390",
+                "financing": "0.00000",
+                "id": "6391",
+                "instrument": "EUR_USD",
+                "orderID": "6390",
+                "pl": "-0.03370",
+                "price": "1.13018",
+                "reason": "MARKET_ORDER_POSITION_CLOSEOUT",
+                "time": "2016-06-22T18:41:35.034041665Z",
+                "tradesClosed": [
+                    {
+                        "financing": "0.00000",
+                        "realizedPL": "-0.00013",
+                        "tradeID": "6383",
+                        "units": "-1"
+                    },
+                    {
+                        "financing": "0.00000",
+                        "realizedPL": "-0.03357",
+                        "tradeID": "6385",
+                        "units": "-250"
+                    }
+                ],
+                "type": "ORDER_FILL",
+                "units": "-251",
+                "userID": "<USERID>"
+            },
+            "relatedTransactionIDs": [
+                "6390",
+                "6391"
+            ]
         }
     }
 }

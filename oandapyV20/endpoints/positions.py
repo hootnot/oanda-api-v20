@@ -1,6 +1,6 @@
 """Handle position endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass, extendargs
+from .decorators import dyndoc_insert, endpoint, abstractclass
 from .responses.positions import responses
 
 
@@ -136,12 +136,50 @@ class PositionDetails(Positions):
         super(PositionDetails, self).__init__(accountID, instrument)
 
 
-@extendargs("data")
 @endpoint("v3/accounts/{accountID}/positions/{instrument}/close", "PUT")
 class PositionClose(Positions):
-    """PositionClose.
-
-    Closeout the open Position for a specific instrument in an Account.
-    """
+    """Closeout the open Position regarding instrument in an Account."""
 
     HEADERS = {"Content-Type": "application/json"}
+
+    @dyndoc_insert(responses)
+    def __init__(self, accountID, instrument, data):
+        """Instantiate a PositionClose request.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            id of the account to perform the request on.
+
+        instrument : string (required)
+            instrument to close partially or fully.
+
+        data : dict (required)
+            closeout specification data to send, check developer.oanda.com
+            for details.
+
+
+        Data body example::
+
+            {_v3_accounts_accountID_position_close_body}
+
+
+        >>> import oandapyV20
+        >>> import oandapyV20.endpoints.positions as positions
+        >>> accountID = ...
+        >>> instrument = ...
+        >>> client = oandapyV20.API(access_token=...)
+        >>> data = {_v3_accounts_accountID_position_close_body}
+        >>> r = positions.PositionClose(accountID=accountID,
+        >>>                             instrument=instrument,
+        >>>                             data=data)
+        >>> client.request(r)
+        >>> print r.response
+
+        Output::
+
+            {_v3_accounts_accountID_position_close_resp}
+
+        """
+        super(PositionClose, self).__init__(accountID, instrument)
+        self.data = data

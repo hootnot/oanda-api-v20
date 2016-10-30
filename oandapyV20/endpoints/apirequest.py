@@ -18,10 +18,6 @@ class APIRequest(object):
 
         method : string
             the method for the request. Default: GET.
-
-        body : dict
-            dictionary with data for the request. This data
-            will be sent as JSON-data.
         """
         self._expected_status = expected_status
         self._status_code = None

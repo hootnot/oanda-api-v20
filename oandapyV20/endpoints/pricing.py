@@ -2,19 +2,22 @@
 """Handle pricing endpoints."""
 from .apirequest import APIRequest
 from ..exceptions import StreamTerminated
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.pricing import definitions    # flake8: noqa
 from .responses.pricing import responses
 from types import GeneratorType
+from abc import ABCMeta, abstractmethod
 
 
-@abstractclass
 class Pricing(APIRequest):
     """Pricing - class to handle pricing endpoint."""
+
+    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     def __init__(self, accountID):
         """Instantiate a Pricing APIRequest instance.
 

@@ -1,16 +1,19 @@
 """Handle position endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .responses.positions import responses
+from abc import ABCMeta, abstractmethod
 
 
-@abstractclass
 class Positions(APIRequest):
     """Positions - abstractbase class to handle the 'positions' endpoints."""
+
+    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, accountID, instrument=None):
         """Instantiate a Positions APIRequest instance.

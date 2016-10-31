@@ -4,13 +4,11 @@ from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint
 from .definitions.instruments import definitions    # flake8: noqa
 from .responses.instruments import responses
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
 class Instruments(APIRequest):
     """Instruments - abstract class to handle instruments endpoint."""
-
-    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"

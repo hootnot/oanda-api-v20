@@ -6,13 +6,11 @@ from .decorators import dyndoc_insert, endpoint
 from .definitions.pricing import definitions    # flake8: noqa
 from .responses.pricing import responses
 from types import GeneratorType
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
 class Pricing(APIRequest):
     """Pricing - class to handle pricing endpoint."""
-
-    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"

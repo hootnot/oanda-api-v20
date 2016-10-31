@@ -2,13 +2,11 @@
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint
 from .responses.positions import responses
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
 class Positions(APIRequest):
     """Positions - abstractbase class to handle the 'positions' endpoints."""
-
-    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"

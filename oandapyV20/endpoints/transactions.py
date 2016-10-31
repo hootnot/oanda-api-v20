@@ -6,13 +6,11 @@ from .decorators import dyndoc_insert, endpoint
 from .definitions.transactions import definitions    # flake8: noqa
 from .responses.transactions import responses
 from types import GeneratorType
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
 class Transactions(APIRequest):
     """Transactions - abstract baseclass to handle transaction endpoints."""
-
-    __metaclass__ = ABCMeta
 
     ENDPOINT = ""
     METHOD = "GET"

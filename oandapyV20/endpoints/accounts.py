@@ -1,18 +1,19 @@
 # -*- encoding: utf-8 -*-
 """Handle account endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.accounts import definitions    # flake8: noqa
 from .responses.accounts import responses
+from abc import abstractmethod
 
 
-@abstractclass
 class Accounts(APIRequest):
     """Accounts - class to handle the accounts endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, accountID=None):
         """Instantiate an Accounts APIRequest instance.

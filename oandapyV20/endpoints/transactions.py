@@ -2,19 +2,20 @@
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
 from ..exceptions import StreamTerminated
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.transactions import definitions    # flake8: noqa
 from .responses.transactions import responses
 from types import GeneratorType
+from abc import abstractmethod
 
 
-@abstractclass
 class Transactions(APIRequest):
     """Transactions - abstract baseclass to handle transaction endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, accountID, transactionID=None):
         """Instantiate a Transactions APIRequest instance.

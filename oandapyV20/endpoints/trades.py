@@ -1,18 +1,19 @@
 # -*- encoding: utf-8 -*-
 """Handle trades endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.trades import definitions    # flake8: noqa
 from .responses.trades import responses
+from abc import abstractmethod
 
 
-@abstractclass
 class Trades(APIRequest):
     """Trades - abstract baseclass to handle the trades endpoints."""
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, accountID, tradeID=None):
         """Instantiate a Trades APIRequest instance.

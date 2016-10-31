@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.orders import definitions    # flake8: noqa
 from .responses.orders import responses
+from abc import abstractmethod
 
 
-@abstractclass
 class Orders(APIRequest):
     """Orders - abstract base class to handle the orders endpoints."""
 
@@ -14,6 +14,7 @@ class Orders(APIRequest):
     METHOD = "GET"
     EXPECTED_STATUS = 0
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, accountID, orderID=None):
         """Instantiate an Orders request.

@@ -1,18 +1,19 @@
 # -*- encoding: utf-8 -*-
 """Handle instruments endpoints."""
 from .apirequest import APIRequest
-from .decorators import dyndoc_insert, endpoint, abstractclass
+from .decorators import dyndoc_insert, endpoint
 from .definitions.instruments import definitions    # flake8: noqa
 from .responses.instruments import responses
+from abc import abstractmethod
 
 
-@abstractclass
 class Instruments(APIRequest):
     """Instruments - abstract class to handle instruments endpoint."""
 
     ENDPOINT = ""
     METHOD = "GET"
 
+    @abstractmethod
     @dyndoc_insert(responses)
     def __init__(self, instrument):
         """Instantiate a Instrument APIRequest instance.

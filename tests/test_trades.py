@@ -55,7 +55,8 @@ class TestTrades(unittest.TestCase):
             r = trades.Trades(accountID)
 
         bcErr = bcErr.exception
-        self.assertTrue("Use of abstract base class" in "{}".format(bcErr))
+        self.assertTrue("Can't instantiate abstract class Trades "
+                        "with abstract methods" in "{}".format(bcErr))
 
     @requests_mock.Mocker()
     def test__trades_list(self, mock_get):

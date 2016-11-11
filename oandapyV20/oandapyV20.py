@@ -289,7 +289,7 @@ class API(object):
         if method == 'get':
             request_args['params'] = params
         elif hasattr(endpoint, "data") and endpoint.data:
-            request_args['data'] = json.dumps(endpoint.data)
+            request_args['json'] = endpoint.data
 
         # if any parameter for request then merge them
         request_args.update(self._request_params)

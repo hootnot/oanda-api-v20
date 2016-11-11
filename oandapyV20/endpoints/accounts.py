@@ -2,7 +2,6 @@
 """Handle account endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint
-from .definitions.accounts import definitions    # flake8: noqa
 from .responses.accounts import responses
 from abc import abstractmethod
 

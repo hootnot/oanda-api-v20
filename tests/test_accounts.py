@@ -18,7 +18,6 @@ from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.accounts as accounts
 from oandapyV20.endpoints.accounts import responses
-from oandapyV20.endpoints.definitions import primitives
 
 access_token = None
 accountID = None

@@ -7,6 +7,7 @@ representing a specific group of definitions instead of a dictionary.
 """
 import sys
 from importlib import import_module
+import six
 
 
 dyndoc = """Definition representation of {cls}
@@ -39,7 +40,7 @@ def make_definition_classes(mod):
     M = import_module(PTH)
     for cls, cldef in M.definitions.items():
 
-        orig, fiV = cldef.items()[0]
+        orig, fiV = next(six.iteritems(cldef))
         fiK = orig.replace('-', '_')
         # create the docstring dynamically
         clsdoc = dyndoc.format(cls=cls,

@@ -18,6 +18,7 @@ Contents:
    modules
    oandapyV20.endpoints
    oandapyV20.definitions
+   oandapyV20.contrib
    oandapyV20
 
    examples

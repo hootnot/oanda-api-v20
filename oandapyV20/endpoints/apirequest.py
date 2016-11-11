@@ -2,6 +2,7 @@
 import six
 from abc import ABCMeta, abstractmethod
 
+
 @six.add_metaclass(ABCMeta)
 class APIRequest(object):
     """Base Class for API-request classes."""

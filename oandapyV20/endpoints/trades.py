@@ -2,7 +2,6 @@
 """Handle trades endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint
-from .definitions.trades import definitions    # flake8: noqa
 from .responses.trades import responses
 from abc import abstractmethod
 

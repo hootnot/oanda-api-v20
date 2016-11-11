@@ -2,7 +2,6 @@
 """Handle orders and pendingOrders endpoints."""
 from .apirequest import APIRequest
 from .decorators import dyndoc_insert, endpoint
-from .definitions.orders import definitions    # flake8: noqa
 from .responses.orders import responses
 from abc import abstractmethod
 

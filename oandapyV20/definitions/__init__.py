@@ -9,6 +9,28 @@ import sys
 from importlib import import_module
 
 
+dyndoc = """Definition representation of {cls}
+
+    Definitions used in requests and responses. This
+    class provides the ID and the description of the definitions.
+
+    >>> import {PTH} as def{mod}
+    >>> print def{mod}.{cls}.{firstItem}
+    {orig}
+    >>> c = def{mod}.{cls}()
+    >>> print c[c.{firstItem}]
+    {firstItemVal}
+
+"""
+
+_doc = """
+    .. note::
+
+       attribute name *{}* is renamed to *{}*, value stil is *{}*. This
+       means that a lookup stil applies.
+"""
+
+
 def make_definition_classes(mod):
     """Dynamically create the definition classes from module 'mod'."""
     rootpath = "oandapyV20"
@@ -16,20 +38,35 @@ def make_definition_classes(mod):
 
     M = import_module(PTH)
     for cls, cldef in M.definitions.items():
-        # create the docstring dynamically
-        dyndoc = """Definition representation of {}
 
-        Definitions used in requests and responses. This
-        class provides the ID and the description of the definitions.
-        """.format(cls)
+        orig, fiV = cldef.items()[0]
+        fiK = orig.replace('-', '_')
+        # create the docstring dynamically
+        clsdoc = dyndoc.format(cls=cls,
+                               PTH=PTH,
+                               mod=mod,
+                               firstItem=fiK, orig=orig,
+                               firstItemVal=fiV)
+
+        # Since we can't change the docstring afterwards (it's readonly)
+        # figure this out before and not during ...
+        for K, V in cldef.items():
+            attrName = K
+            if "-" in K:
+                attrName = K.replace('-', '_')
+                adoc = _doc.format(K, attrName, K)
+                clsdoc += adoc
 
         # the class
-        dyncls = type(cls, (object,), {'__doc__': dyndoc})
+        dyncls = type(cls, (object,), {'__doc__': clsdoc})
 
         definitions = dict()
         for K, V in cldef.items():
-            setattr(dyncls, K, K)       # set as class attributes
-            definitions.update({K: V})  # for mapping by __getitem__
+            attrName = K
+            if "-" in K:
+                attrName = K.replace('-', '_')
+            setattr(dyncls, attrName, K)  # set as class attributes
+            definitions.update({K: V})    # for mapping by __getitem__
 
         def mkgi(definitions):
             def __getitem__(self, definitionID):

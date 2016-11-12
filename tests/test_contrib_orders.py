@@ -14,15 +14,15 @@ import oandapyV20.contrib.requests as req
 
 def to_str(d):
     """convert dictionary values to str."""
+    # All values back from OANDA are strings, so int's and floats
+    # need to be converted to strings for comparing the response with
+    # the requested values
     for k in d.keys():
-        if isinstance(d[k], int):
-            d[k] = str(d[k])
-        elif isinstance(d[k], float):
-            d[k] = "{:.5f}".format(d[k])
-        elif re.match("^\d+$", d[k]):
-            d[k] = str(d[k])
-        elif re.match("^\d+\.\d+$", d[k]):
-            d[k] = "{:.5f}".format(float(d[k]))
+        s = str(d[k])
+        if re.match("^\d+$", s):         # int as a string
+            d[k] = "{:d}".format(int(s))
+        elif re.match("^\d+\.\d+$", s):  # float as a string, reformat
+            d[k] = "{:.5f}".format(float(s))
 
     return d
 

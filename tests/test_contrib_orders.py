@@ -97,6 +97,22 @@ class TestContribRequests(unittest.TestCase):
             'type': 'TAKE_PROFIT'},
             ValueError
             ),
+       # SLO
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234",
+            "price": 1.07},
+           {'timeInForce': 'GTC',
+            'type': 'STOP_LOSS'}
+        ),
+       # ... GTD, should raise a ValueError with missing date
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "GTD",
+            "price": 1.07},
+           {'timeInForce': 'GTD',
+            'type': 'STOP_LOSS'},
+            ValueError
+        ),
     ])
     def test__orders(self, cls, inpar, refpar, exc=None):
         reference = dict({"order": refpar})

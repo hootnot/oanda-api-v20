@@ -37,13 +37,15 @@ class TestContribRequests(unittest.TestCase):
             "units": 10000},
            {'timeInForce': 'FOK',
             'positionFill': 'DEFAULT',
-            'type': 'MARKET'}),
+            'type': 'MARKET'}
+        ),
        (req.MarketOrderRequest,
            {"instrument": "EUR_USD",
             "units": "10000"},
            {'timeInForce': 'FOK',
             'positionFill': 'DEFAULT',
-            'type': 'MARKET'}),
+            'type': 'MARKET'}
+        ),
        # LO
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
@@ -52,7 +54,8 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTC',
             'positionFill': 'DEFAULT',
             'type': 'LIMIT'
-            }),
+            }
+        ),
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
             "units": "10000",
@@ -60,7 +63,8 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTC',
             'positionFill': 'DEFAULT',
             'type': 'LIMIT'
-            }),
+            }
+        ),
        # MIT
        (req.MITOrderRequest,
            {"instrument": "EUR_USD",
@@ -69,7 +73,7 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTC',
             'positionFill': 'DEFAULT',
             'type': 'MARKET_IF_TOUCHED'}
-            ),
+        ),
        # ... GTD, should raise a ValueError with missing date
        (req.MITOrderRequest,
            {"instrument": "EUR_USD",
@@ -79,15 +83,15 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTD',
             'positionFill': 'DEFAULT',
             'type': 'MARKET_IF_TOUCHED'},
-            ValueError
-            ),
+           ValueError
+        ),
        # TPO
        (req.TakeProfitOrderRequest,
            {"tradeID": "1234",
             "price": 1.22},
            {'timeInForce': 'GTC',
             'type': 'TAKE_PROFIT'}
-            ),
+        ),
        # ... GTD, should raise a ValueError with missing date
        (req.TakeProfitOrderRequest,
            {"tradeID": "1234",
@@ -95,8 +99,8 @@ class TestContribRequests(unittest.TestCase):
             "price": 1.22},
            {'timeInForce': 'GTD',
             'type': 'TAKE_PROFIT'},
-            ValueError
-            ),
+           ValueError
+        ),
        # SLO
        (req.StopLossOrderRequest,
            {"tradeID": "1234",
@@ -111,7 +115,7 @@ class TestContribRequests(unittest.TestCase):
             "price": 1.07},
            {'timeInForce': 'GTD',
             'type': 'STOP_LOSS'},
-            ValueError
+           ValueError
         ),
        # TSLO
        (req.TrailingStopLossOrderRequest,
@@ -127,7 +131,7 @@ class TestContribRequests(unittest.TestCase):
             "distance": 20.5},
            {'timeInForce': 'GTD',
             'type': 'TRAILING_STOP_LOSS'},
-            ValueError
+           ValueError
         ),
        # SO
        (req.StopOrderRequest,
@@ -147,7 +151,7 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTD',
             'positionFill': 'DEFAULT',
             'type': 'STOP'},
-            ValueError
+           ValueError
         ),
     ])
     def test__orders(self, cls, inpar, refpar, exc=None):

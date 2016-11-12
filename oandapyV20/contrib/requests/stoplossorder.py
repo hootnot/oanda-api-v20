@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-from baserequest import BaseRequest
+from .baserequest import BaseRequest
 import oandapyV20.definitions.orders as OD
 
 

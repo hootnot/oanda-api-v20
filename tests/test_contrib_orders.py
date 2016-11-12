@@ -31,6 +31,7 @@ class TestContribRequests(unittest.TestCase):
     """Tests regarding contrib requests."""
 
     @parameterized.expand([
+       # MO
        (req.MarketOrderRequest,
            {"instrument": "EUR_USD",
             "units": 10000},
@@ -43,6 +44,7 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'FOK',
             'positionFill': 'DEFAULT',
             'type': 'MARKET'}),
+       # LO
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
             "units": 10000,
@@ -58,14 +60,38 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTC',
             'positionFill': 'DEFAULT',
             'type': 'LIMIT'
-            })
+            }),
+       # MIT
+       (req.MITOrderRequest,
+           {"instrument": "EUR_USD",
+            "units": 10000,
+            "price": 1.08},
+           {'timeInForce': 'GTC',
+            'positionFill': 'DEFAULT',
+            'type': 'MARKET_IF_TOUCHED'}
+            ),
+       # ... GTD, should raise a ValueError with missing date
+       (req.MITOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'GTD',
+            "units": 10000,
+            "price": 1.08},
+           {'timeInForce': 'GTD',
+            'positionFill': 'DEFAULT',
+            'type': 'MARKET_IF_TOUCHED'},
+            ValueError
+            ),
     ])
-    def test__orders(self, cls, inpar, refpar):
+    def test__orders(self, cls, inpar, refpar, exc=None):
         reference = dict({"order": refpar})
         reference['order'].update(to_str(inpar))
 
-        r = cls(**inpar)
-        self.assertTrue(r.data == reference)
+        if not exc:
+            r = cls(**inpar)
+            self.assertTrue(r.data == reference)
+        else:
+            with self.assertRaises(exc) as err:
+                r = cls(**inpar)
 
 
 if __name__ == "__main__":

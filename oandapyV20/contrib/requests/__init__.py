@@ -6,6 +6,7 @@ __all__ = [
     'StopLossOrderRequest',
     'TrailingStopLossOrderRequest',
     'StopOrderRequest',
+    'PositionCloseRequest',
 ]
 
 from .marketorder import MarketOrderRequest
@@ -15,3 +16,4 @@ from .takeprofitorder import TakeProfitOrderRequest
 from .stoplossorder import StopLossOrderRequest
 from .trailingstoplossorder import TrailingStopLossOrderRequest
 from .stoporder import StopOrderRequest
+from .positionclose import PositionCloseRequest

@@ -165,6 +165,42 @@ class TestContribRequests(unittest.TestCase):
             with self.assertRaises(exc) as err:
                 r = cls(**inpar)
 
+    @parameterized.expand([
+       # regular
+       (req.PositionCloseRequest,
+           {"longUnits": 10000,
+            "shortUnits": 2000},
+           {"longUnits": "10000",
+            "shortUnits": "2000"},
+        ),
+       # nothing
+       (req.PositionCloseRequest,
+           {},
+           {},
+           ValueError
+        ),
+       # client ext
+       (req.PositionCloseRequest,
+           {"longUnits": 10000,
+            "shortUnits": 2000,
+            "longClientExtensions": {"key": "val"}
+            },
+           {"longUnits": "10000",
+            "shortUnits": "2000",
+            "longClientExtensions": {"key": "val"}
+            },
+        ),
+    ])
+    def test__anonymous_body(self, cls, inpar, refpar, exc=None):
+        reference = to_str(inpar)
+
+        if not exc:
+            r = cls(**inpar)
+            self.assertTrue(r.data == reference)
+        else:
+            with self.assertRaises(exc) as err:
+                r = cls(**inpar)
+
 
 if __name__ == "__main__":
 

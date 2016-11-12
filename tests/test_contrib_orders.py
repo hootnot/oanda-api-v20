@@ -190,12 +190,22 @@ class TestContribRequests(unittest.TestCase):
             "longClientExtensions": {"key": "val"}
             },
         ),
+       # regular
+       (req.TradeCloseRequest,
+           {"units": 10000},
+           {"units": "10000"}
+        ),
+       # default
+       (req.TradeCloseRequest,
+           {},
+           {"units": "ALL"}
+        ),
     ])
     def test__anonymous_body(self, cls, inpar, refpar, exc=None):
-        reference = to_str(inpar)
+        reference = to_str(refpar)
 
         if not exc:
-            r = cls(**inpar)
+            r = cls(**inpar) if inpar else cls()
             self.assertTrue(r.data == reference)
         else:
             with self.assertRaises(exc) as err:

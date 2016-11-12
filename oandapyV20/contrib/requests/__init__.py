@@ -17,3 +17,4 @@ from .stoplossorder import StopLossOrderRequest
 from .trailingstoplossorder import TrailingStopLossOrderRequest
 from .stoporder import StopOrderRequest
 from .positionclose import PositionCloseRequest
+from .tradeclose import TradeCloseRequest

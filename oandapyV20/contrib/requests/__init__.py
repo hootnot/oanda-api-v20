@@ -4,6 +4,7 @@ __all__ = [
     'MITOrderRequest',
     'TakeProfitOrderRequest',
     'StopLossOrderRequest',
+    'TrailingStopLossOrderRequest',
     'StopOrderRequest',
 ]
 

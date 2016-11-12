@@ -81,6 +81,22 @@ class TestContribRequests(unittest.TestCase):
             'type': 'MARKET_IF_TOUCHED'},
             ValueError
             ),
+       # TPO
+       (req.TakeProfitOrderRequest,
+           {"tradeID": "1234",
+            "price": 1.22},
+           {'timeInForce': 'GTC',
+            'type': 'TAKE_PROFIT'}
+            ),
+       # ... GTD, should raise a ValueError with missing date
+       (req.TakeProfitOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "GTD",
+            "price": 1.22},
+           {'timeInForce': 'GTD',
+            'type': 'TAKE_PROFIT'},
+            ValueError
+            ),
     ])
     def test__orders(self, cls, inpar, refpar, exc=None):
         reference = dict({"order": refpar})

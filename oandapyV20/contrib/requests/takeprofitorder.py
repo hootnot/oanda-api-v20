@@ -40,10 +40,10 @@ class TakeProfitOrderRequest(BaseRequest):
             >>>
             >>> accountID = "..."
             >>> client = API(access_token=...)
-            >>> tpo = TakeProfitOrderRequest(orderID="1234",
-            >>>                              price=1.22)
-            >>> print(json.dumps(tpo.data, indent=4))
-            >>> r = orders.OrderCreate(accountID, data=tpo.data)
+            >>> ordr = TakeProfitOrderRequest(tradeID="1234",
+            >>>                               price=1.22)
+            >>> print(json.dumps(ordr.data, indent=4))
+            >>> r = orders.OrderCreate(accountID, data=ordr.data)
             >>> rv = client.request(r)
             >>> ...
         """

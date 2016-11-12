@@ -40,15 +40,14 @@ class StopLossOrderRequest(BaseRequest):
         >>>
         >>> accountID = "..."
         >>> client = API(access_token=...)
-        >>> ordr = StopLossOrderRequest(orderID="1234", price=1.07)
+        >>> ordr = StopLossOrderRequest(tradeID="1234", price=1.07)
         >>> print(json.dumps(ordr.data, indent=4))
         {
             "order": {
-                "type": "MARKET",
-                "positionFill": "DEFAULT",
-                "instrument": "EUR_USD",
-                "timeInForce": "FOK",
-                "units": "10000"
+                "type": "STOP_LOSS",
+                "tradeID": "1234",
+                "price": "1.07000",
+                "timeInForce": "GTC",
             }
         }
         >>> # now we have the order specification, create the order request

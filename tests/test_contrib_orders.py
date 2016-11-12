@@ -113,6 +113,22 @@ class TestContribRequests(unittest.TestCase):
             'type': 'STOP_LOSS'},
             ValueError
         ),
+       # TSLO
+       (req.TrailingStopLossOrderRequest,
+           {"tradeID": "1234",
+            "distance": 20.5},
+           {'timeInForce': 'GTC',
+            'type': 'TRAILING_STOP_LOSS'}
+        ),
+       # ... GTD, should raise a ValueError with missing date
+       (req.TrailingStopLossOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "GTD",
+            "distance": 20.5},
+           {'timeInForce': 'GTD',
+            'type': 'TRAILING_STOP_LOSS'},
+            ValueError
+        ),
     ])
     def test__orders(self, cls, inpar, refpar, exc=None):
         reference = dict({"order": refpar})

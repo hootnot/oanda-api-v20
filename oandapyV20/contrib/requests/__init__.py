@@ -11,3 +11,4 @@ from .limitorder import LimitOrderRequest
 from .mitorder import MITOrderRequest
 from .takeprofitorder import TakeProfitOrderRequest
 from .stoplossorder import StopLossOrderRequest
+from .trailingstoplossorder import TrailingStopLossOrderRequest

@@ -10,6 +10,7 @@ __all__ = [
     'TakeProfitDetails',
     'StopLossDetails',
     'TrailingStopLossDetails',
+    'ClientExtensions',
 ]
 
 from .marketorder import MarketOrderRequest
@@ -27,3 +28,4 @@ from .onfill import (
     StopLossDetails,
     TrailingStopLossDetails
 )
+from .extensions import ClientExtensions

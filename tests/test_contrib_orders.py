@@ -267,6 +267,25 @@ class TestContribRequests(unittest.TestCase):
             'distance': '100.00000'},
            ValueError
         ),
+       # ClientExtensions
+       (req.ClientExtensions,
+           {"clientID": "myID"},
+           {"clientID": "myID"},
+        ),
+       (req.ClientExtensions,
+           {"clientTag": "myTag"},
+           {"clientTag": "myTag"},
+        ),
+       (req.ClientExtensions,
+           {"clientComment": "myComment"},
+           {"clientComment": "myComment"},
+        ),
+       # .. raises ValueError because no values were set
+       (req.ClientExtensions,
+           {},
+           {},
+           ValueError
+        ),
     ])
     def test__anonymous_body(self, cls, inpar, refpar, exc=None):
         reference = to_str(refpar)

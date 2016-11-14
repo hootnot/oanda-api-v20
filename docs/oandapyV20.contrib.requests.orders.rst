@@ -29,6 +29,19 @@ This goes typically for *Take Profit* and *Stop Loss*.
     :special-members: __init__
 
 
+Client Extensions
+~~~~~~~~~~~~~~~~~
+
+Client extensions can be used optionally on Order Requests. It allows
+a client to set a custom ID, Tag and/or Comment.
+
+.. autoclass:: oandapyV20.contrib.requests.ClientExtensions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :special-members: __init__
+
+
 Order classes
 -------------
 

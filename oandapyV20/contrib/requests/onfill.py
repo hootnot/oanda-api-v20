@@ -29,6 +29,7 @@ class OnFill(BaseRequest):
         if timeInForce == OD.TimeInForce.GTD and not gtdTime:
             raise ValueError("gtdTime: value required when timeInForce is GTD")
         self._data.update({"gtdTime": gtdTime})
+        self._data.update({"clientExtensions": clientExtensions})
 
 
 class TakeProfitDetails(OnFill):

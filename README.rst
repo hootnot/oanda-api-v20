@@ -71,6 +71,42 @@ request allowing query-parameters, then the @params decorator is applied also.
 
 The V20-library has a client 'API'-class which processes APIRequest objects.
 
+contrib.requests
+~~~~~~~~~~~~~~~~
+
+The contrib.request package offers classes providing an easy way
+to construct the data for the *data* parameter of the OrderCreate endpoint.
+or the TradeCRCDO (Create/Replace/Cancel Dependent Orders)
+
+.. code-block:: python
+
+    mktOrder = MarketOrderRequest(instrument="EUR_USD",
+         units=10000,
+         takeProfitOnFill=TakeProfitDetails(price=1.10).data,
+         stopLossOnFill=StopLossDetails(price=1.07).data)
+
+
+    instead of:
+
+.. code-block:: python
+
+    mktOrder = {'order': {
+                   'timeInForce': 'FOK',
+                   'instrument': 'EUR_USD',
+                   'positionFill': 'DEFAULT',
+                   'units': '10000',
+                   'type': 'MARKET',
+                   'takeProfitOnFill': {
+                       'timeInForce': 'GTC',
+                       'price': '1.10000'}
+                   }
+                   'stopLossOnFill': {
+                       'timeInForce': 'GTC',
+                       'price': '1.07000'}
+                   }
+               }
+
+
 Examples
 --------
 

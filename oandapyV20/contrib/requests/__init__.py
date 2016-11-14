@@ -2,7 +2,7 @@ __all__ = [
     'MarketOrderRequest',
     'LimitOrderRequest',
     'MITOrderRequest',
-    'TakeProfitOrderRequest',
+    'TakeProfitOrderRequest', 'TakeProfitDetails',
     'StopLossOrderRequest',
     'TrailingStopLossOrderRequest',
     'StopOrderRequest',
@@ -18,3 +18,9 @@ from .trailingstoplossorder import TrailingStopLossOrderRequest
 from .stoporder import StopOrderRequest
 from .positionclose import PositionCloseRequest
 from .tradeclose import TradeCloseRequest
+
+from .onfill import (
+    TakeProfitDetails,
+    StopLossDetails,
+    TrailingStopLossDetails
+)

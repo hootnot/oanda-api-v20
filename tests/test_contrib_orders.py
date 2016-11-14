@@ -10,6 +10,7 @@ except:
 
 
 import oandapyV20.contrib.requests as req
+import oandapyV20.definitions.orders as OD
 
 
 def to_str(d):
@@ -199,6 +200,72 @@ class TestContribRequests(unittest.TestCase):
        (req.TradeCloseRequest,
            {},
            {"units": "ALL"}
+        ),
+       # TakeProfitDetails
+       (req.TakeProfitDetails,
+           {"price": 1.10},
+           {'timeInForce': 'GTC',
+            'price': '1.10000'}
+        ),
+       # .. raises ValueError because GTD required gtdTime
+       (req.TakeProfitDetails,
+           {"price": 1.10,
+            "timeInForce": OD.TimeInForce.GTD},
+           {'timeInForce': 'GTD',
+            'price': '1.10000'},
+           ValueError
+        ),
+       # .. raises ValueError because timeInForce must be GTC/GTD/GFD
+       (req.TakeProfitDetails,
+           {"price": 1.10,
+            "timeInForce": OD.TimeInForce.FOK},
+           {'timeInForce': 'FOK',
+            'price': '1.10000'},
+           ValueError
+        ),
+       # StopLossDetails
+       (req.StopLossDetails,
+           {"price": 1.10},
+           {'timeInForce': 'GTC',
+            'price': '1.10000'}
+        ),
+       # .. raises ValueError because GTD required gtdTime
+       (req.StopLossDetails,
+           {"price": 1.10,
+            "timeInForce": OD.TimeInForce.GTD},
+           {'timeInForce': 'GTD',
+            'price': '1.10000'},
+           ValueError
+        ),
+       # .. raises ValueError because timeInForce must be GTC/GTD/GFD
+       (req.StopLossDetails,
+           {"price": 1.10,
+            "timeInForce": OD.TimeInForce.FOK},
+           {'timeInForce': 'FOK',
+            'price': '1.10000'},
+           ValueError
+        ),
+       # TrailingStopLossDetails
+       (req.TrailingStopLossDetails,
+           {"distance": 25},
+           {'timeInForce': 'GTC',
+            'distance': '25.00000'}
+        ),
+       # .. raises ValueError because GTD required gtdTime
+       (req.TrailingStopLossDetails,
+           {"distance": 100,
+            "timeInForce": OD.TimeInForce.GTD},
+           {'timeInForce': 'GTD',
+            'distance': '100.00000'},
+           ValueError
+        ),
+       # .. raises ValueError because timeInForce must be GTC/GTD/GFD
+       (req.TrailingStopLossDetails,
+           {"distance": 100,
+            "timeInForce": OD.TimeInForce.FOK},
+           {'timeInForce': 'FOK',
+            'distance': '100.00000'},
+           ValueError
         ),
     ])
     def test__anonymous_body(self, cls, inpar, refpar, exc=None):

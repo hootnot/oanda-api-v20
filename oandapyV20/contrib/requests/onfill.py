@@ -3,7 +3,7 @@ import six
 from abc import ABCMeta, abstractmethod
 
 from .baserequest import BaseRequest
-from oandapyV20.types import TradeID, PriceValue
+from oandapyV20.types import PriceValue
 import oandapyV20.definitions.orders as OD
 
 

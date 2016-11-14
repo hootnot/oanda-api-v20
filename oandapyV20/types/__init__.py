@@ -6,6 +6,8 @@ __all__ = [
     'PriceValue',
     'Units',
     'ClientID',
+    'ClientTag',
+    'ClientComment',
     'OrderIdentifier',
     'OrderSpecifier'
 ]
@@ -17,6 +19,8 @@ from .types import (
     PriceValue,
     Units,
     ClientID,
+    ClientTag,
+    ClientComment,
     OrderIdentifier,
     OrderSpecifier
 )

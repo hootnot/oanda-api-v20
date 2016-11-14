@@ -2,13 +2,12 @@
 """Example demonstrating the contrib.request classes.
 
 Create a MarketOrderRequest to enter 10000 EUR_USD LONG position along with
-- a TakeProfitOrder to take profit @1.10 
-- a StopLossOrder to take loss @1.07 
+- a TakeProfitOrder to take profit @1.10
+- a StopLossOrder to take loss @1.07
 
 These values apply for this moment: EUR_USD 1.077
 So when you run the example you may need to change the values.
 """
-import sys
 import json
 
 from oandapyV20.contrib.requests import MarketOrderRequest
@@ -56,7 +55,8 @@ else:
     print(json.dumps(rv, indent=2))
 
 # or short: it could have been written as
-mktOrder = MarketOrderRequest(instrument="EUR_USD",
-         units=10000,
-         takeProfitOnFill=TakeProfitDetails(price=EUR_USD_TAKE_PROFIT).data,
-         stopLossOnFill=StopLossDetails(price=EUR_USD_STOP_LOSS).data)
+mktOrder = MarketOrderRequest(
+    instrument="EUR_USD",
+    units=10000,
+    takeProfitOnFill=TakeProfitDetails(price=EUR_USD_TAKE_PROFIT).data,
+    stopLossOnFill=StopLossDetails(price=EUR_USD_STOP_LOSS).data)

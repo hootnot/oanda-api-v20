@@ -2,11 +2,14 @@ __all__ = [
     'MarketOrderRequest',
     'LimitOrderRequest',
     'MITOrderRequest',
-    'TakeProfitOrderRequest', 'TakeProfitDetails',
+    'TakeProfitOrderRequest',
     'StopLossOrderRequest',
     'TrailingStopLossOrderRequest',
     'StopOrderRequest',
     'PositionCloseRequest',
+    'TakeProfitDetails',
+    'StopLossDetails',
+    'TrailingStopLossDetails',
 ]
 
 from .marketorder import MarketOrderRequest

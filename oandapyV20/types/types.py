@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 """types."""
 
-import json
 import six
 from abc import ABCMeta
 
@@ -116,17 +115,6 @@ class ClientComment(OAType):
             raise ValueError("ClientComment: length {}".format(length))
 
         self._v = clientComment
-
-
-class ClientID(OAType):
-    """representation of ClientID, a string value of max 128 chars."""
-
-    def __init__(self, clientID):
-        length = len(clientID)
-        if not length or length > 128:
-            raise ValueError("ClientID: length {}".format(length))
-
-        self._v = clientID
 
 
 class OrderIdentifier(OAType):

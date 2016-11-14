@@ -80,6 +80,26 @@ class TestTypes(unittest.TestCase):
            "to long"+"x"*125,
         ValueError
         ),
+       # ClientTag
+       (tp.ClientTag,
+           {"clientTag": "my valid custom tag"},
+           "my valid custom tag"
+        ),
+       (tp.ClientTag,
+           {"clientTag": "to long"+"x"*125},
+           "to long"+"x"*125,
+        ValueError
+        ),
+       # ClientComment
+       (tp.ClientComment,
+           {"clientComment": "my valid custom comment"},
+           "my valid custom comment"
+        ),
+       (tp.ClientComment,
+           {"clientComment": "to long"+"x"*125},
+           "to long"+"x"*125,
+        ValueError
+        ),
        # OrderIdentifier
        (tp.OrderIdentifier,
            {"orderID": 1234,

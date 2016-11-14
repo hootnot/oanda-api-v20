@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 """types."""
 
-import json
 import six
 from abc import ABCMeta
 

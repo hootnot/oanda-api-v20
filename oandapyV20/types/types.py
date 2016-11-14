@@ -96,6 +96,39 @@ class ClientID(OAType):
         self._v = clientID
 
 
+class ClientTag(OAType):
+    """representation of ClientTag, a string value of max 128 chars."""
+
+    def __init__(self, clientTag):
+        length = len(clientTag)
+        if not length or length > 128:
+            raise ValueError("ClientTag: length {}".format(length))
+
+        self._v = clientTag
+
+
+class ClientComment(OAType):
+    """representation of ClientComment, a string value of max 128 chars."""
+
+    def __init__(self, clientComment):
+        length = len(clientComment)
+        if not length or length > 128:
+            raise ValueError("ClientComment: length {}".format(length))
+
+        self._v = clientComment
+
+
+class ClientID(OAType):
+    """representation of ClientID, a string value of max 128 chars."""
+
+    def __init__(self, clientID):
+        length = len(clientID)
+        if not length or length > 128:
+            raise ValueError("ClientID: length {}".format(length))
+
+        self._v = clientID
+
+
 class OrderIdentifier(OAType):
     """representation of the OrderIdentifier object."""
 

@@ -270,15 +270,15 @@ class TestContribRequests(unittest.TestCase):
        # ClientExtensions
        (req.ClientExtensions,
            {"clientID": "myID"},
-           {"clientID": "myID"},
+           {"id": "myID"},
         ),
        (req.ClientExtensions,
            {"clientTag": "myTag"},
-           {"clientTag": "myTag"},
+           {"tag": "myTag"},
         ),
        (req.ClientExtensions,
            {"clientComment": "myComment"},
-           {"clientComment": "myComment"},
+           {"comment": "myComment"},
         ),
        # .. raises ValueError because no values were set
        (req.ClientExtensions,

@@ -7,6 +7,7 @@ __all__ = [
     'TrailingStopLossOrderRequest',
     'StopOrderRequest',
     'PositionCloseRequest',
+    'TradeCloseRequest',
     'TakeProfitDetails',
     'StopLossDetails',
     'TrailingStopLossDetails',

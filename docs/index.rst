@@ -19,6 +19,7 @@ Contents:
    oandapyV20.endpoints
    oandapyV20.definitions
    oandapyV20.contrib
+   oandapyV20.types
    oandapyV20
 
    examples

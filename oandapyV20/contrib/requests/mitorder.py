@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from .baserequest import BaseRequest
+from oandapyV20.types import Units, PriceValue
 import oandapyV20.definitions.orders as OD
 
 
@@ -66,8 +67,8 @@ class MITOrderRequest(BaseRequest):
         # required
         self._data.update({"timeInForce": timeInForce})
         self._data.update({"instrument": instrument})
-        self._data.update({"units": units})
-        self._data.update({"price": "{:.5f}".format(float(price))})
+        self._data.update({"units": Units(units).value})
+        self._data.update({"price": PriceValue(price).value})
 
         # optional, but required if
         self._data.update({"gtdTime": gtdTime})

@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from .baserequest import BaseRequest
+from oandapyV20.types import Units, PriceValue
 import oandapyV20.definitions.orders as OD
 
 
@@ -112,11 +113,15 @@ class MarketOrderRequest(BaseRequest):
 
         # required
         self._data.update({"instrument": instrument})
-        self._data.update({"units": "{:d}".format(int(units))})
+        self._data.update({"units": Units(units).value})
 
         # optional
-        self._data.update({"priceBound": priceBound})
-        self._data.update({"positionFill": positionFill})
+        if priceBound:
+            self._data.update({"priceBound": PriceValue(priceBound).value})
+
+        if positionFill and getattr(OD.OrderPositionFill, positionFill):
+            self._data.update({"positionFill": positionFill})
+
         self._data.update({"clientExtensions": clientExtensions})
         self._data.update({"takeProfitOnFill": takeProfitOnFill})
         self._data.update({"stopLossOnFill": stopLossOnFill})

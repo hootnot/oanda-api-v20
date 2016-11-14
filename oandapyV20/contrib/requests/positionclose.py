@@ -2,6 +2,7 @@
 """positionclose."""
 
 from .baserequest import BaseRequest
+from oandapyV20.types import Units
 
 
 class PositionCloseRequest(BaseRequest):
@@ -65,14 +66,14 @@ class PositionCloseRequest(BaseRequest):
             raise ValueError("longUnits and/or shortUnits parameter required")
 
         if longUnits:
-            self._data.update({"longUnits": "{:d}".format(int(longUnits))})
+            self._data.update({"longUnits": Units(longUnits).value})
 
             if longClientExtensions:
                 self._data.update({"longClientExtensions":
                                    longClientExtensions})
 
         if shortUnits:
-            self._data.update({"shortUnits": "{:d}".format(int(shortUnits))})
+            self._data.update({"shortUnits": Units(shortUnits).value})
 
             if shortClientExtensions:
                 self._data.update({"shortClientExtensions":

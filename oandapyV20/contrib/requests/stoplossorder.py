@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from .baserequest import BaseRequest
+from oandapyV20.types import TradeID, PriceValue
 import oandapyV20.definitions.orders as OD
 
 
@@ -64,8 +65,8 @@ class StopLossOrderRequest(BaseRequest):
         self._data.update({"type": OD.OrderType.STOP_LOSS})
 
         # required
-        self._data.update({"tradeID": tradeID})
-        self._data.update({"price": "{:.5f}".format(float(price))})
+        self._data.update({"tradeID": TradeID(tradeID).value})
+        self._data.update({"price": PriceValue(price).value})
 
         # optional
         self._data.update({"clientExtensions": clientExtensions})

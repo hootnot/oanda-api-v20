@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from .baserequest import BaseRequest
+from oandapyV20.types import Units, PriceValue
 import oandapyV20.definitions.orders as OD
 
 
@@ -79,8 +80,8 @@ class StopOrderRequest(BaseRequest):
 
         # required
         self._data.update({"instrument": instrument})
-        self._data.update({"units": "{:d}".format(int(units))})
-        self._data.update({"price": "{:.5f}".format(float(price))})
+        self._data.update({"units": Units(units).value})
+        self._data.update({"price": PriceValue(price).value})
 
         # optional, but required if timeInForce.GTD
         self._data.update({"gtdTime": gtdTime})

@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from .baserequest import BaseRequest
+from oandapyV20.types import TradeID, PriceValue
 import oandapyV20.definitions.orders as OD
 
 
@@ -65,8 +66,8 @@ class TrailingStopLossOrderRequest(BaseRequest):
         self._data.update({"type": OD.OrderType.TRAILING_STOP_LOSS})
 
         # required
-        self._data.update({"tradeID": tradeID})
-        self._data.update({"distance": "{:.5f}".format(float(distance))})
+        self._data.update({"tradeID": TradeID(tradeID).value})
+        self._data.update({"distance": PriceValue(distance).value})
 
         # optional
         self._data.update({"clientExtensions": clientExtensions})

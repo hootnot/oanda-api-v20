@@ -22,8 +22,8 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
 Status
 ------
 
- * The endpoint specs known till this moment are covered by the code.
- * Tests partially completed
+ * All endpoint are covered except for *"Forex Labs"*
+ * Testsuite
 
 
 Supported Python versions:
@@ -59,24 +59,25 @@ If you want to run the tests, clone the repository:
 Design
 ------
 
-I have choosen a different approach regarding the design of the new library versus the
-'oandapy' library which is based on 'mixin' classes.
+I have choosen a different approach regarding the design of the new library versus the library covering the REST-V1 interface:
+https://github.com/oanda/oandapy (oandapy), which is based on 'mixin' classes.
 
 In the V20-library endpoints are represented as APIRequest objects derived from the
 APIRequest base class. Each endpoint group (accounts, trades, etc.) is represented
 by it's own (abstract) class covering the functionality of all endpoints for that group. Each endpoint within that group is covered by a class derived from
-the abstract class. These classes are provided with their endpoint and method
-using the @endpoint decorator. If it concerns an endpoint based on a GET
-request allowing query-parameters, then the @params decorator is applied also.
+the abstract class.
 
-The V20-library has a client 'API'-class which processes APIRequest objects.
+Client
+~~~~~~
+
+The V20-library has a client class (API) which processes APIRequest objects.
 
 contrib.requests
 ~~~~~~~~~~~~~~~~
 
 The contrib.request package offers classes providing an easy way
-to construct the data for the *data* parameter of the OrderCreate endpoint.
-or the TradeCRCDO (Create/Replace/Cancel Dependent Orders)
+to construct the data for the *data* parameter of the OrderCreate endpoint
+or the TradeCRCDO (Create/Replace/Cancel Dependent Orders).
 
 .. code-block:: python
 
@@ -128,6 +129,49 @@ API-endpoint access
     rv = client.request(r)
     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
 
+
+Placing a *MarketOrder* with *TakeProfitOrder* and *StopLossOrder*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    import json
+    
+    from oandapyV20.contrib.requests import MarketOrderRequest
+    from oandapyV20.contrib.requests import TakeProfitDetails, StopLossDetails
+    
+    import oandapyV20.endpoints.orders as orders
+    import oandapyV20
+    
+    from exampleauth import exampleAuth
+    
+    
+    accountID, access_token = exampleAuth()
+    api = oandapyV20.API(access_token=access_token)
+    
+    # EUR_USD (today 1.0750)
+    EUR_USD_STOP_LOSS = 1.07
+    EUR_USD_TAKE_PROFIT = 1.10
+    
+    mktOrder = MarketOrderRequest(
+        instrument="EUR_USD",
+        units=10000,
+        takeProfitOnFill=TakeProfitDetails(price=EUR_USD_TAKE_PROFIT).data,
+        stopLossOnFill=StopLossDetails(price=EUR_USD_STOP_LOSS).data)
+    
+    # create the OrderCreate request
+    r = orders.OrderCreate(accountID, data=mktOrder.data)
+    try:
+        # create the OrderCreate request
+        rv = api.request(r)
+    except oandapyV20.exceptions.V20Error as err:
+        print(r.status_code, err)
+    else:
+        print(json.dumps(rv, indent=2))
+
+ 
+Processing series of requests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Processing series of requests is also possible now by storing different requests in 
 an array or from some 'request-factory' class. Below an array example:

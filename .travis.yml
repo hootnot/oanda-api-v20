@@ -26,4 +26,3 @@ deploy:
     tags: true
     distributions: sdist bdist_wheel
     repo: hootnot/oanda-api-v20
-    branch: pypi-upload

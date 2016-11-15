@@ -8,10 +8,7 @@ import oandapyV20.endpoints.instruments as instruments
 from exampleauth import exampleAuth
 
 
-# constants
-granularities = instruments.definitions["CandlestickGranularity"].keys()
-granularities = sorted(granularities)
-
+granularities = ["M1", "M5", "M15", "H1", "H4", "D"]
 # create the top-level parser
 parser = argparse.ArgumentParser(prog='candle-data')
 parser.add_argument('--nice', action='store_true', help='json indented')

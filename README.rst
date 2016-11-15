@@ -19,6 +19,11 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
    :target: https://coveralls.io/github/hootnot/oanda-api-v20?branch=master
    :alt: Coverage
 
+.. image:: https://badge.fury.io/py/oandapyV20.svg
+   :target: https://badge.fury.io/py/oandapyV20
+   :alt: Pypi
+
+
 Status
 ------
 
@@ -41,6 +46,13 @@ Install
 
 .. code-block:: bash
 
+    $ pip install oandapyV20
+
+
+or from github:
+
+.. code-block:: bash
+
     $ pip install git+https://github.com/hootnot/oanda-api-v20.git
 
 If you want to run the tests, clone the repository:
@@ -49,10 +61,11 @@ If you want to run the tests, clone the repository:
 
     $ git clone https://github.com/hootnot/oanda-api-v20
     $ cd oanda-api-v20
-    # edit tests/account.txt and tests/token.txt ...
     $ python setup.py test
     $ python setup.py install
 
+To run examples from the example directory, please edit *examples/account.txt*
+and *examples/token.txt*. These are required.
 
 
 

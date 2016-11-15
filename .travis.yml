@@ -4,14 +4,27 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
-- "pypy"
+- pypy
 install:
 - pip install pip --upgrade
 - pip install six
 - pip install requests-mock
 - pip install coveralls
 - pip install nose nose-parameterized
+- pip install wheel
+- pip install twine
 script:
 - coverage run --source=oandapyV20 setup.py test
 after_success:
 - coveralls
+deploy:
+  provider: pypi
+  server: https://testpypi.python.org/pypi
+  user: hootnot
+  password:
+    secure: TeRvZQUs1+y3XM9TO3acP2FlZSFSVZWhDc5kSdls0O/NRGXbY/DwgIdhduJNfIyhuSnpc7SqNO5X8spJnKbhP3TOqd3WIGEXeYlGooA0x9Lq1hRm4drPWaGFpRilFsB1r/J/vQIM37qdDCOilvpurvW62tYNG0S8Xz53o5lLRcvG17Ndgev4FWi/AViYDlNeX43mnxgzgwvYMSv3zF5UKz32ID8S9KCEj8TTiduhiswWFFa68MQt0mjVt91Nn4iFmD/lyEgqrVgAiqnN+uvTf0Xb/JCY+Re+fiskUqAnUWjAYQ18d7e9r778WfYJKLEp4OKKqvZdKWSudqZ+B9szniQ2/BO03FcApaJrn7cP0S0r+BjfpfKDkHmvVhNe/PPgX6VJHyTauVywt1VQjxmyYrv581wZV8fUkwi212+j2N2ct9dBF0CYjKmHuNCZOD8hs9LitSjWfwA/LkcmAvQmDY2x6BhjYoBcjfCHBbn0X6pA8i85EAIReFUunxtBgl95t+1RtJbNtt79qmrVcSX8oGp4lN6pyk90DvUedVq2f3IYrfUf3cZiAku9FWFpQM8186yTN3IxVg8+YlLtNfxpIeL8AhL0GuBGuDyFs+WBIem7+eJtsOtWmCRSAWBKKeOF5v8SiV9n2MEECavVhItpCUbGg1/ZahxWHi+VtMzTesA=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: hootnot/oanda-api-v20
+    branch: pypi-upload

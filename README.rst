@@ -19,6 +19,11 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
    :target: https://coveralls.io/github/hootnot/oanda-api-v20?branch=master
    :alt: Coverage
 
+.. image:: https://badge.fury.io/py/oandapyV20.svg
+   :target: https://badge.fury.io/py/oandapyV20
+   :alt: Pypi
+
+
 Status
 ------
 

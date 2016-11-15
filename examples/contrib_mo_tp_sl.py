@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """Example demonstrating the contrib.request classes.
 
 Create a MarketOrderRequest to enter 10000 EUR_USD LONG position along with

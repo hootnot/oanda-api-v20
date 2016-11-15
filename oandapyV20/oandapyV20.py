@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """OANDA API wrapper for OANDA's REST-V20 API."""
 
 import json

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """dynamically add the classes for definition representations.
 
 Most of the endpoint groups have some definitions that apply. These are

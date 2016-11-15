@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """Handle transactions endpoints."""
 from .apirequest import APIRequest
 from ..exceptions import StreamTerminated

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from .baserequest import BaseRequest
 from oandapyV20.types import Units, PriceValue

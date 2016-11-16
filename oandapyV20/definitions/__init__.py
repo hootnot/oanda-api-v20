@@ -69,13 +69,27 @@ def make_definition_classes(mod):
             setattr(dyncls, attrName, K)  # set as class attributes
             definitions.update({K: V})    # for mapping by __getitem__
 
-        def mkgi(definitions):
+        def mkgi():
             def __getitem__(self, definitionID):
-                self._definitions = definitions
+                """return description for definitionID."""
                 return self._definitions[definitionID]
             return __getitem__
 
-        setattr(dyncls, "__getitem__", mkgi(definitions))
+        def mkinit(definitions):
+            def __init__(self):
+                self._definitions = definitions
+
+            return __init__
+
+        def mkPropDefinitions():
+            def definitions(self):
+                """readonly property holding definition dict."""
+                return self._definitions
+            return property(definitions)
+
+        setattr(dyncls, "__getitem__", mkgi())
+        setattr(dyncls, "__init__", mkinit(definitions))
+        setattr(dyncls, "definitions", mkPropDefinitions())
         setattr(sys.modules["{}.definitions.{}".format(rootpath, mod)],
                 cls, dyncls)
 

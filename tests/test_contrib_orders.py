@@ -239,6 +239,17 @@ class TestContribRequests(unittest.TestCase):
             "longClientExtensions": {"key": "val"}
             },
         ),
+       # client ext
+       (req.PositionCloseRequest,
+           {"longUnits": 10000,
+            "shortUnits": 2000,
+            "shortClientExtensions": {"key": "val"}
+            },
+           {"longUnits": "10000",
+            "shortUnits": "2000",
+            "shortClientExtensions": {"key": "val"}
+            },
+        ),
        # regular
        (req.TradeCloseRequest,
            {"units": 10000},

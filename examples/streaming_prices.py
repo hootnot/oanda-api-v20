@@ -34,7 +34,7 @@ api = API(access_token=access_token,
           request_params=request_params)
 
 r = PricingStream(accountID=accountID,
-                  params={"instruments": clargs.instruments})
+                  params={"instruments": ",".join(clargs.instruments)})
 
 # fetch MAXREC stream records
 MAXREC = clargs.count

@@ -11,39 +11,35 @@ except:
 
 import oandapyV20.contrib.requests as req
 import oandapyV20.definitions.orders as OD
-
-
-def to_str(d):
-    """convert dictionary values to str."""
-    # All values back from OANDA are strings, so int's and floats
-    # need to be converted to strings for comparing the response with
-    # the requested values
-    for k in d.keys():
-        s = str(d[k])
-        if re.match("^\d+$", s):         # int as a string
-            d[k] = "{:d}".format(int(s))
-        elif re.match("^\d+\.\d+$", s):  # float as a string, reformat
-            d[k] = "{:.5f}".format(float(s))
-
-    return d
+import oandapyV20.types as types
 
 
 class TestContribRequests(unittest.TestCase):
-    """Tests regarding contrib requests."""
+    """Tests regarding contrib requests.
+
+    The reference is created using the second dict parameter. The
+    first dict parameter is merge with this, but only for the keys
+    that do NOT exist. That allows us to override parameters.
+    The result should reflect the data constructed by the class
+
+    """
 
     @parameterized.expand([
        # MO
        (req.MarketOrderRequest,
            {"instrument": "EUR_USD",
-            "units": 10000},
-           {'timeInForce': 'FOK',
+            "units": 10000},         # integer!
+           {'timeInForce': 'FOK',    # the default
+            'units': '10000',        # override, should be the str equiv.
             'positionFill': 'DEFAULT',
             'type': 'MARKET'}
         ),
        (req.MarketOrderRequest,
            {"instrument": "EUR_USD",
+            "priceBound": 12345,     # integer
             "units": "10000"},
            {'timeInForce': 'FOK',
+            "priceBound": types.PriceValue(12345).value,
             'positionFill': 'DEFAULT',
             'type': 'MARKET'}
         ),
@@ -51,26 +47,27 @@ class TestContribRequests(unittest.TestCase):
            {"instrument": "EUR_USD",
             'timeInForce': 'GFD',     # should result in a ValueError
             "units": "10000"},
-           {'timeInForce': 'GFD',
-            'positionFill': 'DEFAULT',
+           {'positionFill': 'DEFAULT',
             'type': 'MARKET'},
            ValueError
         ),
        # LO
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
-            "units": 10000,
+            "units": 10000,     # integer
             "price": 1.08},
            {'timeInForce': 'GTC',
+            "price": '1.08000',
             'positionFill': 'DEFAULT',
             'type': 'LIMIT'
             }
         ),
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
-            "units": "10000",
+            "units": "10000",    # string
             "price": "1.08"},
            {'timeInForce': 'GTC',
+            "price": '1.08000',
             'positionFill': 'DEFAULT',
             'type': 'LIMIT'
             }
@@ -81,6 +78,7 @@ class TestContribRequests(unittest.TestCase):
             "units": 10000,
             "price": 1.08},
            {'timeInForce': 'GTC',
+            "price": '1.08000',
             'positionFill': 'DEFAULT',
             'type': 'MARKET_IF_TOUCHED'}
         ),
@@ -91,6 +89,7 @@ class TestContribRequests(unittest.TestCase):
             "units": 10000,
             "price": 1.08},
            {'timeInForce': 'GTD',
+            "price": '1.08000',
             'positionFill': 'DEFAULT',
             'type': 'MARKET_IF_TOUCHED'},
            ValueError
@@ -102,6 +101,7 @@ class TestContribRequests(unittest.TestCase):
             "units": 10000,
             "price": 1.08},
            {'timeInForce': 'FOK',
+            "price": '1.08000',
             'positionFill': 'DEFAULT',
             'type': 'MARKET_IF_TOUCHED'},
            ValueError
@@ -111,6 +111,7 @@ class TestContribRequests(unittest.TestCase):
            {"tradeID": "1234",
             "price": 1.22},
            {'timeInForce': 'GTC',
+            "price": '1.22000',
             'type': 'TAKE_PROFIT'}
         ),
        # ... GTD, should raise a ValueError with missing date
@@ -119,6 +120,7 @@ class TestContribRequests(unittest.TestCase):
             "timeInForce": "GTD",
             "price": 1.22},
            {'timeInForce': 'GTD',
+            "price": '1.22000',
             'type': 'TAKE_PROFIT'},
            ValueError
         ),
@@ -128,6 +130,7 @@ class TestContribRequests(unittest.TestCase):
             "timeInForce": "FOK",
             "price": 1.22},
            {'timeInForce': 'FOK',
+            "price": '1.22000',
             'type': 'TAKE_PROFIT'},
            ValueError
         ),
@@ -136,7 +139,8 @@ class TestContribRequests(unittest.TestCase):
            {"tradeID": "1234",
             "price": 1.07},
            {'timeInForce': 'GTC',
-            'type': 'STOP_LOSS'}
+            'type': 'STOP_LOSS',
+            'price': '1.07000'}
         ),
        # ... GTD, should raise a ValueError with missing date
        (req.StopLossOrderRequest,
@@ -161,6 +165,7 @@ class TestContribRequests(unittest.TestCase):
            {"tradeID": "1234",
             "distance": 20.5},
            {'timeInForce': 'GTC',
+            "distance": '20.50000',
             'type': 'TRAILING_STOP_LOSS'}
         ),
        # ... GTD, should raise a ValueError with missing date
@@ -178,7 +183,7 @@ class TestContribRequests(unittest.TestCase):
             "timeInForce": "FOK",
             "distance": 20.5},
            {'timeInForce': 'FOK',
-            "distance": 20.5,
+            "distance": "20.50000",
             'type': 'TRAILING_STOP_LOSS'},
            ValueError
         ),
@@ -189,6 +194,7 @@ class TestContribRequests(unittest.TestCase):
             "price": 1.07},
            {'timeInForce': 'GTC',
             'positionFill': 'DEFAULT',
+            "price": "1.07000",
             'type': 'STOP'}
         ),
        # ... GTD, should raise a ValueError with missing date
@@ -199,13 +205,18 @@ class TestContribRequests(unittest.TestCase):
             "price": 1.07},
            {'timeInForce': 'GTD',
             'positionFill': 'DEFAULT',
+            "price": "1.07000",
             'type': 'STOP'},
            ValueError
         ),
     ])
     def test__orders(self, cls, inpar, refpar, exc=None):
         reference = dict({"order": refpar})
-        reference['order'].update(to_str(inpar))
+
+        # update in reference all keys if they do not exists
+        for k in inpar.keys():
+            if k not in reference['order']:
+                reference['order'][k] = str(inpar[k])
 
         if not exc:
             r = cls(**inpar)
@@ -347,11 +358,10 @@ class TestContribRequests(unittest.TestCase):
         ),
     ])
     def test__anonymous_body(self, cls, inpar, refpar, exc=None):
-        reference = to_str(refpar)
 
         if not exc:
             r = cls(**inpar) if inpar else cls()
-            self.assertTrue(r.data == reference)
+            self.assertTrue(r.data == refpar)
         else:
             with self.assertRaises(exc) as err:
                 r = cls(**inpar)

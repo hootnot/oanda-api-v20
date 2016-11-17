@@ -2,6 +2,8 @@ from setuptools import setup, find_packages
 import os
 import sys
 import re
+import shutil
+
 
 def get_version(package):
     """
@@ -10,6 +12,7 @@ def get_version(package):
     init_py = open(os.path.join(package, '__init__.py')).read()
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
+
 def read_all(f):
     with open(f) as I:
         return I.read()
@@ -17,6 +20,15 @@ def read_all(f):
 requirements = map(str.strip, open("requirements.txt").readlines())
 
 version = get_version('oandapyV20')
+
+if sys.argv[-1] == 'publish':
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (version, version))
+    print("  git push --tags")
+    shutil.rmtree('dist')
+    shutil.rmtree('build')
+    shutil.rmtree('oandapyV20.egg-info')
+    sys.exit()
 
 setup(name='oandapyV20',
       version=version,
@@ -37,7 +49,7 @@ setup(name='oandapyV20',
             'Programming Language :: Python :: 3.3',
             'Programming Language :: Python :: 3.4',
             'Programming Language :: Python :: 3.5',
-      ], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      ],  # Get from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='OANDA FOREX/CFD wrapper REST-V20 API',
       author='F. Brekeveld',
       author_email='f.brekeveld@gmail.com',

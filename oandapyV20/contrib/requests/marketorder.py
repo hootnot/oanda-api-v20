@@ -2,7 +2,10 @@
 
 from .baserequest import BaseRequest
 from oandapyV20.types import Units, PriceValue
-import oandapyV20.definitions.orders as OD
+from oandapyV20.definitions.orders import (
+    OrderType,
+    TimeInForce,
+    OrderPositionFill)
 
 
 class MarketOrderRequest(BaseRequest):
@@ -16,9 +19,10 @@ class MarketOrderRequest(BaseRequest):
                  instrument,
                  units,
                  priceBound=None,
-                 positionFill=OD.OrderPositionFill.DEFAULT,
+                 positionFill=OrderPositionFill.DEFAULT,
                  clientExtensions=None,
                  takeProfitOnFill=None,
+                 timeInForce=TimeInForce.FOK,
                  stopLossOnFill=None,
                  trailingStopLossOnFill=None,
                  tradeClientExtensions=None):
@@ -107,9 +111,14 @@ class MarketOrderRequest(BaseRequest):
         """
         super(MarketOrderRequest, self).__init__()
 
+        # allowed: FOK/IOC
+        if timeInForce not in [TimeInForce.FOK,
+                               TimeInForce.IOC]:
+            raise ValueError("timeInForce: {}".format(timeInForce))
+
         # by default for a MARKET order
-        self._data.update({"type": OD.OrderType.MARKET})
-        self._data.update({"timeInForce": OD.TimeInForce.FOK})
+        self._data.update({"type": OrderType.MARKET})
+        self._data.update({"timeInForce": timeInForce})
 
         # required
         self._data.update({"instrument": instrument})
@@ -119,7 +128,11 @@ class MarketOrderRequest(BaseRequest):
         if priceBound:
             self._data.update({"priceBound": PriceValue(priceBound).value})
 
-        if positionFill and getattr(OD.OrderPositionFill, positionFill):
+        try:
+            hasattr(OrderPositionFill, positionFill)
+        except:
+            raise ValueError("positionFill {}".format(positionFill))
+        else:
             self._data.update({"positionFill": positionFill})
 
         self._data.update({"clientExtensions": clientExtensions})

@@ -2,7 +2,10 @@
 
 from .baserequest import BaseRequest
 from oandapyV20.types import Units, PriceValue
-import oandapyV20.definitions.orders as OD
+from oandapyV20.definitions.orders import (
+    OrderType,
+    OrderPositionFill,
+    TimeInForce)
 
 
 class MITOrderRequest(BaseRequest):
@@ -17,8 +20,8 @@ class MITOrderRequest(BaseRequest):
                  units,
                  price,
                  priceBound=None,
-                 positionFill=OD.OrderPositionFill.DEFAULT,
-                 timeInForce=OD.TimeInForce.GTC,
+                 positionFill=OrderPositionFill.DEFAULT,
+                 timeInForce=TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None,
                  takeProfitOnFill=None,
@@ -61,8 +64,14 @@ class MITOrderRequest(BaseRequest):
         """
         super(MITOrderRequest, self).__init__()
 
+        # allowed: GTC/GFD/GTD
+        if timeInForce not in [TimeInForce.GTC,
+                               TimeInForce.GTD,
+                               TimeInForce.GFD]:
+            raise ValueError("timeInForce: {}".format(timeInForce))
+
         # by default for a MARKET_IF_TOUCHED order
-        self._data.update({"type": OD.OrderType.MARKET_IF_TOUCHED})
+        self._data.update({"type": OrderType.MARKET_IF_TOUCHED})
 
         # required
         self._data.update({"timeInForce": timeInForce})
@@ -72,7 +81,7 @@ class MITOrderRequest(BaseRequest):
 
         # optional, but required if
         self._data.update({"gtdTime": gtdTime})
-        if timeInForce == OD.TimeInForce.GTD and not gtdTime:
+        if timeInForce == TimeInForce.GTD and not gtdTime:
             raise ValueError("gtdTime missing")
 
         # optional

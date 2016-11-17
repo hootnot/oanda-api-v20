@@ -2,7 +2,7 @@
 
 from .baserequest import BaseRequest
 from oandapyV20.types import TradeID, PriceValue
-import oandapyV20.definitions.orders as OD
+from oandapyV20.definitions.orders import TimeInForce, OrderType
 
 
 class TrailingStopLossOrderRequest(BaseRequest):
@@ -17,7 +17,7 @@ class TrailingStopLossOrderRequest(BaseRequest):
                  tradeID,
                  distance,
                  clientTradeID=None,
-                 timeInForce=OD.TimeInForce.GTC,
+                 timeInForce=TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None):
         """
@@ -62,8 +62,14 @@ class TrailingStopLossOrderRequest(BaseRequest):
         """
         super(TrailingStopLossOrderRequest, self).__init__()
 
+        # allowed: GTC/GFD/GTD
+        if timeInForce not in [TimeInForce.GTC,
+                               TimeInForce.GTD,
+                               TimeInForce.GFD]:
+            raise ValueError("timeInForce: {}".format(timeInForce))
+
         # by default for a TRAILING_STOP_LOSS order
-        self._data.update({"type": OD.OrderType.TRAILING_STOP_LOSS})
+        self._data.update({"type": OrderType.TRAILING_STOP_LOSS})
 
         # required
         self._data.update({"tradeID": TradeID(tradeID).value})
@@ -73,8 +79,8 @@ class TrailingStopLossOrderRequest(BaseRequest):
         self._data.update({"clientExtensions": clientExtensions})
         self._data.update({"timeInForce": timeInForce})
         self._data.update({"gtdTime": gtdTime})
-        # allowed: GTC/GFD/GTD
-        if timeInForce == OD.TimeInForce.GTD and not gtdTime:
+
+        if timeInForce == TimeInForce.GTD and not gtdTime:
             raise ValueError("gtdTime missing")
 
     @property

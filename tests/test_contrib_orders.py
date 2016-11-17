@@ -47,6 +47,15 @@ class TestContribRequests(unittest.TestCase):
             'positionFill': 'DEFAULT',
             'type': 'MARKET'}
         ),
+       (req.MarketOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'GFD',     # should result in a ValueError
+            "units": "10000"},
+           {'timeInForce': 'GFD',
+            'positionFill': 'DEFAULT',
+            'type': 'MARKET'},
+           ValueError
+        ),
        # LO
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",
@@ -86,6 +95,17 @@ class TestContribRequests(unittest.TestCase):
             'type': 'MARKET_IF_TOUCHED'},
            ValueError
         ),
+       # ... FOK, should raise a ValueError (not allowed)
+       (req.MITOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'FOK',
+            "units": 10000,
+            "price": 1.08},
+           {'timeInForce': 'FOK',
+            'positionFill': 'DEFAULT',
+            'type': 'MARKET_IF_TOUCHED'},
+           ValueError
+        ),
        # TPO
        (req.TakeProfitOrderRequest,
            {"tradeID": "1234",
@@ -99,6 +119,15 @@ class TestContribRequests(unittest.TestCase):
             "timeInForce": "GTD",
             "price": 1.22},
            {'timeInForce': 'GTD',
+            'type': 'TAKE_PROFIT'},
+           ValueError
+        ),
+       # ... FOK, should raise a ValueError (not allowed)
+       (req.TakeProfitOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "FOK",
+            "price": 1.22},
+           {'timeInForce': 'FOK',
             'type': 'TAKE_PROFIT'},
            ValueError
         ),
@@ -118,6 +147,15 @@ class TestContribRequests(unittest.TestCase):
             'type': 'STOP_LOSS'},
            ValueError
         ),
+       # ... FOK, should raise a ValueError
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "FOK",
+            "price": 1.07},
+           {'timeInForce': 'FOK',
+            'type': 'STOP_LOSS'},
+           ValueError
+        ),
        # TSLO
        (req.TrailingStopLossOrderRequest,
            {"tradeID": "1234",
@@ -131,6 +169,16 @@ class TestContribRequests(unittest.TestCase):
             "timeInForce": "GTD",
             "distance": 20.5},
            {'timeInForce': 'GTD',
+            'type': 'TRAILING_STOP_LOSS'},
+           ValueError
+        ),
+       # ... FOK, should raise a ValueError (not allowed)
+       (req.TrailingStopLossOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "FOK",
+            "distance": 20.5},
+           {'timeInForce': 'FOK',
+            "distance": 20.5,
             'type': 'TRAILING_STOP_LOSS'},
            ValueError
         ),

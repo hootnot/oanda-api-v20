@@ -15,6 +15,22 @@ class TestTypes(unittest.TestCase):
     """Tests types."""
 
     @parameterized.expand([
+       # AccountID
+       (tp.AccountID,
+           {"accountID": "001-011-5838423-001"},
+           {"siteID": "001",
+            "divisionID": "011",
+            "userID": "5838423",
+            "accountNumber": "001"}
+        ),
+       (tp.AccountID,
+           {"accountID": "0010115838423001"},
+           {"siteID": "001",
+            "divisionID": "011",
+            "userID": "5838423",
+            "accountNumber": "001"},
+        ValueError
+        ),
        # OrderID
        (tp.OrderID,
            {"orderID": "1234"},

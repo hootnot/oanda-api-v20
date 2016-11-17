@@ -2,8 +2,10 @@
 
 from .baserequest import BaseRequest
 from oandapyV20.types import Units, PriceValue
-import oandapyV20.definitions.orders as OD
-
+from oandapyV20.definitions.orders import (
+    OrderType,
+    OrderPositionFill,
+    TimeInForce)
 
 class StopOrderRequest(BaseRequest):
     """create a StopOrderRequest.
@@ -17,8 +19,8 @@ class StopOrderRequest(BaseRequest):
                  units,
                  price,
                  priceBound=None,
-                 positionFill=OD.OrderPositionFill.DEFAULT,
-                 timeInForce=OD.TimeInForce.GTC,
+                 positionFill=OrderPositionFill.DEFAULT,
+                 timeInForce=TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None,
                  takeProfitOnFill=None,
@@ -76,7 +78,7 @@ class StopOrderRequest(BaseRequest):
         super(StopOrderRequest, self).__init__()
 
         # by default for a STOP order
-        self._data.update({"type": OD.OrderType.STOP})
+        self._data.update({"type": OrderType.STOP})
 
         # required
         self._data.update({"instrument": instrument})
@@ -85,7 +87,7 @@ class StopOrderRequest(BaseRequest):
 
         # optional, but required if timeInForce.GTD
         self._data.update({"gtdTime": gtdTime})
-        if timeInForce == OD.TimeInForce.GTD and not gtdTime:
+        if timeInForce == TimeInForce.GTD and not gtdTime:
             raise ValueError("gtdTime missing")
 
         # optional

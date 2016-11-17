@@ -2,6 +2,7 @@
 """types."""
 
 import six
+import re
 from abc import ABCMeta
 
 
@@ -13,6 +14,34 @@ class OAType(object):
     def value(self):
         """value property."""
         return self._v
+
+
+class AccountID(OAType):
+    """representation of an AccountID, string value of an Account Identifier.
+
+    Parameters
+    ----------
+
+    accountID : string (required)
+        the accountID of a v20 account
+
+    Example
+    -------
+
+        >>> print AccountID("001-011-5838423-001").value
+
+
+    A ValueError exception is raised in case of an incorrect value.
+    """
+
+    def __init__(self, accountID):
+        l = re.match(r"(?P<siteID>\d+)-(?P<divisionID>\d+)"
+                     "-(?P<userID>\d+)-(?P<accountNumber>\d+)", accountID)
+        if not l:
+            msg = "AccountID {} not a valid V20 account".format(accountID)
+            raise ValueError(msg)
+
+        self._v = l.groupdict()
 
 
 class OrderID(OAType):

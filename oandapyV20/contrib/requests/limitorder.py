@@ -2,7 +2,10 @@
 
 from .baserequest import BaseRequest
 from oandapyV20.types import Units, PriceValue
-import oandapyV20.definitions.orders as OD
+from oandapyV20.definitions.orders import (
+    OrderType,
+    TimeInForce,
+    OrderPositionFill)
 
 
 class LimitOrderRequest(BaseRequest):
@@ -16,9 +19,10 @@ class LimitOrderRequest(BaseRequest):
                  instrument,
                  units,
                  price,
-                 positionFill=OD.OrderPositionFill.DEFAULT,
+                 positionFill=OrderPositionFill.DEFAULT,
                  clientExtensions=None,
                  takeProfitOnFill=None,
+                 timeInForce=TimeInForce.GTC,
                  stopLossOnFill=None,
                  trailingStopLossOnFill=None,
                  tradeClientExtensions=None):
@@ -56,8 +60,8 @@ class LimitOrderRequest(BaseRequest):
         super(LimitOrderRequest, self).__init__()
 
         # by default for a LIMIT order
-        self._data.update({"type": OD.OrderType.LIMIT})
-        self._data.update({"timeInForce": OD.TimeInForce.GTC})
+        self._data.update({"type": OrderType.LIMIT})
+        self._data.update({"timeInForce": timeInForce})
 
         # required
         self._data.update({"instrument": instrument})

@@ -15,6 +15,12 @@ class TestDefinitions(unittest.TestCase):
         self.assertTrue(isinstance(c, allDEF.orders.OrderType) and
                         c['MARKET'] == orderDefs['OrderType']['MARKET'])
 
+    def test__order_definitions_dictproperty(self):
+        """test for the definitions property."""
+        c = allDEF.orders.OrderType()
+        self.assertTrue(isinstance(c.definitions, dict) and
+                        c.definitions['MARKET'] == c['MARKET'])
+
 
 if __name__ == "__main__":
 

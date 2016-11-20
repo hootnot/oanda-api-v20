@@ -97,7 +97,8 @@ or the TradeCRCDO (Create/Replace/Cancel Dependent Orders).
     mktOrder = MarketOrderRequest(instrument="EUR_USD",
          units=10000,
          takeProfitOnFill=TakeProfitDetails(price=1.10).data,
-         stopLossOnFill=StopLossDetails(price=1.07).data)
+         stopLossOnFill=StopLossDetails(price=1.07).data
+    ).data
 
 
     instead of:

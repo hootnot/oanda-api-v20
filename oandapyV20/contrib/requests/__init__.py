@@ -1,19 +1,3 @@
-__all__ = [
-    'MarketOrderRequest',
-    'LimitOrderRequest',
-    'MITOrderRequest',
-    'TakeProfitOrderRequest',
-    'StopLossOrderRequest',
-    'TrailingStopLossOrderRequest',
-    'StopOrderRequest',
-    'PositionCloseRequest',
-    'TradeCloseRequest',
-    'TakeProfitDetails',
-    'StopLossDetails',
-    'TrailingStopLossDetails',
-    'ClientExtensions',
-]
-
 from .marketorder import MarketOrderRequest
 from .limitorder import LimitOrderRequest
 from .mitorder import MITOrderRequest
@@ -30,3 +14,19 @@ from .onfill import (
     TrailingStopLossDetails
 )
 from .extensions import ClientExtensions
+
+__all__ = (
+    'MarketOrderRequest',
+    'LimitOrderRequest',
+    'MITOrderRequest',
+    'TakeProfitOrderRequest',
+    'StopLossOrderRequest',
+    'TrailingStopLossOrderRequest',
+    'StopOrderRequest',
+    'PositionCloseRequest',
+    'TradeCloseRequest',
+    'TakeProfitDetails',
+    'StopLossDetails',
+    'TrailingStopLossDetails',
+    'ClientExtensions',
+)

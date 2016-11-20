@@ -7,6 +7,7 @@ from oandapyV20.definitions.orders import (
     OrderPositionFill,
     TimeInForce)
 
+
 class StopOrderRequest(BaseRequest):
     """create a StopOrderRequest.
 
@@ -54,7 +55,7 @@ class StopOrderRequest(BaseRequest):
         >>> accountID = "..."
         >>> client = API(access_token=...)
         >>> ordr = StopOrderRequest(instrument="EUR_USD",
-        >>>                         units=10000, price=1.07)
+        ...                         units=10000, price=1.07)
         >>> print(json.dumps(ordr.data, indent=4))
         {
             "order": {
@@ -74,7 +75,6 @@ class StopOrderRequest(BaseRequest):
         >>> print(json.dumps(rv, indent=4))
         >>> ...
         """
-
         super(StopOrderRequest, self).__init__()
 
         # by default for a STOP order
@@ -107,5 +107,3 @@ class StopOrderRequest(BaseRequest):
         return the JSON body.
         """
         return dict({"order": super(StopOrderRequest, self).data})
-
-

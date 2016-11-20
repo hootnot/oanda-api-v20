@@ -28,7 +28,6 @@ class MITOrderRequest(BaseRequest):
                  stopLossOnFill=None,
                  trailingStopLossOnFill=None,
                  tradeClientExtensions=None):
-
         """
         Instantiate an MITOrderRequest.
 

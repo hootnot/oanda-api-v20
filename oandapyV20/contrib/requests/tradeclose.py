@@ -44,10 +44,10 @@ class TradeCloseRequest(BaseRequest):
         >>> print(rv)
         >>> ...
         """
-
         super(TradeCloseRequest, self).__init__()
 
         # by default for a TradeClose no parameters are required
         if units:
-            self._data.update({"units":
-                "{:d}".format(int(units)) if units != "ALL" else "ALL"})
+            self._data.update(
+                {"units":
+                 "{:d}".format(int(units)) if units != "ALL" else "ALL"})

@@ -1,18 +1,3 @@
-
-__all__ = [
-    'AccountID',
-    'OrderID',
-    'TradeID',
-    'AccountUnits',
-    'PriceValue',
-    'Units',
-    'ClientID',
-    'ClientTag',
-    'ClientComment',
-    'OrderIdentifier',
-    'OrderSpecifier'
-]
-
 from .types import (
     AccountID,
     OrderID,
@@ -25,4 +10,18 @@ from .types import (
     ClientComment,
     OrderIdentifier,
     OrderSpecifier
+)
+
+__all__ = (
+    'AccountID',
+    'OrderID',
+    'TradeID',
+    'AccountUnits',
+    'PriceValue',
+    'Units',
+    'ClientID',
+    'ClientTag',
+    'ClientComment',
+    'OrderIdentifier',
+    'OrderSpecifier'
 )

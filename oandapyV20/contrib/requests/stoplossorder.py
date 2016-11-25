@@ -8,7 +8,7 @@ from oandapyV20.definitions.orders import TimeInForce, OrderType
 class StopLossOrderRequest(BaseRequest):
     """create a StopLossOrderRequest.
 
-    StopLossOrderRequest is used to build the body for a MarketOrder.
+    StopLossOrderRequest is used to build the body for a StopLossOrder.
     The body can be used to pass to the OrderCreate endpoint.
     """
 

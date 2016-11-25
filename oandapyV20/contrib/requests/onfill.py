@@ -120,7 +120,7 @@ class StopLossDetails(OnFill):
                  timeInForce=OD.TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None):
-        """Instantiate TakeProfitDetails.
+        """Instantiate StopLossDetails.
 
         Parameters
         ----------
@@ -176,14 +176,14 @@ class StopLossDetails(OnFill):
 
 
 class TrailingStopLossDetails(OnFill):
-    """Representation of the specification for a TrailinStopLossOrder.
+    """Representation of the specification for a TrailingStopLossOrder.
 
-    It is typically used to specify 'trainling stop loss details' for the
+    It is typically used to specify 'trailing stop loss details' for the
     'trailingStopLossOnFill' parameter of an OrderRequest. This way one
     can create the Trailing Stop Loss Order as a dependency when an order
     gets filled.
 
-    The other way to create a TrailinStopLossOrder is to create it afterwards
+    The other way to create a TrailingStopLossOrder is to create it afterwards
     on an existing trade. In that case you use TrailingStopLossOrderRequest on
     the trade.
     """
@@ -193,13 +193,13 @@ class TrailingStopLossDetails(OnFill):
                  timeInForce=OD.TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None):
-        """Instantiate TakeProfitDetails.
+        """Instantiate TrailingStopLossDetails.
 
         Parameters
         ----------
 
         distance : float or string (required)
-            the price to trigger take profit order
+            the price to trigger trailing stop loss order
 
         timeInForce : TimeInForce (required), default TimeInForce.GTC
             the time in force

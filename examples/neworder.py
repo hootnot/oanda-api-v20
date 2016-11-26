@@ -1,7 +1,14 @@
-"""create order demo."""
+"""create order demo.
+
+demonstrates:
+- placing a market order
+- placing a faulty market order
+- usage of contrib.requests
+"""
 import json
 from oandapyV20 import API
 import oandapyV20.endpoints.orders as orders
+from oandapyV20.contrib.requests import MarketOrderRequest
 from oandapyV20.exceptions import V20Error
 from exampleauth import exampleAuth
 import logging
@@ -36,6 +43,15 @@ orderConf = [
           }
         }
 ]
+
+# to demonstrate contrib.requests ...
+# next few lines represent the same as orderConf above
+sameThing = [
+    MarketOrderRequest(instrument="EUR_USD", units=100).data,
+    MarketOrderRequest(instrument="UR_USD", units=100).data,
+]
+
+assert orderConf == sameThing
 
 # client
 api = API(access_token=token)

@@ -174,7 +174,8 @@ responses = {
                 ],
                 "instrument": "EUR_JPY",
                 "time": "2016-10-27T08:38:43.094548890Z",
-                "closeoutAsk": "114.316"
+                "closeoutAsk": "114.316",
+                "type": "PRICE"
              },
              {
                 "type": "HEARTBEAT",
@@ -205,7 +206,8 @@ responses = {
                 ],
                 "instrument": "EUR_USD",
                 "time": "2016-10-27T08:38:45.664613867Z",
-                "closeoutAsk": "1.09192"
+                "closeoutAsk": "1.09192",
+                "type": "PRICE"
              },
              {
                 "status": "tradeable",
@@ -248,7 +250,8 @@ responses = {
                 ],
                 "instrument": "EUR_JPY",
                 "time": "2016-10-27T08:38:45.681572782Z",
-                "closeoutAsk": "114.319"
+                "closeoutAsk": "114.319",
+                "type": "PRICE"
              }
         ]
     }

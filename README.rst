@@ -49,7 +49,7 @@ Install
     $ pip install oandapyV20
 
 
-or from github:
+or the latest development version from github:
 
 .. code-block:: bash
 
@@ -64,8 +64,8 @@ If you want to run the tests, clone the repository:
     $ python setup.py test
     $ python setup.py install
 
-To run examples from the example directory, please edit *examples/account.txt*
-and *examples/token.txt*. These are required.
+Examples are provided in the https://github.com/hootnot/oandapyV20-examples
+repository.
 
 
 
@@ -400,7 +400,8 @@ Output
             ],
             "instrument": "EUR_GBP",
             "time": "2016-09-29T17:07:19.994271769Z",
-            "closeoutAsk": "0.86465"
+            "closeoutAsk": "0.86465",
+            "type": "PRICE"
           }
         ]
       }
@@ -480,7 +481,8 @@ Output
       ],
       "instrument": "DE30_EUR",
       "time": "2016-10-17T12:25:28.158741026Z",
-      "closeoutAsk": "10547.4"
+      "closeoutAsk": "10547.4",
+      "type": "PRICE",
     }
     {
       "type": "HEARTBEAT",
@@ -527,7 +529,8 @@ Output
       ],
       "instrument": "EUR_JPY",
       "time": "2016-10-17T12:25:40.837289374Z",
-      "closeoutAsk": "114.494"
+      "closeoutAsk": "114.494",
+      "type": "PRICE",
     }
     {
       "type": "HEARTBEAT",
@@ -558,7 +561,8 @@ Output
       ],
       "instrument": "EUR_USD",
       "time": "2016-10-17T12:25:43.689619691Z",
-      "closeoutAsk": "1.09970"
+      "closeoutAsk": "1.09970",
+      "type": "PRICE"
     }
     {
       "status": "tradeable",
@@ -601,7 +605,8 @@ Output
       ],
       "instrument": "EUR_JPY",
       "time": "2016-10-17T12:25:43.635964725Z",
-      "closeoutAsk": "114.490"
+      "closeoutAsk": "114.490",
+      "type": "PRICE"
     }
     {
       "status": "tradeable",
@@ -636,7 +641,8 @@ Output
       ],
       "instrument": "DE30_EUR",
       "time": "2016-10-17T12:25:44.900162113Z",
-      "closeoutAsk": "10547.7"
+      "closeoutAsk": "10547.7",
+      "type": "PRICE"
     }
     {
       "status": "tradeable",
@@ -671,7 +677,8 @@ Output
       ],
       "instrument": "DE30_EUR",
       "time": "2016-10-17T12:25:44.963539084Z",
-      "closeoutAsk": "10547.4"
+      "closeoutAsk": "10547.4",
+      "type": "PRICE"
     }
     {
       "status": "tradeable",
@@ -714,5 +721,6 @@ Output
       ],
       "instrument": "EUR_JPY",
       "time": "2016-10-17T12:25:45.586100087Z",
-      "closeoutAsk": "114.495"
+      "closeoutAsk": "114.495",
+      "type": "PRICE"
     }

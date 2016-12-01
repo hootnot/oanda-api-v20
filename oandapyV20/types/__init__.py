@@ -1,5 +1,6 @@
 from .types import (
     AccountID,
+    DateTime,
     OrderID,
     TradeID,
     AccountUnits,
@@ -14,6 +15,7 @@ from .types import (
 
 __all__ = (
     'AccountID',
+    'DateTime',
     'OrderID',
     'TradeID',
     'AccountUnits',

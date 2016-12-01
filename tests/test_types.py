@@ -213,7 +213,6 @@ class TestTypes(unittest.TestCase):
 
         if not exc:
             r = cls(**inpar)
-            print(r.value, reference)
             self.assertTrue(r.value == reference)
         else:
             with self.assertRaises(exc) as err:

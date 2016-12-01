@@ -2,6 +2,11 @@
 """Instruments Definitions."""
 
 definitions = {
+    "PriceComponents": {
+        "A": "Ask",
+        "B": "Bid",
+        "M": "Mid",
+    },
     "CandlestickGranularity": {
         "S5": "5 second candlesticks, minute alignment",
         "S10": "10 second candlesticks, minute alignment",

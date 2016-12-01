@@ -1,5 +1,6 @@
 import sys
 import unittest
+from datetime import datetime
 
 try:
     from nose_parameterized import parameterized
@@ -10,6 +11,7 @@ except:
 
 import oandapyV20.types as tp
 
+NOW = datetime.now()
 
 class TestTypes(unittest.TestCase):
     """Tests types."""
@@ -160,11 +162,58 @@ class TestTypes(unittest.TestCase):
            "to long"+"x"*125,
         ValueError
         ),
+       # DateTime
+       # no sub-seconds
+       (tp.DateTime,
+           {"dateTime": "2014-07-02T04:00:00Z"},
+           "2014-07-02T04:00:00Z",
+        ),
+       # sub-seconds (milli)
+       (tp.DateTime,
+           {"dateTime": "2014-07-02T04:00:00.000Z"},
+           "2014-07-02T04:00:00.000000000Z",
+        ),
+       # sub-seconds (micro)
+       (tp.DateTime,
+           {"dateTime": "2014-07-02T04:00:00.000000Z"},
+           "2014-07-02T04:00:00.000000000Z",
+        ),
+       # sub-seconds (nano)
+       (tp.DateTime,
+           {"dateTime": "2014-07-02T04:00:00.000000000Z"},
+           "2014-07-02T04:00:00.000000000Z",
+        ),
+       # using a dict with date/time values
+       (tp.DateTime,
+           {"dateTime": {"year": 2014, "month": 12, "day": 2,
+                         "hour": 13, "minute": 48, "second": 12}},
+           "2014-12-02T13:48:12Z",
+        ),
+       # using a dict with date/time values + sub-seconds
+       (tp.DateTime,
+           {"dateTime": {"year": 2014, "month": 12, "day": 2,
+                         "hour": 13, "minute": 48, "second": 12,
+                         "subsecond": 0}},
+           "2014-12-02T13:48:12.000000000Z",
+        ),
+       # using a datetime.datetime instance
+       (tp.DateTime,
+           {"dateTime": NOW},
+           datetime.strftime(NOW, "%Y-%m-%dT%H:%M:%S.%f000Z")
+        ),
+       # test for exception (missing digit in seconds)
+       (tp.DateTime,
+           {"dateTime": "2014-07-02T04:00:0"},
+           "2014-07-02T04:00:00.000000000Z",
+        ValueError
+        ),
+       
     ])
     def test__types(self, cls, inpar, reference, exc=None):
 
         if not exc:
             r = cls(**inpar)
+            print(r.value, reference)
             self.assertTrue(r.value == reference)
         else:
             with self.assertRaises(exc) as err:

@@ -4,6 +4,7 @@
 import six
 import re
 from abc import ABCMeta
+from datetime import datetime
 
 
 @six.add_metaclass(ABCMeta)
@@ -66,6 +67,79 @@ class OrderID(OAType):
         if int(orderID) < 0:
             raise ValueError("OrderID must be a positive integer value")
         self._v = "{:d}".format(int(orderID))
+
+
+class DateTime(OAType):
+    """representation of a DateTime as a RFC 3339 string
+
+    Parameters
+    ----------
+
+    dateTime : string, datetime instance, dict (required)
+        the dateTime parameter must be:
+         - a valid RFC3339 string representing a date-time, or
+         - a dict holding the relevant datetime parts, or
+         - a datetime.datetime instance
+
+    The value property is always RFC3339  datetime string
+
+    Example
+    -------
+
+    >>> print DateTime("2014-07-02T04:00:00.000000Z").value
+    >>> print DateTime({"year": 2014, "month": 12, "day": 2,
+    ....                "hour": 13, "minute": 48, "second": 12}).value
+    >>> from datetime import datetime
+    >>> print DateTime(datetime.now()).value
+
+
+    A ValueError exception is raised in case of an invalid value
+    """
+
+    def __init__(self, dateTime):
+
+        def formatDT(dtd):
+
+            _date = datetime(
+                int(dtd.get("year")),
+                int(dtd.get("month")),
+                int(dtd.get("day")),
+                int(dtd.get("hour")),
+                int(dtd.get("minute")),
+                int(dtd.get("second")))
+
+            dt = datetime.strftime(_date, "%Y-%m-%dT%H:%M:%S")
+
+            if "subsecond" in dtd and dtd.get("subsecond") != '':
+                dt = "{}.{:<09d}".format(dt, int(dtd.get("subsecond")))
+
+            return dt+"Z"
+
+        if isinstance(dateTime, str):
+            l = re.match(r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)"
+                         "T(?P<hour>\d+):(?P<minute>\d+):(?P<second>\d+)"
+                         "(?:.(?P<subsecond>(\d{9}|\d{6}|\d{3})|))"
+                         "Z",
+                         dateTime)
+
+            if not l:
+                msg = "Invalid RFC 3339 string: {}".format(dateTime)
+                raise ValueError(msg)
+
+            # print l.groupdict()
+            self._v = formatDT(l.groupdict())
+
+        elif isinstance(dateTime, dict):
+            self._v = formatDT(dateTime)
+
+        elif isinstance(dateTime, datetime):
+            self._v = formatDT({"year": dateTime.year,
+                                "month": dateTime.month,
+                                "day": dateTime.day,
+                                "hour": dateTime.hour,
+                                "minute": dateTime.minute,
+                                "second": dateTime.second,
+                                "subsecond": dateTime.microsecond})
 
 
 class TradeID(OAType):

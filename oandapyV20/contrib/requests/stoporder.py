@@ -71,7 +71,6 @@ class StopOrderRequest(BaseRequest):
         >>> r = orders.OrderCreate(accountID, data=ordr.data)
         >>> # perform the request
         >>> rv = client.request(r)
-        >>> print(rv)
         >>> print(json.dumps(rv, indent=4))
         >>> ...
         """

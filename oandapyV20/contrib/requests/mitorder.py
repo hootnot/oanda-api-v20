@@ -47,19 +47,29 @@ class MITOrderRequest(BaseRequest):
         Example
         -------
 
-            >>> import json
-            >>> from oandapyV20 import API
-            >>> import oandapyV20.endpoints.orders as orders
-            >>> from oandapyV20.contrib.requests import MITOrderRequest
-            >>>
-            >>> accountID = "..."
-            >>> client = API(access_token=...)
-            >>> mo = MITOrderRequest(instrument="EUR_USD",
-            >>>                      units=10000, price=1.08)
-            >>> print(json.dumps(mo.data, indent=4))
-            >>> r = orders.OrderCreate(accountID, data=mo.data)
-            >>> rv = client.request(r)
-            >>> ...
+        >>> import json
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> from oandapyV20.contrib.requests import MITOrderRequest
+        >>>
+        >>> accountID = "..."
+        >>> client = API(access_token=...)
+        >>> ordr = MITOrderRequest(instrument="EUR_USD",
+        ...                      units=10000, price=1.08)
+        >>> print(json.dumps(ordr.data, indent=4))
+        {
+            "order": {
+                "timeInForce": "GTC",
+                "instrument": "EUR_USD",
+                "units": "10000",
+                "price": "1.08000",
+                "type": "MARKET_IF_TOUCHED",
+                "positionFill": "DEFAULT"
+            }
+        }
+        >>> r = orders.OrderCreate(accountID, data=ordr.data)
+        >>> rv = client.request(r)
+        >>> ...
         """
         super(MITOrderRequest, self).__init__()
 

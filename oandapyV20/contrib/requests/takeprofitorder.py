@@ -34,19 +34,27 @@ class TakeProfitOrderRequest(BaseRequest):
         Example
         -------
 
-            >>> import json
-            >>> from oandapyV20 import API
-            >>> import oandapyV20.endpoints.orders as orders
-            >>> from oandapyV20.contrib.requests import TakeProfitOrderRequest
-            >>>
-            >>> accountID = "..."
-            >>> client = API(access_token=...)
-            >>> ordr = TakeProfitOrderRequest(tradeID="1234",
-            >>>                               price=1.22)
-            >>> print(json.dumps(ordr.data, indent=4))
-            >>> r = orders.OrderCreate(accountID, data=ordr.data)
-            >>> rv = client.request(r)
-            >>> ...
+        >>> import json
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> from oandapyV20.contrib.requests import TakeProfitOrderRequest
+        >>>
+        >>> accountID = "..."
+        >>> client = API(access_token=...)
+        >>> ordr = TakeProfitOrderRequest(tradeID="1234",
+        >>>                               price=1.22)
+        >>> print(json.dumps(ordr.data, indent=4))
+        {
+            "order": {
+                "timeInForce": "GTC",
+                "price": "1.22000",
+                "type": "TAKE_PROFIT",
+                "tradeID": "1234"
+            }
+        }
+        >>> r = orders.OrderCreate(accountID, data=ordr.data)
+        >>> rv = client.request(r)
+        >>> ...
         """
         super(TakeProfitOrderRequest, self).__init__()
 

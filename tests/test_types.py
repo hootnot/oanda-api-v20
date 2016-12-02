@@ -210,7 +210,7 @@ class TestTypes(unittest.TestCase):
        
     ])
     def test__types(self, cls, inpar, reference, exc=None):
-
+        """test_types."""
         if not exc:
             r = cls(**inpar)
             self.assertTrue(r.value == reference)

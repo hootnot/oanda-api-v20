@@ -45,17 +45,29 @@ class LimitOrderRequest(BaseRequest):
         Example
         -------
 
-            >>> import json
-            >>> from oandapyV20 import API
-            >>> import oandapyV20.endpoints.orders as orders
-            >>> from oandapyV20.contrib.requests import LimitOrderRequest
-            >>>
-            >>> accountID = "..."
-            >>> client = API(access_token=...)
-            >>> mo = LimitOrderRequest(instrument="EUR_USD",
-            >>>                        units=10000, price=1.08)
-            >>> print(json.dumps(mo.data, indent=4))
-            >>> ...
+        >>> import json
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> from oandapyV20.contrib.requests import LimitOrderRequest
+        >>>
+        >>> accountID = "..."
+        >>> client = API(access_token=...)
+        >>> ordr = LimitOrderRequest(instrument="EUR_USD",
+        ...                          units=10000, price=1.08)
+        >>> print(json.dumps(ordr.data, indent=4))
+        {
+            "order": {
+                "timeInForce": "GTC",
+                "instrument": "EUR_USD",
+                "units": "10000",
+                "price": "1.08000",
+                "type": "LIMIT",
+                "positionFill": "DEFAULT"
+            }
+        }
+        >>> r = orders.orderCreate(accountID, data=ordr.data)
+        >>> rv = client.request(r)
+        >>>
         """
         super(LimitOrderRequest, self).__init__()
 

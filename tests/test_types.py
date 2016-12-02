@@ -155,11 +155,11 @@ class TestTypes(unittest.TestCase):
         ),
        (tp.OrderSpecifier,
            {"specifier": "@my valid custom id"},
-           "my valid custom id",
+           "@my valid custom id",
         ),
        (tp.OrderSpecifier,
-           {"specifier": "@"+"to long"+"x"*125},
-           "to long"+"x"*125,
+           {"specifier": "@to long"+"x"*125},
+           "@to long"+"x"*125,
         ValueError
         ),
        # DateTime

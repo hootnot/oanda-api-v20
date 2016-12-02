@@ -235,6 +235,6 @@ class OrderSpecifier(OAType):
 
     def __init__(self, specifier):
         if str(specifier).startswith('@'):
-            self._v = ClientID(specifier.lstrip('@')).value
+            self._v = "@"+ClientID(specifier.lstrip('@')).value
         else:
             self._v = OrderID(specifier).value

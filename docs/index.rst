@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to OANDA REST-V20 API's documentation!
-==============================================
+Welcome to OANDA REST-V20 API wrapper documentation!
+====================================================
 
 Contents:
 
@@ -15,14 +15,14 @@ Contents:
    installation
    oanda-api-v20
 
-   modules
    oandapyV20.endpoints
    oandapyV20.definitions
-   oandapyV20.contrib
    oandapyV20.types
+   oandapyV20.contrib
+   examples
+.. modules
    oandapyV20
 
-   examples
 
 
 

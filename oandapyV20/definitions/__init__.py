@@ -21,6 +21,11 @@ dyndoc = """Definition representation of {cls}
     >>> c = def{mod}.{cls}()
     >>> print c[c.{firstItem}]
     {firstItemVal}
+    >>> # or
+    >>> print def{mod}.{cls}().definitions[c.{firstItem}]
+    >>> # all keys
+    >>> print def{mod}.{cls}().definitions.keys()
+    >>> ...
 
 """
 
@@ -38,6 +43,7 @@ def make_definition_classes(mod):
     PTH = "{}.definitions.{}".format(rootpath, mod)
 
     M = import_module(PTH)
+    __ALL__ = []  # construct the __all__ variable
     for cls, cldef in M.definitions.items():
 
         orig, fiV = next(six.iteritems(cldef))
@@ -92,6 +98,11 @@ def make_definition_classes(mod):
         setattr(dyncls, "definitions", mkPropDefinitions())
         setattr(sys.modules["{}.definitions.{}".format(rootpath, mod)],
                 cls, dyncls)
+        __ALL__.append(cls)
+
+    setattr(sys.modules["{}.definitions.{}".format(rootpath, mod)],
+            "__all__", tuple(__ALL__))
+
 
 definitionModules = [
     'accounts',

@@ -67,33 +67,46 @@ class TakeProfitDetails(OnFill):
         Example
         -------
 
-            >>> import json
-            >>> from oandapyV20 import API
-            >>> import oandapyV20.endpoints.orders as orders
-            >>> from oandapyV20.contrib.requests import (
-            >>>     MarketOrderRequest, TakeProfitDetails)
-            >>>
-            >>> accountID = "..."
-            >>> client = API(access_token=...)
-            >>> # at time of writing EUR_USD = 1.0740
-            >>> # let us take profit at 1.10, GoodTillCancel (default)
-            >>> takeProfitOnFillOrder = TakeProfitDetails(price=1.10)
-            >>> print(takeProfitOnFillOrder)
-            {
-                "timeInForce": "GTC",
-                "price": "1.10000"
+        >>> import json
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.orders as orders
+        >>> from oandapyV20.contrib.requests import (
+        >>>     MarketOrderRequest, TakeProfitDetails)
+        >>>
+        >>> accountID = "..."
+        >>> client = API(access_token=...)
+        >>> # at time of writing EUR_USD = 1.0740
+        >>> # let us take profit at 1.10, GoodTillCancel (default)
+        >>> takeProfitOnFillOrder = TakeProfitDetails(price=1.10)
+        >>> print(takeProfitOnFillOrder.data)
+        {
+            "timeInForce": "GTC",
+            "price": "1.10000"
+        }
+        >>> ordr = MarketOrderRequest(
+        >>>     instrument="EUR_USD",
+        >>>     units=10000,
+        >>>     takeProfitOnFill=takeProfitOnFillOrder.data
+        >>> )
+        >>> # or as shortcut ...
+        >>> #   takeProfitOnFill=TakeProfitDetails(price=1.10).data
+        >>> print(json.dumps(ordr.data, indent=4))
+        {
+            "order": {
+                "timeInForce": "FOK",
+                "instrument": "EUR_USD",
+                "units": "10000",
+                "positionFill": "DEFAULT",
+                "type": "MARKET",
+                "takeProfitOnFill": {
+                    "timeInForce": "GTC",
+                    "price": "1.10000"
+                }
             }
-            >>> ordr = MarketOrderRequest(
-            >>>     instrument="EUR_USD",
-            >>>     units=10000,
-            >>>     takeProfitOnFill=takeProfitOnFillOrder.data
-            >>> )
-            >>> # or as shortcut ...
-            >>> #   takeProfitOnFill=TakeProfitDetails(price=1.10).data
-            >>> print(json.dumps(ordr.data, indent=4))
-            >>> r = orders.OrderCreate(accountID, data=ordr.data)
-            >>> rv = client.request(r)
-            >>> ...
+        }
+        >>> r = orders.OrderCreate(accountID, data=ordr.data)
+        >>> rv = client.request(r)
+        >>> ...
         """
         super(TakeProfitDetails, self).__init__(
             timeInForce=timeInForce,

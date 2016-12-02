@@ -1,13 +1,7 @@
 oandapyV20.definitions.accounts
-===============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: oandapyV20.definitions.accounts.AccountFinancingMode
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :special-members: __getitem__
-
-.. autoclass:: oandapyV20.definitions.accounts.PositionAggregationMode
+.. automodule:: oandapyV20.definitions.accounts
     :members:
     :undoc-members:
     :show-inheritance:

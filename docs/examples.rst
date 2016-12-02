@@ -1,6 +1,10 @@
 Examples
 --------
 
+Examples can be found in the examples repositiory on github: examplesrepo_.
+
+.. _examplesrepo: https://github.com/hootnot/oandapyV20-examples
+
 
 Example for trades-endpoints
 ````````````````````````````

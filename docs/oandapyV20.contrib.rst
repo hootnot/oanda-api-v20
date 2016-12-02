@@ -1,7 +1,8 @@
-oandapyV20.contrib module
-=========================
+oandapyV20.contrib.requests
+===========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
+   :glob:
 
-   oandapyV20.contrib.requests.orders
+   contrib/*

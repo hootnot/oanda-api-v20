@@ -1,7 +1,7 @@
 oandapyV20.definitions.trades
-=============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: oandapyV20.definitions.trades.TradeState
+.. automodule:: oandapyV20.definitions.trades
     :members:
     :undoc-members:
     :show-inheritance:

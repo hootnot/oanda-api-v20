@@ -35,6 +35,7 @@ class PositionCloseRequest(BaseRequest):
         shortClientExtensions : dict (optional)
             dict representing shortClientExtensions
 
+
         One of the parameters or both must be supplied.
 
         Example

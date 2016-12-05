@@ -113,7 +113,7 @@ class DateTime(OAType):
 
             dt = datetime.strftime(_date, "%Y-%m-%dT%H:%M:%S")
 
-            if "subsecond" in dtd and dtd.get("subsecond") != '':
+            if "subsecond" in dtd and dtd.get("subsecond") is not None:
                 dt = "{}.{:>06d}".format(dt, int(dtd.get("subsecond")))
 
             return dt+"Z"

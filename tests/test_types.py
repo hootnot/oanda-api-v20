@@ -171,17 +171,17 @@ class TestTypes(unittest.TestCase):
        # sub-seconds (milli)
        (tp.DateTime,
            {"dateTime": "2014-07-02T04:00:00.000Z"},
-           "2014-07-02T04:00:00.000000000Z",
+           "2014-07-02T04:00:00.000000Z",
         ),
        # sub-seconds (micro)
        (tp.DateTime,
            {"dateTime": "2014-07-02T04:00:00.000000Z"},
-           "2014-07-02T04:00:00.000000000Z",
+           "2014-07-02T04:00:00.000000Z",
         ),
        # sub-seconds (nano)
        (tp.DateTime,
-           {"dateTime": "2014-07-02T04:00:00.000000000Z"},
-           "2014-07-02T04:00:00.000000000Z",
+           {"dateTime": "2014-07-02T04:00:00.000000Z"},
+           "2014-07-02T04:00:00.000000Z",
         ),
        # using a dict with date/time values
        (tp.DateTime,
@@ -194,17 +194,17 @@ class TestTypes(unittest.TestCase):
            {"dateTime": {"year": 2014, "month": 12, "day": 2,
                          "hour": 13, "minute": 48, "second": 12,
                          "subsecond": 0}},
-           "2014-12-02T13:48:12.000000000Z",
+           "2014-12-02T13:48:12.000000Z",
         ),
        # using a datetime.datetime instance
        (tp.DateTime,
            {"dateTime": NOW},
-           datetime.strftime(NOW, "%Y-%m-%dT%H:%M:%S.%f000Z")
+           datetime.strftime(NOW, "%Y-%m-%dT%H:%M:%S.%fZ")
         ),
        # test for exception (missing digit in seconds)
        (tp.DateTime,
            {"dateTime": "2014-07-02T04:00:0"},
-           "2014-07-02T04:00:00.000000000Z",
+           "2014-07-02T04:00:00.000000Z",
         ValueError
         ),
        

@@ -48,8 +48,12 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
+.PHONY: types
+types:	../oandapyV20/types/types.py
+	@python dirstruct.py types oandapyV20.types
+
 .PHONY: html
-html:
+html:	types
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."

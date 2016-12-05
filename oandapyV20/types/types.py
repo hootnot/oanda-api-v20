@@ -83,6 +83,9 @@ class DateTime(OAType):
 
     The value property is always RFC3339  datetime string
 
+    Fractional seconds are in microseconds. This compatible with
+    datetime.datetime.
+
     Example
     -------
 
@@ -111,14 +114,14 @@ class DateTime(OAType):
             dt = datetime.strftime(_date, "%Y-%m-%dT%H:%M:%S")
 
             if "subsecond" in dtd and dtd.get("subsecond") != '':
-                dt = "{}.{:<09d}".format(dt, int(dtd.get("subsecond")))
+                dt = "{}.{:>06d}".format(dt, int(dtd.get("subsecond")))
 
             return dt+"Z"
 
         if isinstance(dateTime, str):
             l = re.match(r"(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)"
                          "T(?P<hour>\d+):(?P<minute>\d+):(?P<second>\d+)"
-                         "(?:.(?P<subsecond>(\d{9}|\d{6}|\d{3})|))"
+                         "(?:.(?P<subsecond>\d{1,6})|)"
                          "Z",
                          dateTime)
 

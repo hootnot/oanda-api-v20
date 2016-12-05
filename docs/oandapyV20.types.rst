@@ -1,7 +1,7 @@
 oandapyV20.types
 ================
 
-The *oandapyV20.types* module contains the types representing the types
+The :mod:`oandapyV20.types` module contains the types representing the types
 that are used in the API-specs of OANDA, check developer.oanda.com_.
 These types offer a convenient interface between Python types and
 the types used in the REST-API.
@@ -22,15 +22,15 @@ a float.
     pv1.value == pv2.value
     True
 
-Regardless the value we pass, the float or the string, the PriceValue instance
-will allways be the string value.
+Regardless the value we instantiate it with, a float or a string,
+the PriceValue instance will allways be a string value.
 
 The types also validate the values passed. Invalid values will raise an
 exception.
 
-.. automodule:: oandapyV20.types
-    :members:
-    :undoc-members:
-    :inherited-members:
-.. ..:show-inheritance:
-    :special-members: __init__
+
+.. toctree::
+   :maxdepth: 4
+   :glob:
+
+   types/*

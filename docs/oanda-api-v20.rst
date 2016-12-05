@@ -4,10 +4,11 @@ Interface OANDA's REST-V20
 The client
 ----------
 
-The `oandapyV20` package contains a client class, `oandapyV20.API`, to
+The :mod:`oandapyV20` package contains a client class, :class:`oandapyV20.API`, to
 communicate with the REST-V20 interface. It processes requests that
 can be created from the endpoint classes.
-For it's communication it relies on: requests_.
+For it's communication it relies on: :py:mod:`requests`
+(requests_).
 
 .. _requests: http://docs.python-requests.org/en/master/
 
@@ -31,7 +32,7 @@ Exceptions
 Logging
 -------
 
-The `oandapyV20` package has `logging` integrated. Logging can be
+The :mod:`oandapyV20` package has `logging` integrated. Logging can be
 simply applied by enabling a `logger`.
 The example below will log INFO-level logging to the file *v20.log*.
 For details check the :py:mod:`logger` module in the standard Python

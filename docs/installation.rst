@@ -1,7 +1,7 @@
 Introduction
 ============
 
-The `oandapyV20` package offers an API to the OANDA V20 REST service.
+The :mod:`oandapyV20` package offers an API to the OANDA V20 REST service.
 To use the REST-API-service you will need a *token* and an *account*. This
 applies for both *live*  and *practice* accounts. For details check oanda.com_.
 

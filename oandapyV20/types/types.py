@@ -4,7 +4,7 @@
 import six
 import re
 from abc import ABCMeta
-from datetime import datetime
+import datetime as natdatetime  # native datetime
 
 
 @six.add_metaclass(ABCMeta)
@@ -70,7 +70,7 @@ class OrderID(OAType):
 
 
 class DateTime(OAType):
-    """representation of a DateTime as a RFC 3339 string
+    """representation of a DateTime as a RFC 3339 string.
 
     Parameters
     ----------
@@ -91,7 +91,7 @@ class DateTime(OAType):
 
     >>> print DateTime("2014-07-02T04:00:00.000000Z").value
     >>> print DateTime({"year": 2014, "month": 12, "day": 2,
-    ....                "hour": 13, "minute": 48, "second": 12}).value
+    ...                 "hour": 13, "minute": 48, "second": 12}).value
     >>> from datetime import datetime
     >>> print DateTime(datetime.now()).value
 
@@ -103,7 +103,7 @@ class DateTime(OAType):
 
         def formatDT(dtd):
 
-            _date = datetime(
+            _date = natdatetime.datetime(
                 int(dtd.get("year")),
                 int(dtd.get("month")),
                 int(dtd.get("day")),
@@ -111,7 +111,7 @@ class DateTime(OAType):
                 int(dtd.get("minute")),
                 int(dtd.get("second")))
 
-            dt = datetime.strftime(_date, "%Y-%m-%dT%H:%M:%S")
+            dt = natdatetime.datetime.strftime(_date, "%Y-%m-%dT%H:%M:%S")
 
             if "subsecond" in dtd and dtd.get("subsecond") is not None:
                 dt = "{}.{:>06d}".format(dt, int(dtd.get("subsecond")))
@@ -135,7 +135,7 @@ class DateTime(OAType):
         elif isinstance(dateTime, dict):
             self._v = formatDT(dateTime)
 
-        elif isinstance(dateTime, datetime):
+        elif isinstance(dateTime, natdatetime.datetime):
             self._v = formatDT({"year": dateTime.year,
                                 "month": dateTime.month,
                                 "day": dateTime.day,

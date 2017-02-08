@@ -61,6 +61,12 @@ If you want to run the tests, clone the repository:
 
     $ git clone https://github.com/hootnot/oanda-api-v20
     $ cd oanda-api-v20
+
+    # install necessary packages for testing
+    $ grep "\- pip install" .travis.yml |
+    > while read LNE
+    > do `echo $LNE| cut -c2-` ; done
+
     $ python setup.py test
     $ python setup.py install
 

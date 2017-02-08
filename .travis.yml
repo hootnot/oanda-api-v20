@@ -7,7 +7,6 @@ python:
 - pypy
 install:
 - pip install pip --upgrade
-- pip install six
 - pip install requests-mock
 - pip install coveralls
 - pip install nose nose-parameterized

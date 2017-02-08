@@ -33,11 +33,11 @@ Status
 
 Supported Python versions:
 
-    +-------------------+-----+-----+-----+-----+------+
-    | Python            | 2.7 | 3.3 | 3.4 | 3.5 | Pypy |
-    +===================+=====+=====+=====+=====+======+
-    | **oanda-api-v20** | YES | YES | YES | YES | YES  |
-    +-------------------+-----+-----+-----+-----+------+
+    +-------------------+-----+-----+-----+-----+-----+------+
+    | Python            | 2.7 | 3.3 | 3.4 | 3.5 | 3.6 | Pypy |
+    +===================+=====+=====+=====+=====+=====+======+
+    | **oanda-api-v20** | YES | YES | YES | YES | YES | YES  |
+    +-------------------+-----+-----+-----+-----+-----+------+
 
 
 
@@ -61,6 +61,12 @@ If you want to run the tests, clone the repository:
 
     $ git clone https://github.com/hootnot/oanda-api-v20
     $ cd oanda-api-v20
+
+    # install necessary packages for testing
+    $ grep "\- pip install" .travis.yml |
+    > while read LNE
+    > do `echo $LNE| cut -c2-` ; done
+
     $ python setup.py test
     $ python setup.py install
 

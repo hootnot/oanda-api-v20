@@ -3,7 +3,7 @@ import sys
 import time
 from datetime import datetime
 import re
-from oandapyV20.contrib.stream.streamrecord import HEARTBEAT, TICK
+from oandapyV20.contrib.stream.streamrecord import HEARTBEAT, PRICE
 import logging
 
 

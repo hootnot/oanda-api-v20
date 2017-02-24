@@ -3,6 +3,7 @@ import sys
 import time
 from datetime import datetime
 import re
+from oandapyV20.contrib.util import granularity_to_time
 from oandapyV20.contrib.stream.streamrecord import HEARTBEAT, PRICE
 import logging
 
@@ -12,31 +13,6 @@ dancingBear = 2
 dancingBearHighLowExtreme = 3
 
 logger = logging.getLogger(__name__)
-
-
-def granularity_to_time(granularity):
-    """get value in seconds for named granularities: M1, M5 ... H1 etc.
-
-    Parameters
-    ----------
-
-    granularity : string
-        granularity string specifying seconds, minitues, hours, days
-        Granularities of days is of no use for generating candles
-        from a stream.
-    """
-    mfact = {
-        'S': 1,
-        'M': 60,
-        'H': 3600,
-        'D': 86400,
-    }
-    try:
-        f, n = re.match("(?P<f>[SMHD])(?:(?P<n>\d+)|)", granularity).groups()
-        n = int(n) if n else 1
-        return mfact[f] * n
-    except:
-        raise ValueError("Can't handle granularity: {}".format(granularity))
 
 
 class CandleFactory(object):
@@ -76,7 +52,7 @@ class CandleFactory(object):
         to see if the heartbeat tick did complete the timeframe. If so, the
         record is returned as 'completed'.
         """
-        if tick.recordtype() == TICK:
+        if tick.recordtype == PRICE:
             instrument = tick["instrument"]
             logger.info("process PriceTick for: %s", instrument)
             for G in self._halls[instrument]:
@@ -162,8 +138,8 @@ class CandleFactoryHall(object):
         self.end = tick.epoch - (tick.epoch % self.frameTime) + self.frameTime
         self.data = {
             "instrument": self.instrument,
-            "start": "%s" % self.secs2time(self.start),
-            "end": "%s" % self.secs2time(self.end),
+            "start": "%s" % self._secs2time(self.start),
+            "end": "%s" % self._secs2time(self.end),
             "granularity": self.granularity,
             "completed": False,
             "data": {
@@ -175,7 +151,7 @@ class CandleFactoryHall(object):
             }
         }
 
-    def secs2time(self, e):
+    def _secs2time(self, e):
         w = time.gmtime(e)
         return datetime(*list(w)[0:6])
 
@@ -184,10 +160,7 @@ class CandleFactoryHall(object):
         return self.data.copy()
 
     def processTick(self, tick):
-        return self._processTick(tick)
-
-    def _processTick(self, tick):
-        if tick.recordtype() == HEARTBEAT:
+        if tick.recordtype == HEARTBEAT:
             if self.data and tick.epoch > self.end:
                 # this frame is completed based on the heartbeat timestamp
                 candle = self._make_candle(completed=True)

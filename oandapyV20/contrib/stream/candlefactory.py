@@ -33,8 +33,8 @@ def granularity_to_time(granularity):
     }
     try:
         f, n = re.match("(?P<f>[SMHD])(?:(?P<n>\d+)|)", granularity).groups()
-        n = n if n else 1
-        return mfact[f] * int(n)
+        n = int(n) if n else 1
+        return mfact[f] * n
     except:
         raise ValueError("Can't handle granularity: {}".format(granularity))
 

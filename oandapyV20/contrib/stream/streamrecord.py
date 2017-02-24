@@ -36,40 +36,46 @@ pricingstream record example:
   "tradeable": true
 }
 """
-mid_bid_ask = 4
 
-TICK = 1
+PRICE = 1
 HEARTBEAT = 2
 
 
 class StreamRecord(object):
     """StreamRecord - convert OANDA streamrecord."""
 
-    def __init__(self, s, mode=mid_bid_ask):
+    def __init__(self, sr):
+        self._rtype = None
+
         # accept JSON data aswell as stringdata to convert to JSON
-        j = json.loads(s) if isinstance(s, str) else s
-        # use calendar.timegm, this gives back the correct time without
-        # timezone differences
-        self.rtype = None
+        if isinstance(sr, (str, unicode)):
+            sr = json.loads(sr)
+
         self.data = {}
-        if j["type"] == "PRICE":
-            self.rtype = TICK
-            self.data['instrument'] = j["instrument"]
-            self.data['bid'] = float(j["closeoutBid"])
-            self.data['ask'] = float(j["closeoutAsk"])
+        self.convert(sr)
+
+    def convert(self, sr):
+        if sr["type"] == "PRICE":
+            self._rtype = PRICE
+            self.data['instrument'] = sr["instrument"]
+            self.data['bid'] = float(sr["closeoutBid"])
+            self.data['ask'] = float(sr["closeoutAsk"])
             self.data['mid'] = (self.data['bid'] + self.data['ask'])/2.0
             self.data['value'] = self.data['mid']
-        elif j["type"] == "HEARTBEAT":
-            self.rtype = HEARTBEAT
+        elif sr["type"] == "HEARTBEAT":
+            self._rtype = HEARTBEAT
         else:
             raise ValueError("Unknown stream record type {}".format(s))
 
-        self.dt = parse_date(j['time'])
-        self.epoch = int(calendar.timegm(self.dt.timetuple()))
-        self.data['time'] = j["time"]
+        # use calendar.timegm, this gives back the correct time without
+        # timezone differences
+        dt = parse_date(sr['time'])
+        self.epoch = int(calendar.timegm(dt.timetuple()))
+        self.data['time'] = sr["time"]
 
+    @property
     def recordtype(self):
-        return self.rtype
+        return self._rtype
 
     def __getitem__(self, k):
         return self.data[k]

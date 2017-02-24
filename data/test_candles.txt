@@ -1,0 +1,4 @@
+{"start": "2017-02-23 20:57:00", "end": "2017-02-23 20:58:00", "instrument": "EUR_USD", "completed": true, "granularity": "M1", "data": {"high": 1.058025, "last": 1.05797, "open": 1.058, "low": 1.05795, "volume": 7}}
+{"start": "2017-02-23 20:58:00", "end": "2017-02-23 20:59:00", "instrument": "EUR_USD", "completed": true, "granularity": "M1", "data": {"high": 1.0581, "last": 1.0581, "open": 1.05795, "low": 1.057945, "volume": 10}}
+{"start": "2017-02-23 20:59:00", "end": "2017-02-23 21:00:00", "instrument": "EUR_USD", "completed": true, "granularity": "M1", "data": {"high": 1.058135, "last": 1.05809, "open": 1.05808, "low": 1.05808, "volume": 9}}
+{"start": "2017-02-23 20:55:00", "end": "2017-02-23 21:00:00", "instrument": "EUR_USD", "completed": true, "granularity": "M5", "data": {"high": 1.058135, "last": 1.05809, "open": 1.058, "low": 1.057945, "volume": 26}}

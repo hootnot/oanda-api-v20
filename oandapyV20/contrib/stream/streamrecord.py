@@ -2,6 +2,7 @@
 import json
 import calendar
 from iso8601 import parse_date
+import six
 
 """
 pricingstream record example:
@@ -48,7 +49,7 @@ class StreamRecord(object):
         self._rtype = None
 
         # accept JSON data aswell as stringdata to convert to JSON
-        if isinstance(sr, (str, unicode)):
+        if isinstance(sr, six.text_type):
             sr = json.loads(sr)
 
         self.data = {}

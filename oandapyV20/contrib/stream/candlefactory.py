@@ -5,6 +5,7 @@ from datetime import datetime
 from oandapyV20.contrib.util import granularity_to_time
 from oandapyV20.contrib.stream.streamrecord import HEARTBEAT, PRICE
 import logging
+import six
 
 
 atEndOfTimeFrame = 1
@@ -34,7 +35,7 @@ class CandleFactory(object):
         self._halls = {}
         logger.info("set up candle factory ")
         for ih in instruments:
-            instrument, grans = ih.items()[0]
+            instrument, grans = next(six.iteritems(ih))
             logger.info("set up candle factory grans: %s", ",".join(grans))
             self._halls.update(
                 {instrument:
@@ -164,10 +165,10 @@ class CandleFactoryHall(object):
                 # this frame is completed based on the heartbeat timestamp
                 candle = self._make_candle(completed=True)
                 self.data = None     # clear it, reinitialized by the next tick
-                logger.warn("infrequent ticks: %s, %s completed with "
-                            "heartbeat (%d secs)" %
-                            (self.instrument, self.granularity,
-                             (tick.epoch - self.end)))
+                logger.warning("infrequent ticks: %s, %s completed with "
+                               "heartbeat (%d secs)" %
+                               (self.instrument, self.granularity,
+                                (tick.epoch - self.end)))
                 return candle
             else:
                 return None

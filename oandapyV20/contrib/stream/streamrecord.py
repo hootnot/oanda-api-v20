@@ -65,7 +65,7 @@ class StreamRecord(object):
         elif sr["type"] == "HEARTBEAT":
             self._rtype = HEARTBEAT
         else:
-            raise ValueError("Unknown stream record type {}".format(s))
+            raise ValueError("Unknown stream record type {}".format(sr))
 
         # use calendar.timegm, this gives back the correct time without
         # timezone differences

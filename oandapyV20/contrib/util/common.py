@@ -25,5 +25,3 @@ def granularity_to_time(granularity):
         return mfact[f] * n
     except:
         raise ValueError("Can't handle granularity: {}".format(granularity))
-
-

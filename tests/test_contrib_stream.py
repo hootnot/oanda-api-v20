@@ -15,7 +15,12 @@ except:
 import oandapyV20
 from oandapyV20 import API
 import oandapyV20.endpoints.pricing as pricing
-from oandapyV20.contrib.stream import CandleFactory, StreamRecord, PRICE, HEARTBEAT
+from oandapyV20.contrib.stream import (
+    CandleFactory,
+    StreamRecord,
+    PRICE,
+    HEARTBEAT
+)
 
 access_token = None
 accountID = None
@@ -78,7 +83,7 @@ class TestContribStream(unittest.TestCase):
                     rec = json.loads(rec)
                 if sr.recordtype == PRICE and \
                    sr.data['bid'] == float(rec.get("closeoutBid")) and \
-                   sr.data['ask'] == float(rec.get("closeoutAsk")): 
+                   sr.data['ask'] == float(rec.get("closeoutAsk")):
                     ticksParsedAndVerified += 1
 
         self.assertTrue(ticksRead == ticksParsedAndVerified)
@@ -102,12 +107,12 @@ class TestContribStream(unittest.TestCase):
             for candle in I:
                 verify.append(json.loads(candle))
 
-        cf = CandleFactory([{"EUR_USD":["M1", "M5"]}])
+        cf = CandleFactory([{"EUR_USD": ["M1", "M5"]}])
         for rec in api.request(r):
             sr = StreamRecord(rec)
             for candle in cf.processTick(sr):
                 if candle:
-                     candles.append(candle)
+                    candles.append(candle)
 
         self.assertTrue(verify == candles)
 

@@ -2,7 +2,6 @@
 import sys
 import time
 from datetime import datetime
-import re
 from oandapyV20.contrib.util import granularity_to_time
 from oandapyV20.contrib.stream.streamrecord import HEARTBEAT, PRICE
 import logging

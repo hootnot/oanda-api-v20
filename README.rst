@@ -40,6 +40,17 @@ Supported Python versions:
     +-------------------+-----+-----+-----+-----+-----+------+
 
 
+Interactive
+-----------
+
+.. image:: https://jupyter.readthedocs.io/en/latest/_static/_images/jupyter.svg
+   :target: ./jupyter
+   :alt: Jupyter
+
+Using the Jupyter `notebook`_ it is easy to play with the
+*oandapyV20* library.
+
+.. _notebook: ./jupyter
 
 Install
 -------

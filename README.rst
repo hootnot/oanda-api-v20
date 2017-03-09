@@ -40,6 +40,13 @@ Supported Python versions:
     +-------------------+-----+-----+-----+-----+-----+------+
 
 
+Interactive
+-----------
+
+.. image:: https://jupyter.readthedocs.io/en/latest/_static/_images/jupyter.svg
+   :target: ./jupyter
+   :alt: Jupyter
+
 
 Install
 -------

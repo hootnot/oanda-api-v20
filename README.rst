@@ -47,6 +47,10 @@ Interactive
    :target: ./jupyter
    :alt: Jupyter
 
+Using the Jupyter `notebook`_ it is easy to play with the
+*oandapyV20* library.
+
+.. _notebook: ./jupyter
 
 Install
 -------

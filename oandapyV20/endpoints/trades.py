@@ -66,6 +66,7 @@ class TradesList(Trades):
 
         """
         super(TradesList, self).__init__(accountID)
+        self.params = params
 
 
 @endpoint("v3/accounts/{accountID}/openTrades")

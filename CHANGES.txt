@@ -1,0 +1,51 @@
+Version 0.2.3
+-------------
+2017/04/17:
+          fix: trades.TradesList unhandled params, issue #69
+
+2017/03/09:
+          jupyter notebooks added
+
+2017/02/08:
+          Python 3.6 added
+
+2017/01/30:
+          datetime name conflict solved, issue #62
+
+2016/12/05:
+          documentation: dynamically generated types directory tree
+
+          types: DateTime subsecond part fix
+
+2016/12/05:
+          fixes OrderSpecifier
+
+2016/12/01:
+          extend types with DateTime
+
+2016/11/17:
+          bug streaming prices: list values need to be joined, solved #50
+
+Version 0.2.2
+-------------
+2016/11/17:
+          extend types with AccountID
+          definitions
+          increase coverage
+          contrib.request classes timeInForce parameter add and/or verify
+          against allowed values
+
+Version 0.2.1
+-------------
+2016/11/15:
+          * documentation updates
+          * missing requirement: six added
+
+Version 0.2.0
+-------------
+2016/11/15:
+
+          * first release with coverage of all endpoints except the 'forexlabs'
+          * definitions covered as in the development documeintation
+          * types representing data types as in the development documeintation
+          * contrib.requests: classes to construct data for requestbodies

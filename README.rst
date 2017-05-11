@@ -1,7 +1,7 @@
 OANDA REST-V20 API wrapper
 ==========================
 
-The REST-V20 API specs are not completely released yet. Support for 'forex labs' endpoints will be integrated when OANDA releases the specs of those endpoints.
+The REST-V20 API specs are not completely released yet. Support for 'forex labs' endpoint will be integrated when OANDA releases the specs of this endpoint. All other endpoints are covered.
 
 .. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
    :target: https://travis-ci.org/hootnot/oanda-api-v20
@@ -23,12 +23,6 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
    :target: https://badge.fury.io/py/oandapyV20
    :alt: Pypi
 
-
-Status
-------
-
- * All endpoint are covered except for *"Forex Labs"*
- * Testsuite
 
 
 Supported Python versions:
@@ -741,3 +735,18 @@ Output
       "closeoutAsk": "114.495",
       "type": "PRICE"
     }
+
+About this software
+-------------------
+The *oanda-api-v20* software is a personal project.
+I have no prior or existing relationship with OANDA.
+
+If you have any questions regarding this software, please take a look at
+the documentation first:
+
+ * oandapyV20 : http://oanda-api-v20.readthedocs.io/en/latest/?badge=latest
+ * OANDA developer docs : http://developer.oanda.com
+ * examples : https://github.com/hootnot/oandapyV20-examples
+ * Github: https://github.com/hootnot/oanda-api-v20 check the open and closed issues
+
+If you still have questions/issues you can open an *issue* on Gitub: https://github.com/hootnot/oanda-api-v20

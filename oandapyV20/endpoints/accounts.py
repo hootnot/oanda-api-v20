@@ -46,7 +46,7 @@ class AccountList(Accounts):
 
         ::
 
-            {_v3_account_by_accountID_resp}
+            {_v3_accounts_resp}
 
         """
         super(AccountList, self).__init__()
@@ -80,7 +80,7 @@ class AccountDetails(Accounts):
 
         ::
 
-            {_v3_account_by_accountID_summary_resp}
+            {_v3_account_by_accountID_resp}
 
         """
         super(AccountDetails, self).__init__(accountID)

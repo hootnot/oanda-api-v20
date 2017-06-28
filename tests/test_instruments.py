@@ -66,6 +66,36 @@ class TestInstruments(unittest.TestCase):
         self.assertTrue(result == resp)
 
 
+    @requests_mock.Mocker()
+    def test__instruments_orderbook(self, mock_get):
+        """get the orderbook information for instruments."""
+        instrument = "EUR_USD"
+        tid = "_v3_instruments_instrument_orderbook"
+        resp, data, params = fetchTestData(responses, tid)
+        r = instruments.InstrumentsOrderBook(instrument=instrument,
+                                             params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+
+    @requests_mock.Mocker()
+    def test__instruments_positionbook(self, mock_get):
+        """get the positionbook information for instruments."""
+        instrument = "EUR_USD"
+        tid = "_v3_instruments_instrument_positionbook"
+        resp, data, params = fetchTestData(responses, tid)
+        r = instruments.InstrumentsPositionBook(instrument=instrument,
+                                                params=params)
+        mock_get.register_uri('GET',
+                              "{}/{}".format(api.api_url, r),
+                              text=json.dumps(resp))
+        result = api.request(r)
+        self.assertTrue(result == resp)
+
+
 if __name__ == "__main__":
 
     unittest.main()

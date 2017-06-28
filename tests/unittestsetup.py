@@ -23,7 +23,7 @@ def fetchTestData(responses, k):
     except:
         pass
 
-    if params:
+    if params is not None:
         return (resp, data, params)
 
     return (resp, data)

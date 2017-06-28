@@ -57,7 +57,7 @@ class InstrumentsCandles(Instruments):
         >>> import oandapyV20.endpoints.instruments as instruments
         >>> client = oandapyV20.API(access_token=...)
         >>> params = ...
-        >>> r = instruments.InstrumentsCandles(instrument="DE30_EUR",
+        >>> r = instruments.InstrumentsCandles(instrument="EUR_USD",
         >>>                                    params=params)
         >>> client.request(r)
         >>> print r.response
@@ -101,7 +101,7 @@ class InstrumentsOrderBook(Instruments):
         >>> import oandapyV20.endpoints.instruments as instruments
         >>> client = oandapyV20.API(access_token=...)
         >>> params = ...
-        >>> r = instruments.InstrumentsOrderBook(instrument="DE30_EUR",
+        >>> r = instruments.InstrumentsOrderBook(instrument="EUR_USD",
         >>>                                      params=params)
         >>> client.request(r)
         >>> print r.response

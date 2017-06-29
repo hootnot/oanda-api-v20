@@ -10,7 +10,7 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
 .. image:: https://readthedocs.org/projects/oanda-api-v20/badge/?version=latest
    :target: http://oanda-api-v20.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
-   
+
 .. image:: https://landscape.io/github/hootnot/oanda-api-v20/master/landscape.svg?style=flat
    :target: https://landscape.io/github/hootnot/oanda-api-v20/master
    :alt: Code Health
@@ -83,9 +83,6 @@ repository.
 Design
 ------
 
-I have choosen a different approach regarding the design of the new library versus the library covering the REST-V1 interface:
-https://github.com/oanda/oandapy (oandapy), which is based on 'mixin' classes.
-
 In the V20-library endpoints are represented as APIRequest objects derived from the
 APIRequest base class. Each endpoint group (accounts, trades, etc.) is represented
 by it's own (abstract) class covering the functionality of all endpoints for that group. Each endpoint within that group is covered by a class derived from
@@ -133,6 +130,85 @@ or the TradeCRCDO (Create/Replace/Cancel Dependent Orders).
                }
 
 
+contrib.factories
+~~~~~~~~~~~~~~~~~
+
+The contrib.factories module offers classes providing an easy way
+generate requests.
+Downloading historical data is limited to 5000 records per request. This
+means that you have to make subsequent requests with change of parameters
+if you want more than 5000 records.
+
+The *CandleHistoryRequest* solves this by generating the requests for you,
+example:
+
+.. code-block:: python
+
+   import sys
+   import json
+
+   from oandapyV20.contrib.factories import CandleHistoryRequest
+   from oandapyV20 import API
+
+   access_token = "..."
+
+   client = API(access_token=access_token)
+
+   _from = sys.argv[1]
+   _to = sys.argv[2]
+   gran = sys.argv[3]
+   instr = sys.argv[4]
+
+   params = {
+       "granularity": gran,
+       "from": _from,
+       "to": _to
+   }
+
+   def cnv(r, h):
+       for candle in r.get('candles'):
+           ctime = candle.get('time')[0:18]
+           try:
+               rec = "{time},{complete},{o},{h},{l},{c},{v}".format(
+                   time=ctime,
+                   complete=candle['complete'],
+                   o=candle['mid']['o'],
+                   h=candle['mid']['h'],
+                   l=candle['mid']['l'],
+                   c=candle['mid']['c'],
+                   v=candle['volume'],
+               )
+           except Exception as e:
+               print(e, r)
+           else:
+               h.write(rec+"\n")
+
+   with open("/tmp/{}.{}.out".format(instr, gran), "w") as O:
+       for r in CandleHistoryRequest(instrument=instr, params=params):
+           # print("{} {}".format(r, r.params))
+           rv = client.request(r)
+           cnv(r.response, O)
+
+When running this:
+
+.. code-block:: shell
+
+   $ python oandahist.py 2017-01-01T00:00:00Z 2017-06-30T00:00:00Z H4 EUR_USD
+
+Which will give:
+
+.. code-block:: shell
+
+   $ tail /tmp/EUR_USD.H4.out
+   ...
+   2017-06-28T01:00:0,True,1.13397,1.13557,1.13372,1.13468,1534
+   2017-06-28T05:00:0,True,1.13465,1.13882,1.13454,1.13603,8486
+   2017-06-28T09:00:0,True,1.13606,1.13802,1.12918,1.13315,12815
+   2017-06-28T13:00:0,True,1.13317,1.13909,1.13283,1.13781,13255
+   2017-06-28T17:00:0,True,1.13783,1.13852,1.13736,1.13771,2104
+   2017-06-28T21:00:0,True,1.13789,1.13894,1.13747,1.13874,1454
+
+
 Examples
 --------
 
@@ -161,29 +237,29 @@ Placing a *MarketOrder* with *TakeProfitOrder* and *StopLossOrder*
 .. code-block:: python
 
     import json
-    
+
     from oandapyV20.contrib.requests import MarketOrderRequest
     from oandapyV20.contrib.requests import TakeProfitDetails, StopLossDetails
-    
+
     import oandapyV20.endpoints.orders as orders
     import oandapyV20
-    
+
     from exampleauth import exampleAuth
-    
-    
+
+
     accountID, access_token = exampleAuth()
     api = oandapyV20.API(access_token=access_token)
-    
+
     # EUR_USD (today 1.0750)
     EUR_USD_STOP_LOSS = 1.07
     EUR_USD_TAKE_PROFIT = 1.10
-    
+
     mktOrder = MarketOrderRequest(
         instrument="EUR_USD",
         units=10000,
         takeProfitOnFill=TakeProfitDetails(price=EUR_USD_TAKE_PROFIT).data,
         stopLossOnFill=StopLossDetails(price=EUR_USD_STOP_LOSS).data)
-    
+
     # create the OrderCreate request
     r = orders.OrderCreate(accountID, data=mktOrder.data)
     try:
@@ -194,11 +270,11 @@ Placing a *MarketOrder* with *TakeProfitOrder* and *StopLossOrder*
     else:
         print(json.dumps(rv, indent=2))
 
- 
+
 Processing series of requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Processing series of requests is also possible now by storing different requests in 
+Processing series of requests is also possible now by storing different requests in
 an array or from some 'request-factory' class. Below an array example:
 
 .. code-block:: python
@@ -270,7 +346,7 @@ Output
         ]
       }
     }
-    
+
     {
       "request": "v3/accounts",
       "response": {

@@ -1,7 +1,5 @@
-import sys
 import math
 import unittest
-import re
 
 try:
     from nose_parameterized import parameterized
@@ -24,15 +22,22 @@ class TestContribFactories(unittest.TestCase):
     """
 
     @parameterized.expand([
-       (req.CandleHistoryRequest,
+       (req.CandleHistoryRequestFactory,
            "DE30_EUR",
            {"from": "2017-01-01T00:00:00Z",
             "to": "2017-01-02T00:00:00Z",
             "granularity": "M1"},
            {"len": int(math.ceil(24*60.0 / 500))},
         ),
+       (req.CandleHistoryRequestFactory,
+           "DE30_EUR",
+           {"from": "2017-01-01T00:00:00Z",
+            "granularity": "M1"},
+           {},
+        ),
     ])
-    def test__candlehistory(self, factory, instrument, inpar, refpar, exc=None):
+    def test__candlehistory(self, factory, instrument, inpar, refpar,
+                            exc=None):
         """candlehistoryfactory."""
         if not exc:
             # run the factory
@@ -40,14 +45,15 @@ class TestContribFactories(unittest.TestCase):
             for r in factory(instrument, params=inpar):
                 if i == 0:
                     self.assertTrue(r.params['from'] == inpar['from'])
-                if i == refpar['len']:
-                    self.assertTrue( 'to' not in r.params)
+                    # the calculated 'to' should be there
+                    self.assertTrue('to' in r.params)
+                if 'len' in refpar and i == refpar['len']:
+                    self.assertTrue('to' not in r.params)
                 i += 1
 
-            self.assertTrue(i == refpar['len'])
         else:
             with self.assertRaises(exc) as err:
-                r = cls(**inpar)
+                r = factory(instrument, params=inpar)
 
 
 if __name__ == "__main__":

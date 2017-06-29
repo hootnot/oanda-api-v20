@@ -185,7 +185,7 @@ example:
 
    with open("/tmp/{}.{}.out".format(instr, gran), "w") as O:
        for r in CandleHistoryRequest(instrument=instr, params=params):
-           # print("{} {}".format(r, r.params))
+           print("REQUEST: {} {} {}".format(r, r.__class__.__name__, r.params))
            rv = client.request(r)
            cnv(r.response, O)
 
@@ -194,8 +194,19 @@ When running this:
 .. code-block:: shell
 
    $ python oandahist.py 2017-01-01T00:00:00Z 2017-06-30T00:00:00Z H4 EUR_USD
+   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
+   {'to': '2017-03-25T08:00:00Z',
+    'from': '2017-01-01T00:00:00Z', 'granularity': 'H4'}
+   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
+   {'to': '2017-06-16T16:00:00Z',
+    'from': '2017-03-25T08:00:00Z', 'granularity': 'H4'}
+   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
+   {'from': '2017-06-16T16:00:00Z',
+    'granularity': 'H4'}
 
-Which will give:
+
+As you see, it processed three *InstrumentsCandles* requests. The
+data can be found in */tmp/EUR_USD.H4.out*:
 
 .. code-block:: shell
 

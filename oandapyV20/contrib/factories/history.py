@@ -13,12 +13,12 @@ def secs2time(e):
     return datetime(*list(w)[0:6])
 
 
-def CandleHistoryRequest(instrument, params):
-    """create a CandleHistoryRequest.
+def CandleHistoryRequestFactory(instrument, params):
+    """create a CandleHistoryRequestFactory.
 
-    CandleHistoryRequest is used to retrieve historical data, automatically
-    generating sequential requests when the OANDA limit of 'count' records is
-    exceeded.
+    CandleHistoryRequestFactory is used to retrieve historical data,
+    automatically generating sequential requests when the OANDA limit
+    of 'count' records is exceeded.
 
     This is known by:
     - count is specified as a number larger than 5000
@@ -51,7 +51,7 @@ def CandleHistoryRequest(instrument, params):
     >>> import json
     >>> from oandapyV20 import API
     >>> import oandapyV20.endpoints.orders as orders
-    >>> from oandapyV20.contrib.factories import CandleHistoryRequest
+    >>> from oandapyV20.contrib.factories import CandleHistoryRequestFactory
     >>>
     >>> accountID = "..."
     >>> client = API(access_token=...)
@@ -60,8 +60,8 @@ def CandleHistoryRequest(instrument, params):
     ...    "to": "2017-03-01T00:00:00Z",
     ...    "granularity": "M5"
     ... }
-    >>> ch = CandleHistoryRequest(instrument="EUR_USD", params=params)
-    >>> # CandleHistoryRequest returns a generator, generating subsequent
+    >>> ch = CandleHistoryRequestFactory(instrument="EUR_USD", params=params)
+    >>> # CandleHistoryRequestFactory returns a generator generating subsequent
     >>> # requests to retrieve full history from date 'from' till 'to'
     >>> with open("/tmp/hist", "w") as H:
     >>>     for r in ch:

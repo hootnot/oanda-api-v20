@@ -18,11 +18,12 @@ def CandleHistoryRequestFactory(instrument, params):
 
     CandleHistoryRequestFactory is used to retrieve historical data,
     automatically generating sequential requests when the OANDA limit
-    of 'count' records is exceeded.
+    of *count* records is exceeded.
 
     This is known by:
-    - count is specified as a number larger than 5000
-    - difference between 'from' and 'to' with the granularity specified is
+
+    - *count* specified as a number larger than 5000
+    - difference between *from* and *to* with the granularity specified is
       larger than 5000
 
 

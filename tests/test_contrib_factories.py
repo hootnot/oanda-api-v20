@@ -3,7 +3,7 @@ import unittest
 
 try:
     from nose_parameterized import parameterized
-except:
+except ImportError:
     print("*** Please install 'nose_parameterized' to run these tests ***")
     exit(0)
 
@@ -51,9 +51,9 @@ class TestContribFactories(unittest.TestCase):
                     self.assertTrue('to' not in r.params)
                 i += 1
 
-        else:
-            with self.assertRaises(exc) as err:
-                r = factory(instrument, params=inpar)
+        # else:
+        #     with self.assertRaises(exc) as err:
+        #         r = factory(instrument, params=inpar)
 
 
 if __name__ == "__main__":

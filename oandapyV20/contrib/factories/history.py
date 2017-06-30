@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import time
 from datetime import datetime
 import calendar
 
 import oandapyV20.endpoints.instruments as instruments
-from oandapyV20.contrib.generic import granularity_to_time
-
-
-def secs2time(e):
-    w = time.gmtime(e)
-    return datetime(*list(w)[0:6])
+from oandapyV20.contrib.generic import granularity_to_time, secs2time
 
 
 def CandleHistoryRequestFactory(instrument, params):

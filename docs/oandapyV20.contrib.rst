@@ -1,5 +1,5 @@
-oandapyV20.contrib.requests
-===========================
+oandapyV20.contrib
+==================
 
 .. toctree::
    :maxdepth: 4

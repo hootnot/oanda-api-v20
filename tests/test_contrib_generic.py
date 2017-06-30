@@ -13,6 +13,10 @@ import oandapyV20.contrib.generic as gen
 class TestContribGeneric(unittest.TestCase):
     """Tests regarding contrib generic."""
 
+    def test__secs2time(self):
+        d = gen.secs2time(1497499200)
+        self.assertTrue(d.strftime("%Y%m%d-%H:%M:%S") == '20170615-04:00:00')
+
     @parameterized.expand([
        (gen.granularity_to_time, "M1", 1*60),
        (gen.granularity_to_time, "M2", 2*60),

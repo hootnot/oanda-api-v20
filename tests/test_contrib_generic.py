@@ -32,7 +32,7 @@ class TestContribGeneric(unittest.TestCase):
             self.assertTrue(r == refval)
 
         else:
-            with self.assertRaises(exc) as err:
+            with self.assertRaises(exc):
                 r = meth(granularity)
 
 

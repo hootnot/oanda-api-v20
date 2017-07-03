@@ -139,7 +139,7 @@ Downloading historical data is limited to 5000 records per request. This
 means that you have to make consecutive requests with change of parameters
 if you want more than 5000 records.
 
-The *CandleHistoryRequest* solves this by generating the requests for you,
+The *InstrumentCandlesFactory* solves this by generating the requests for you,
 example:
 
 .. code-block:: python
@@ -147,7 +147,7 @@ example:
    import sys
    import json
 
-   from oandapyV20.contrib.factories import CandleHistoryRequest
+   from oandapyV20.contrib.factories import InstrumentCandlesFactory
    from oandapyV20 import API
 
    access_token = "..."
@@ -167,7 +167,7 @@ example:
 
    def cnv(r, h):
        for candle in r.get('candles'):
-           ctime = candle.get('time')[0:18]
+           ctime = candle.get('time')[0:19]
            try:
                rec = "{time},{complete},{o},{h},{l},{c},{v}".format(
                    time=ctime,
@@ -184,7 +184,7 @@ example:
                h.write(rec+"\n")
 
    with open("/tmp/{}.{}.out".format(instr, gran), "w") as O:
-       for r in CandleHistoryRequest(instrument=instr, params=params):
+       for r in InstrumentCandlesFactory(instrument=instr, params=params):
            print("REQUEST: {} {} {}".format(r, r.__class__.__name__, r.params))
            rv = client.request(r)
            cnv(r.response, O)
@@ -205,7 +205,7 @@ When running this:
     'granularity': 'H4'}
 
 
-As you see, it processed three *InstrumentsCandles* requests. The
+The output shows it processed three *InstrumentsCandles* requests. The
 data can be found in */tmp/EUR_USD.H4.out*:
 
 .. code-block:: shell

@@ -136,7 +136,7 @@ contrib.factories
 The contrib.factories module offers classes providing an easy way
 generate requests.
 Downloading historical data is limited to 5000 records per request. This
-means that you have to make subsequent requests with change of parameters
+means that you have to make consecutive requests with change of parameters
 if you want more than 5000 records.
 
 The *CandleHistoryRequest* solves this by generating the requests for you,

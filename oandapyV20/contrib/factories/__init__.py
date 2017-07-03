@@ -1,5 +1,5 @@
-from .history import CandleHistoryRequestFactory
+from .history import InstrumentsCandlesFactory
 
 __all__ = (
-    'CandleHistoryRequestFactory',
+    'InstrumentsCandlesFactory',
 )

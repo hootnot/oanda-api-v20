@@ -22,14 +22,14 @@ class TestContribFactories(unittest.TestCase):
     """
 
     @parameterized.expand([
-       (req.CandleHistoryRequestFactory,
+       (req.InstrumentsCandlesFactory,
            "DE30_EUR",
            {"from": "2017-01-01T00:00:00Z",
             "to": "2017-01-02T00:00:00Z",
             "granularity": "M1"},
            {"len": int(math.ceil(24*60.0 / 500))},
         ),
-       (req.CandleHistoryRequestFactory,
+       (req.InstrumentsCandlesFactory,
            "DE30_EUR",
            {"from": "2017-01-01T00:00:00Z",
             "granularity": "M1"},

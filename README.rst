@@ -1,6 +1,8 @@
 OANDA REST-V20 API wrapper
 ==========================
 
+.. _Top:
+
 The REST-V20 API specs are not completely released yet. Support for 'forex labs' endpoint will be integrated when OANDA releases the specs of this endpoint. All other endpoints are covered.
 
 .. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
@@ -46,6 +48,19 @@ Using the Jupyter `notebook`_ it is easy to play with the
 
 .. _notebook: ./jupyter/index.ipynb
 
+TOC
+---
+
+   + `Install`_
+   + `Design`_
+   + `Client`_
+       - `contrib.requests`_
+       - `contrib.factories`_
+       - `API-endpoint access`_
+       - `Placing a MarketOrder with TakeProfitOrder and StopLossOrder`_
+       - `Processing series of requests`_
+       - `Streaming endpoints`_
+
 Install
 -------
 
@@ -88,10 +103,14 @@ APIRequest base class. Each endpoint group (accounts, trades, etc.) is represent
 by it's own (abstract) class covering the functionality of all endpoints for that group. Each endpoint within that group is covered by a class derived from
 the abstract class.
 
+Top_
+
 Client
 ~~~~~~
 
 The V20-library has a client class (API) which processes APIRequest objects.
+
+Top_
 
 contrib.requests
 ~~~~~~~~~~~~~~~~
@@ -130,6 +149,8 @@ or the TradeCRCDO (Create/Replace/Cancel Dependent Orders).
                }
 
 
+Top_
+
 contrib.factories
 ~~~~~~~~~~~~~~~~~
 
@@ -139,7 +160,7 @@ Downloading historical data is limited to 5000 records per request. This
 means that you have to make consecutive requests with change of parameters
 if you want more than 5000 records.
 
-The *InstrumentCandlesFactory* solves this by generating the requests for you,
+The *InstrumentsCandlesFactory* solves this by generating the requests for you,
 example:
 
 .. code-block:: python
@@ -147,7 +168,7 @@ example:
    import sys
    import json
 
-   from oandapyV20.contrib.factories import InstrumentCandlesFactory
+   from oandapyV20.contrib.factories import InstrumentsCandlesFactory
    from oandapyV20 import API
 
    access_token = "..."
@@ -184,24 +205,25 @@ example:
                h.write(rec+"\n")
 
    with open("/tmp/{}.{}.out".format(instr, gran), "w") as O:
-       for r in InstrumentCandlesFactory(instrument=instr, params=params):
+       for r in InstrumentsCandlesFactory(instrument=instr, params=params):
            print("REQUEST: {} {} {}".format(r, r.__class__.__name__, r.params))
            rv = client.request(r)
            cnv(r.response, O)
+
 
 When running this:
 
 .. code-block:: shell
 
    $ python oandahist.py 2017-01-01T00:00:00Z 2017-06-30T00:00:00Z H4 EUR_USD
-   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
+   REQUEST: v3/instruments/EUR_USD/candles InstrumentsCandles
    {'to': '2017-03-25T08:00:00Z',
     'from': '2017-01-01T00:00:00Z', 'granularity': 'H4'}
-   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
-   {'to': '2017-06-16T16:00:00Z',
-    'from': '2017-03-25T08:00:00Z', 'granularity': 'H4'}
-   Request: v3/instruments/EUR_USD/candles InstrumentsCandles
-   {'from': '2017-06-16T16:00:00Z',
+   REQUEST: v3/instruments/EUR_USD/candles InstrumentsCandles
+   {'to': '2017-06-16T20:00:00Z', 'from': '2017-03-25T12:00:00Z',
+    'granularity': 'H4'}
+   REQUEST: v3/instruments/EUR_USD/candles InstrumentsCandles
+   {'to': '2017-06-30T00:00:00Z', 'from': '2017-06-17T00:00:00Z',
     'granularity': 'H4'}
 
 
@@ -219,6 +241,8 @@ data can be found in */tmp/EUR_USD.H4.out*:
    2017-06-28T17:00:0,True,1.13783,1.13852,1.13736,1.13771,2104
    2017-06-28T21:00:0,True,1.13789,1.13894,1.13747,1.13874,1454
 
+
+Top_
 
 Examples
 --------
@@ -241,6 +265,8 @@ API-endpoint access
     rv = client.request(r)
     print("RESPONSE:\n{}".format(json.dumps(rv, indent=2)))
 
+
+Top_
 
 Placing a *MarketOrder* with *TakeProfitOrder* and *StopLossOrder*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -281,6 +307,8 @@ Placing a *MarketOrder* with *TakeProfitOrder* and *StopLossOrder*
     else:
         print(json.dumps(rv, indent=2))
 
+
+Top_
 
 Processing series of requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -505,6 +533,7 @@ Output
       }
     }
 
+Top_
 
 Streaming endpoints
 ~~~~~~~~~~~~~~~~~~~
@@ -822,6 +851,8 @@ Output
       "closeoutAsk": "114.495",
       "type": "PRICE"
     }
+
+Top_
 
 About this software
 -------------------

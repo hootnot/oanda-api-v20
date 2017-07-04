@@ -13,7 +13,6 @@ except:
     print("*** Please install 'nose_parameterized' to run these tests ***")
     exit(0)
 
-import oandapyV20
 from oandapyV20 import API
 from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.accounts as accounts
@@ -149,7 +148,7 @@ class TestAccounts(unittest.TestCase):
     def test__get_instruments_data_exception(self):
         """check for data parameter exception."""
         with self.assertRaises(TypeError) as oErr:
-            r = accounts.AccountInstruments(accountID=accountID, data={})
+            accounts.AccountInstruments(accountID=accountID, data={})
 
         self.assertEqual("__init__() got an unexpected keyword "
                          "argument 'data'", "{}".format(oErr.exception))
@@ -157,7 +156,7 @@ class TestAccounts(unittest.TestCase):
     def test__get_instruments_params_exception(self):
         """check for params parameter exception."""
         with self.assertRaises(TypeError) as oErr:
-            r = accounts.AccountConfiguration(accountID=accountID, params={})
+            accounts.AccountConfiguration(accountID=accountID, params={})
 
         self.assertEqual("__init__() got an unexpected keyword "
                          "argument 'params'", "{}".format(oErr.exception))

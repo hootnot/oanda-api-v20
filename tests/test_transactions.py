@@ -7,15 +7,8 @@ from .unittestsetup import fetchTestData
 import requests_mock
 
 
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error, StreamTerminated
+from oandapyV20.exceptions import StreamTerminated
 import oandapyV20.endpoints.transactions as transactions
 from oandapyV20.endpoints.transactions import responses
 
@@ -61,7 +54,7 @@ class TestTransactions(unittest.TestCase):
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(resp == r.response and result == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_details(self, mock_get):
@@ -74,7 +67,7 @@ class TestTransactions(unittest.TestCase):
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(resp == r.response and result == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_idrange(self, mock_get):
@@ -86,7 +79,7 @@ class TestTransactions(unittest.TestCase):
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(resp == r.response and result == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_sinceid(self, mock_get):
@@ -98,7 +91,7 @@ class TestTransactions(unittest.TestCase):
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
         result = api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(resp == r.response and result == r.response)
 
     @requests_mock.Mocker()
     def test__transaction_stream(self, mock_get):
@@ -113,7 +106,7 @@ class TestTransactions(unittest.TestCase):
         result = []
         n = 0
         m = 5
-        with self.assertRaises(StreamTerminated) as oErr:
+        with self.assertRaises(StreamTerminated):
             api.request(r)
             for rv in r.response:
                 result.append(rv)
@@ -129,7 +122,7 @@ class TestTransactions(unittest.TestCase):
     def test__transaction_stream_termination_1(self):
         """terminate a stream that does not exist."""
         r = transactions.TransactionsStream(accountID)
-        with self.assertRaises(ValueError) as oErr:
+        with self.assertRaises(ValueError):
             r.terminate()
 
 if __name__ == "__main__":

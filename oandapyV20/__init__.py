@@ -1,5 +1,5 @@
 __title__ = "OANDA REST V20 API Wrapper"
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "Feite Brekeveld"
 __license__ = "MIT"
 __copyright__ = "Copyright 2016 - 2017 Feite Brekeveld"

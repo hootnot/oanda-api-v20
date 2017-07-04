@@ -35,6 +35,21 @@ class TestContribFactories(unittest.TestCase):
             "granularity": "M1"},
            {},
         ),
+       (req.InstrumentsCandlesFactory,
+           "DE30_EUR",
+           {"from": "2017-01-01T00:00:00Z",
+            "to": "2017-06-30T00:00:00Z",
+            "granularity": "H4"},
+           {"len": 3},
+        ),
+       (req.InstrumentsCandlesFactory,
+           "DE30_EUR",
+           {"from": "2017-01-01T00:00:00Z",
+            "to": "2017-06-30T00:00:00Z",
+            "count": 5000,         # same as previous, but increase batchsize
+            "granularity": "H4"},
+           {"len": 1},
+        ),
     ])
     def test__candlehistory(self, factory, instrument, inpar, refpar,
                             exc=None):

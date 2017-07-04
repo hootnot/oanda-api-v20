@@ -1,3 +1,7 @@
+import logging
+from .oandapyV20 import API
+from .exceptions import V20Error
+
 __title__ = "OANDA REST V20 API Wrapper"
 __version__ = "0.4.0"
 __author__ = "Feite Brekeveld"
@@ -8,7 +12,6 @@ __copyright__ = "Copyright 2016 - 2017 Feite Brekeveld"
 VERSION = __version__
 
 # Set default logging handler to avoid "No handler found" warnings.
-import logging
 try:
     from logging import NullHandler
 except ImportError:
@@ -18,5 +21,7 @@ except ImportError:
 
 logging.getLogger(__name__).addHandler(NullHandler())
 
-from .oandapyV20 import API
-from .exceptions import V20Error
+__all__ = (
+    'API',
+    'V20Error'
+)

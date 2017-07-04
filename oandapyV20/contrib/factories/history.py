@@ -121,8 +121,7 @@ def InstrumentsCandlesFactory(instrument, params=None):
             lod.append((_epoch_from, to))
             _epoch_from = to + gs  # advance 1 record
 
-        else:
-            lod.append((_epoch_from, _epoch_to))
+        lod.append((_epoch_from, _epoch_to))
 
         cpparams = params.copy()
         for k in ['count', 'from', 'to']:

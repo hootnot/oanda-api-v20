@@ -1,6 +1,4 @@
-import sys
 import unittest
-import requests_mock
 
 import oandapyV20.definitions as allDEF
 from oandapyV20.definitions.orders import definitions as orderDefs

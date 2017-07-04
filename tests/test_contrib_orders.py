@@ -49,6 +49,15 @@ class TestContribRequests(unittest.TestCase):
             'type': 'MARKET'},
            ValueError
         ),
+       (req.MarketOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'FOK',
+            'positionFill': 'WRONG',
+            "units": "10000"},
+           {'positionFill': 'WRONG',
+            'type': 'MARKET'},
+           ValueError
+        ),
        # LO
        (req.LimitOrderRequest,
            {"instrument": "EUR_USD",

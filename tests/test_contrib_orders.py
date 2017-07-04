@@ -1,6 +1,4 @@
-import sys
 import unittest
-import re
 
 try:
     from nose_parameterized import parameterized
@@ -222,7 +220,7 @@ class TestContribRequests(unittest.TestCase):
             r = cls(**inpar)
             self.assertTrue(r.data == reference)
         else:
-            with self.assertRaises(exc) as err:
+            with self.assertRaises(exc):
                 r = cls(**inpar)
 
     @parameterized.expand([
@@ -363,7 +361,7 @@ class TestContribRequests(unittest.TestCase):
             r = cls(**inpar) if inpar else cls()
             self.assertTrue(r.data == refpar)
         else:
-            with self.assertRaises(exc) as err:
+            with self.assertRaises(exc):
                 r = cls(**inpar)
 
 

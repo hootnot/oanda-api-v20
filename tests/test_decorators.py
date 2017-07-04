@@ -22,7 +22,6 @@ class TestDecorators(unittest.TestCase):
         tst = SomethingExtra(x=10, y=20)
         self.assertEqual(tst.add(), 30)
 
-
     def test__abstractclass(self):
 
         @six.add_metaclass(ABCMeta)
@@ -30,7 +29,7 @@ class TestDecorators(unittest.TestCase):
 
             @abstractmethod
             def __init__(self, x=10):
-                 self.x = x
+                self.x = x
 
         @abstractclass
         class SomethingElse(Something):
@@ -49,16 +48,15 @@ class TestDecorators(unittest.TestCase):
         class ABCDerived(SomethingElse):
             pass
 
-        with self.assertRaises(TypeError) as errAbstract:
-            smth = Something(x=20)
-        with self.assertRaises(TypeError) as errAbstractBase: 
-            smthelse = SomethingElse(x=20, y=30)
+        with self.assertRaises(TypeError):
+            Something(x=20)
+        with self.assertRaises(TypeError):
+            SomethingElse(x=20, y=30)
 
         x = 20
         y = 30
         abcDerived = ABCDerived(x, y)
         self.assertEqual(abcDerived.x + abcDerived.y, x+y)
-
 
 
 if __name__ == "__main__":

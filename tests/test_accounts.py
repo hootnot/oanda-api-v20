@@ -145,21 +145,6 @@ class TestAccounts(unittest.TestCase):
         result = api.request(r)
         self.assertTrue(result == resp)
 
-    def test__get_instruments_data_exception(self):
-        """check for data parameter exception."""
-        with self.assertRaises(TypeError) as oErr:
-            accounts.AccountInstruments(accountID=accountID, data={})
-
-        self.assertEqual("__init__() got an unexpected keyword "
-                         "argument 'data'", "{}".format(oErr.exception))
-
-    def test__get_instruments_params_exception(self):
-        """check for params parameter exception."""
-        with self.assertRaises(TypeError) as oErr:
-            accounts.AccountConfiguration(accountID=accountID, params={})
-
-        self.assertEqual("__init__() got an unexpected keyword "
-                         "argument 'params'", "{}".format(oErr.exception))
 
 if __name__ == "__main__":
 

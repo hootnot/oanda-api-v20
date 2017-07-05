@@ -1,4 +1,3 @@
-import sys
 import unittest
 from datetime import datetime
 
@@ -12,6 +11,7 @@ except:
 import oandapyV20.types as tp
 
 NOW = datetime.now()
+
 
 class TestTypes(unittest.TestCase):
     """Tests types."""
@@ -207,7 +207,6 @@ class TestTypes(unittest.TestCase):
            "2014-07-02T04:00:00.000000Z",
         ValueError
         ),
-       
     ])
     def test__types(self, cls, inpar, reference, exc=None):
         """test_types."""
@@ -217,6 +216,7 @@ class TestTypes(unittest.TestCase):
         else:
             with self.assertRaises(exc) as err:
                 r = cls(**inpar)
+                self.assertTrue("ValueError" in err)
 
 
 if __name__ == "__main__":

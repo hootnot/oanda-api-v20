@@ -128,12 +128,10 @@ class MarketOrderRequest(BaseRequest):
         if priceBound:
             self._data.update({"priceBound": PriceValue(priceBound).value})
 
-        try:
-            hasattr(OrderPositionFill, positionFill)
-        except:
+        if not hasattr(OrderPositionFill, positionFill):
             raise ValueError("positionFill {}".format(positionFill))
-        else:
-            self._data.update({"positionFill": positionFill})
+
+        self._data.update({"positionFill": positionFill})
 
         self._data.update({"clientExtensions": clientExtensions})
         self._data.update({"takeProfitOnFill": takeProfitOnFill})

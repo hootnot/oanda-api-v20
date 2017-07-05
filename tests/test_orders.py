@@ -7,15 +7,7 @@ from .unittestsetup import fetchTestData
 import requests_mock
 
 
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.orders as orders
 from oandapyV20.endpoints.orders import responses
 
@@ -54,7 +46,7 @@ class TestOrders(unittest.TestCase):
     def test__orders_base_exception(self):
         """test for the exception when using the baseclass."""
         with self.assertRaises(TypeError) as bcErr:
-            r = orders.Orders(accountID)
+            orders.Orders(accountID)
 
         bcErr = bcErr.exception
         self.assertTrue("Can't instantiate abstract class Orders "
@@ -192,7 +184,7 @@ class TestOrders(unittest.TestCase):
                               text=text,
                               status_code=200)
         with self.assertRaises(ValueError) as err:
-            result = api.request(r)
+            api.request(r)
 
         self.assertTrue("200" in "{}".format(err.exception) and
                         r.status_code is None)

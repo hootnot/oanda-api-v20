@@ -7,15 +7,8 @@ from .unittestsetup import fetchTestData
 import requests_mock
 
 
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error, StreamTerminated
+from oandapyV20.exceptions import StreamTerminated
 import oandapyV20.endpoints.pricing as pricing
 from oandapyV20.endpoints.pricing import responses
 
@@ -77,7 +70,7 @@ class TestPricing(unittest.TestCase):
         result = []
         n = 0
         m = 3
-        with self.assertRaises(StreamTerminated) as oErr:
+        with self.assertRaises(StreamTerminated):
             for rec in api.request(r):
                 result.append(rec)
                 n += 1
@@ -92,7 +85,7 @@ class TestPricing(unittest.TestCase):
         """terminate a stream that does not exist."""
         params = {"instruments": "EUR_USD,EUR_JPY"}
         r = pricing.PricingStream(accountID, params=params)
-        with self.assertRaises(ValueError) as oErr:
+        with self.assertRaises(ValueError):
             r.terminate()
 
 if __name__ == "__main__":

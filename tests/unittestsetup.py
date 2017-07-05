@@ -13,15 +13,11 @@ expiryDate = time.strftime("%Y-%m-%dT%H:%M:%S",
 def fetchTestData(responses, k):
     resp = responses[k]['response']
     params, data = None, None
-    try:
+    if 'body' in responses[k]:
         data = responses[k]['body']
-    except:
-        pass
 
-    try:
+    if "params" in responses[k]:
         params = responses[k]['params']
-    except:
-        pass
 
     if params is not None:
         return (resp, data, params)

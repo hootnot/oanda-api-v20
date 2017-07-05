@@ -7,15 +7,7 @@ from .unittestsetup import fetchTestData
 import requests_mock
 
 
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
 from oandapyV20.endpoints.instruments import responses
 import oandapyV20.endpoints.instruments as instruments
 
@@ -65,7 +57,6 @@ class TestInstruments(unittest.TestCase):
         result = api.request(r)
         self.assertTrue(result == resp)
 
-
     @requests_mock.Mocker()
     def test__instruments_orderbook(self, mock_get):
         """get the orderbook information for instruments."""
@@ -79,7 +70,6 @@ class TestInstruments(unittest.TestCase):
                               text=json.dumps(resp))
         result = api.request(r)
         self.assertTrue(result == resp)
-
 
     @requests_mock.Mocker()
     def test__instruments_positionbook(self, mock_get):

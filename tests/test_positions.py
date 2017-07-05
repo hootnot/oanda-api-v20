@@ -7,15 +7,7 @@ from .unittestsetup import fetchTestData
 import requests_mock
 
 
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
 import oandapyV20.endpoints.positions as positions
 from oandapyV20.endpoints.positions import responses
 

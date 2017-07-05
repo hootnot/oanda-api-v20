@@ -1,6 +1,4 @@
-import sys
 import unittest
-import re
 
 try:
     from nose_parameterized import parameterized
@@ -48,6 +46,15 @@ class TestContribRequests(unittest.TestCase):
             'timeInForce': 'GFD',     # should result in a ValueError
             "units": "10000"},
            {'positionFill': 'DEFAULT',
+            'type': 'MARKET'},
+           ValueError
+        ),
+       (req.MarketOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'FOK',
+            'positionFill': 'WRONG',
+            "units": "10000"},
+           {'positionFill': 'WRONG',
             'type': 'MARKET'},
            ValueError
         ),
@@ -222,7 +229,7 @@ class TestContribRequests(unittest.TestCase):
             r = cls(**inpar)
             self.assertTrue(r.data == reference)
         else:
-            with self.assertRaises(exc) as err:
+            with self.assertRaises(exc):
                 r = cls(**inpar)
 
     @parameterized.expand([
@@ -363,7 +370,7 @@ class TestContribRequests(unittest.TestCase):
             r = cls(**inpar) if inpar else cls()
             self.assertTrue(r.data == refpar)
         else:
-            with self.assertRaises(exc) as err:
+            with self.assertRaises(exc):
                 r = cls(**inpar)
 
 

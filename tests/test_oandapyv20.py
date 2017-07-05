@@ -1,20 +1,8 @@
 import sys
 import unittest
-import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
-import requests_mock
-
-
-try:
-    from nose_parameterized import parameterized
-except:
-    print("*** Please install 'nose_parameterized' to run these tests ***")
-    exit(0)
-
-import oandapyV20
 from oandapyV20 import API
-from oandapyV20.exceptions import V20Error
 
 access_token = None
 accountID = None
@@ -49,11 +37,10 @@ class TestOandapyV20(unittest.TestCase):
 
     def test__oandapyv20_environment(self):
         """test the exception on a faulty environment."""
-        tapi = None
         with self.assertRaises(KeyError) as envErr:
-            tapi = API(environment="faulty",
-                       access_token=access_token,
-                       headers={"Content-Type": "application/json"})
+            API(environment="faulty",
+                access_token=access_token,
+                headers={"Content-Type": "application/json"})
 
         self.assertTrue("Unknown environment" in "{}".format(envErr.exception))
 
@@ -83,7 +70,7 @@ class TestOandapyV20(unittest.TestCase):
                "adapters were found for 'ttps://test.com/v3/accounts'"
         r = accounts.AccountList()
         with self.assertRaises(RequestException) as oErr:
-            result = api.request(r)
+            api.request(r)
 
         self.assertEqual("{}".format(oErr.exception), text)
 

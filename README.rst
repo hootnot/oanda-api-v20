@@ -1,6 +1,10 @@
 OANDA REST-V20 API wrapper
 ==========================
 
+.. image:: https://api.codacy.com/project/badge/Grade/31c6043164f14b5f928483d9a3ae2458
+   :alt: Codacy Badge
+   :target: https://www.codacy.com/app/hootnot/oanda-api-v20?utm_source=github.com&utm_medium=referral&utm_content=hootnot/oanda-api-v20&utm_campaign=badger
+
 .. _Top:
 
 The REST-V20 API specs are not completely released yet. Support for 'forex labs' endpoint will be integrated when OANDA releases the specs of this endpoint. All other endpoints are covered.

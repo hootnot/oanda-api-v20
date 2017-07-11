@@ -25,7 +25,9 @@ The REST-V20 API specs are not completely released yet. Support for 'forex labs'
    :target: https://badge.fury.io/py/oandapyV20
    :alt: Pypi
 
-
+.. image:: https://api.codacy.com/project/badge/Grade/5946514e3a7c407291f76e630ce3553b 
+   :target: https://www.codacy.com/app/hootnot/oandaapiv20utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hootnot/oanda-api-v20&amp;utm_campaign=Badge_Grade
+   :alt: Codacy
 
 Supported Python versions:
 

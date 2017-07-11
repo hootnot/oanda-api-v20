@@ -24,6 +24,11 @@ class TestContribFactories(unittest.TestCase):
     @parameterized.expand([
        (req.InstrumentsCandlesFactory,
            "DE30_EUR",
+           {},
+           {"len": 1},
+        ),
+       (req.InstrumentsCandlesFactory,
+           "DE30_EUR",
            {"from": "2017-01-01T00:00:00Z",
             "to": "2017-01-02T00:00:00Z",
             "granularity": "M1"},
@@ -34,6 +39,20 @@ class TestContribFactories(unittest.TestCase):
            {"from": "2017-01-01T00:00:00Z",
             "granularity": "M1"},
            {},
+        ),
+       (req.InstrumentsCandlesFactory,
+           "DE30_EUR",
+           {"from": "2017-01-01T00:00:00Z",
+            "to": "2022-06-30T00:00:00Z",
+            "granularity": "M1"},
+           {},
+        ),
+       (req.InstrumentsCandlesFactory,
+           "DE30_EUR",
+           {"to": "2017-06-30T00:00:00Z",
+            "granularity": "M1"},
+           {},
+           ValueError,
         ),
        (req.InstrumentsCandlesFactory,
            "DE30_EUR",
@@ -58,7 +77,7 @@ class TestContribFactories(unittest.TestCase):
             # run the factory
             i = 0
             for r in factory(instrument, params=inpar):
-                if i == 0:
+                if i == 0 and inpar:
                     self.assertTrue(r.params['from'] == inpar['from'])
                     # the calculated 'to' should be there
                     self.assertTrue('to' in r.params)

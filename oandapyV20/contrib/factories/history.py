@@ -102,7 +102,7 @@ def InstrumentsCandlesFactory(instrument, params=None):
         raise ValueError("'to' specified without 'from'")
 
     yparams = dict()
-    if not params:
+    if not params or 'from' not in params:
         yield instruments.InstrumentsCandles(instrument=instrument,
                                              params=yparams)
 

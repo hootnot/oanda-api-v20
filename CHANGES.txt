@@ -1,5 +1,8 @@
-Version 0.4.0
+Version 0.4.1
 -------------
+
+2017/07/11:
+          bugfix, see pr #85
 
 2017/07/04:
           contrib.factories added, pr #81:

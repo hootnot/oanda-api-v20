@@ -1,8 +1,18 @@
+Version 0.4.2
+-------------
+
+2017/07/24
+          fix possible 'date is in the future' error when retrieving candledata
+          using InstrumentsCandlesFactory
+
 Version 0.4.1
 -------------
 
 2017/07/11:
           bugfix, see pr #85
+
+Version 0.4.0
+-------------
 
 2017/07/04:
           contrib.factories added, pr #81:

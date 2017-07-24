@@ -83,7 +83,7 @@ def InstrumentsCandlesFactory(instrument, params=None):
         _from = datetime.strptime(params.get('from'), RFC3339)
         _epoch_from = int(calendar.timegm(_from.timetuple()))
 
-    _to = datetime.now()
+    _to = datetime.utcnow()
     if 'to' in params:
         _tmp = datetime.strptime(params.get('to'), RFC3339)
         # if specified datetime > now, we use 'now' instead
@@ -120,8 +120,6 @@ def InstrumentsCandlesFactory(instrument, params=None):
                 to = _epoch_to
             lod.append((_epoch_from, to))
             _epoch_from = to + gs  # advance 1 record
-
-        lod.append((_epoch_from, _epoch_to))
 
         cpparams = params.copy()
         for k in ['count', 'from', 'to']:

@@ -53,8 +53,8 @@ class TestTransactions(unittest.TestCase):
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
-        result = api.request(r)
-        self.assertTrue(resp == r.response and result == r.response)
+        api.request(r)
+        self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_details(self, mock_get):
@@ -66,8 +66,8 @@ class TestTransactions(unittest.TestCase):
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
-        result = api.request(r)
-        self.assertTrue(resp == r.response and result == r.response)
+        api.request(r)
+        self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_idrange(self, mock_get):
@@ -78,8 +78,8 @@ class TestTransactions(unittest.TestCase):
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
-        result = api.request(r)
-        self.assertTrue(resp == r.response and result == r.response)
+        api.request(r)
+        self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
     def test__transactions_sinceid(self, mock_get):
@@ -90,8 +90,8 @@ class TestTransactions(unittest.TestCase):
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
-        result = api.request(r)
-        self.assertTrue(resp == r.response and result == r.response)
+        api.request(r)
+        self.assertTrue(resp == r.response)
 
     @requests_mock.Mocker()
     def test__transaction_stream(self, mock_get):

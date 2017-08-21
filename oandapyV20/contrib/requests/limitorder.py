@@ -23,6 +23,7 @@ class LimitOrderRequest(BaseRequest):
                  clientExtensions=None,
                  takeProfitOnFill=None,
                  timeInForce=TimeInForce.GTC,
+                 gtdTime=None,
                  stopLossOnFill=None,
                  trailingStopLossOnFill=None,
                  tradeClientExtensions=None):
@@ -79,6 +80,11 @@ class LimitOrderRequest(BaseRequest):
         self._data.update({"instrument": instrument})
         self._data.update({"units": Units(units).value})
         self._data.update({"price": PriceValue(price).value})
+
+        # optional, but required if timeInForce.GTD
+        self._data.update({"gtdTime": gtdTime})
+        if timeInForce == TimeInForce.GTD and not gtdTime:
+            raise ValueError("gtdTime missing")
 
         # optional
         self._data.update({"positionFill": positionFill})

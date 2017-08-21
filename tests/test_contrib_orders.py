@@ -79,6 +79,18 @@ class TestContribRequests(unittest.TestCase):
             'type': 'LIMIT'
             }
         ),
+       # ... GTD, should raise a ValueError with missing date
+       (req.LimitOrderRequest,
+           {"instrument": "EUR_USD",
+            'timeInForce': 'GTD',
+            "units": 10000,
+            "price": 1.08},
+           {'timeInForce': 'GTD',
+            "price": '1.08000',
+            'positionFill': 'DEFAULT',
+            'type': 'LIMIT'},
+           ValueError
+        ),
        # MIT
        (req.MITOrderRequest,
            {"instrument": "EUR_USD",

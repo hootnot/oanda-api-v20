@@ -110,26 +110,20 @@ def InstrumentsCandlesFactory(instrument, params=None):
         delta = _epoch_to - _epoch_from
         nbars = delta / gs
 
-        # a list of date epoch's
-        lod = []
-        # add the other epochs to lod (if any)
-        while nbars - _count > 0:
-            nbars -= _count
-            to = _epoch_from + _count*gs
-            if to > _epoch_to:
-                to = _epoch_to
-            lod.append((_epoch_from, to))
-            _epoch_from = to + gs  # advance 1 record
-
         cpparams = params.copy()
         for k in ['count', 'from', 'to']:
             if k in cpparams:
                 del cpparams[k]
 
-        for pair in lod:
+        # generate InstrumentsCandles requests for all 'bars', each request
+        # requesting max. count records
+        for _ in range(_count, int(((nbars//_count)+1))*_count+1, _count):
+            to = _epoch_from + _count * gs
+            if to > _epoch_to:
+                to = _epoch_to
             yparams = cpparams.copy()
-            yparams.update({"from": secs2time(pair[0]).strftime(RFC3339)})
-            yparams.update({"to": secs2time(pair[1]).strftime(RFC3339)})
-
+            yparams.update({"from": secs2time(_epoch_from).strftime(RFC3339)})
+            yparams.update({"to": secs2time(to).strftime(RFC3339)})
             yield instruments.InstrumentsCandles(instrument=instrument,
                                                  params=yparams)
+            _epoch_from = to + gs  # advance 1 record

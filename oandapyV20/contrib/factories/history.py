@@ -117,7 +117,7 @@ def InstrumentsCandlesFactory(instrument, params=None):
 
         # generate InstrumentsCandles requests for all 'bars', each request
         # requesting max. count records
-        for n in range(_count, ((nbars//_count)+1)*_count+1, _count):
+        for n in range(_count, int(((nbars//_count)+1))*_count+1, _count):
             to = _epoch_from + _count * gs
             if to > _epoch_to:
                 to = _epoch_to

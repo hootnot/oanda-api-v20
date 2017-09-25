@@ -1,3 +1,9 @@
+Version 0.4.5
+-------------
+
+2017/09/25
+          force 'includeFirst' in InstrumentsCandlesFactory, #100
+
 Version 0.4.4
 -------------
 

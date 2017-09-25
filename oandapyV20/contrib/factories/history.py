@@ -27,6 +27,9 @@ def InstrumentsCandlesFactory(instrument, params=None):
     The *count* parameter is only used to control the number of records to
     retrieve in a single request.
 
+    The *includeFirst* parameter is forced to make sure that results do
+    no have a 1-record gap between consecutive requests.
+
     Parameters
     ----------
 
@@ -114,6 +117,8 @@ def InstrumentsCandlesFactory(instrument, params=None):
         for k in ['count', 'from', 'to']:
             if k in cpparams:
                 del cpparams[k]
+        # force includeFirst
+        cpparams.update({"includeFirst": True})
 
         # generate InstrumentsCandles requests for all 'bars', each request
         # requesting max. count records
@@ -126,4 +131,4 @@ def InstrumentsCandlesFactory(instrument, params=None):
             yparams.update({"to": secs2time(to).strftime(RFC3339)})
             yield instruments.InstrumentsCandles(instrument=instrument,
                                                  params=yparams)
-            _epoch_from = to + gs  # advance 1 record
+            _epoch_from = to

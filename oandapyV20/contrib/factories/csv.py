@@ -13,7 +13,9 @@ def CSVFactory(r, conv=convrec, column_map=column_map_tohlcv, delim=","):
     ...   ('mid:c', 'Close'),
     ...   ('volume', 'Volume')
     ... ])
-    >>> params = {"instruments": "EUR_USD,EUR_GBP"}
+    >>> params = {"count": 50,
+    ...           "granularity": "D"}
+    >>> instr = "EUR_USD"
     >>> r = instruments.InstrumentsCandles(instrument=instr, params=params)
     >>> api.request(r)
     >>> for _r in CSVFactory(r.response):

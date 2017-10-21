@@ -15,7 +15,9 @@ def DataFrameFactory(r, column_map=column_map_tohlcv, conv=convrec):
     ...   ('mid:c', 'Close'),
     ...   ('volume', 'Volume')
     ... ])
-    >>> params = {"instruments": "EUR_USD,EUR_GBP"}
+    >>> params = {"count": 50,
+    ...           "granularity": "D"}
+    >>> instr = "EUR_USD"
     >>> r = instruments.InstrumentsCandles(instrument=instr, params=params)
     >>> api.request(r)
     >>> for _r in DataFrameFactory(r.response):

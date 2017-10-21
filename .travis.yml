@@ -13,6 +13,7 @@ install:
 - pip install nose nose-parameterized
 - pip install wheel
 - pip install twine
+- pip install pandas
 script:
 - coverage run --source=oandapyV20 setup.py test
 after_success:

@@ -63,7 +63,7 @@ definitions = {
                " of whether it is long or short.",
         "ASK": "Trigger an Order by comparing its price to the ask regardless"
                " of whether it is long or short.",
-        "MID": "Trigger an Order by comparing its price to the midpoint ",
+        "MID": "Trigger an Order by comparing its price to the midpoint "
                "regardless of whether it is long or short."
-    },
+    }
 }

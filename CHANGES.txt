@@ -1,3 +1,9 @@
+Version 0.5.0
+-------------
+
+2018/02/18
+          update various definitions as OANDA added these to their docs
+
 Version 0.4.5
 -------------
 

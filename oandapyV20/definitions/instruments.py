@@ -16,6 +16,7 @@ definitions = {
         "M2": "2 minute candlesticks, hour alignment",
         "M4": "4 minute candlesticks, hour alignment",
         "M5": "5 minute candlesticks, hour alignment",
+        "M10": "10 minute candlesticks, hour alignment",
         "M15": "15 minute candlesticks, hour alignment",
         "M30": "30 minute candlesticks, hour alignment",
         "H1": "1 hour candlesticks, hour alignment",

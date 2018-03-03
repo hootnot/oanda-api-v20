@@ -60,7 +60,7 @@ class TestForexLabs(unittest.TestCase):
         """get the hist. pos. ratios information for an instrument."""
         tid = "_v3_forexlabs_histposratios"
         resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        r = labs.HistoricalPositionRatios(params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
@@ -72,7 +72,7 @@ class TestForexLabs(unittest.TestCase):
         """get the spreads information for an instrument."""
         tid = "_v3_forexlabs_spreads"
         resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        r = labs.Spreads(params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
@@ -84,7 +84,7 @@ class TestForexLabs(unittest.TestCase):
         """get the commitments of traders information for an instrument."""
         tid = "_v3_forexlabs_commoftrad"
         resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        r = labs.CommitmentsOfTraders(params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
@@ -96,7 +96,7 @@ class TestForexLabs(unittest.TestCase):
         """get the orderbookdata information for an instrument."""
         tid = "_v3_forexlabs_orderbookdata"
         resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        r = labs.OrderbookData(params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))
@@ -108,7 +108,7 @@ class TestForexLabs(unittest.TestCase):
         """get autochartist information for an instrument."""
         tid = "_v3_forexlabs_autochartist"
         resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        r = labs.Autochartist(params=params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
                               text=json.dumps(resp))

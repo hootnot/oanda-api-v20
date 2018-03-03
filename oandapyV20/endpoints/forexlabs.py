@@ -127,10 +127,10 @@ class Spreads(ForexLabs):
 
 
 @endpoint("labs/v1/commitments_of_traders")
-class CommitmentOfTraders(ForexLabs):
-    """CommitmentOfTraders.
+class CommitmentsOfTraders(ForexLabs):
+    """CommitmentsOfTraders.
 
-    Get the 'commitment of traders' information for an instrument.
+    Get the 'commitments of traders' information for an instrument.
     """
 
     @dyndoc_insert(responses)
@@ -157,7 +157,7 @@ class CommitmentOfTraders(ForexLabs):
             {_v3_forexlabs_commoftrad_resp}
 
         """
-        super(CommitmentOfTraders, self).__init__()
+        super(CommitmentsOfTraders, self).__init__()
         self.params = params
 
 

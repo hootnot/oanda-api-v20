@@ -1,3 +1,10 @@
+Version 0.6.0
+-------------
+
+2018/03/07
+          support added for the (legacy) forexlabs endpoints, #110. See
+          developer.oanda.com for details.
+
 Version 0.5.0
 -------------
 

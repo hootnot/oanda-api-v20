@@ -3,7 +3,7 @@ import unittest
 import json
 from . import unittestsetup
 from .unittestsetup import environment as environment
-from .unittestsetup import fetchTestData
+from .unittestsetup import TestData
 import requests_mock
 
 
@@ -47,70 +47,70 @@ class TestForexLabs(unittest.TestCase):
     def test__calendar(self, mock_get):
         """get the calendar information for an instrument."""
         tid = "_v3_forexlabs_calendar"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.Calendar(params=params)
+        td = TestData(responses, tid)
+        r = labs.Calendar(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)
 
     @requests_mock.Mocker()
     def test__histposratios(self, mock_get):
         """get the hist. pos. ratios information for an instrument."""
         tid = "_v3_forexlabs_histposratios"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.HistoricalPositionRatios(params=params)
+        td = TestData(responses, tid)
+        r = labs.HistoricalPositionRatios(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)
 
     @requests_mock.Mocker()
     def test__spreads(self, mock_get):
         """get the spreads information for an instrument."""
         tid = "_v3_forexlabs_spreads"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.Spreads(params=params)
+        td = TestData(responses, tid)
+        r = labs.Spreads(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)
 
     @requests_mock.Mocker()
     def test__commoftrad(self, mock_get):
         """get the commitments of traders information for an instrument."""
         tid = "_v3_forexlabs_commoftrad"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.CommitmentsOfTraders(params=params)
+        td = TestData(responses, tid)
+        r = labs.CommitmentsOfTraders(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)
 
     @requests_mock.Mocker()
     def test__orderbookdata(self, mock_get):
         """get the orderbookdata information for an instrument."""
         tid = "_v3_forexlabs_orderbookdata"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.OrderbookData(params=params)
+        td = TestData(responses, tid)
+        r = labs.OrderbookData(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)
 
     @requests_mock.Mocker()
     def test__autochartist(self, mock_get):
         """get autochartist information for an instrument."""
         tid = "_v3_forexlabs_autochartist"
-        resp, data, params = fetchTestData(responses, tid)
-        r = labs.Autochartist(params=params)
+        td = TestData(responses, tid)
+        r = labs.Autochartist(params=td.params)
         mock_get.register_uri('GET',
                               "{}/{}".format(api.api_url, r),
-                              text=json.dumps(resp))
+                              text=json.dumps(td.resp))
         api.request(r)
-        self.assertTrue(resp == r.response)
+        self.assertTrue(td.resp == r.response)

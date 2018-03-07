@@ -3,7 +3,11 @@ OANDA REST-V20 API wrapper
 
 .. _Top:
 
-The REST-V20 API specs are not completely released yet. Support for 'forex labs' endpoint will be integrated when OANDA releases the specs of this endpoint. All other endpoints are covered.
+As of march 2018 OANDA no longer supports the v1 REST-API. The only pending
+V20 endpoint was the *forexlabs endpoint*. Instead of launching *forexlabs*
+as a *V20-endpoint*, OANDA choose to support this endpoint from the v1
+REST interface, see: http://developer.oanda.com/rest-live-v20/forexlabs-ep/.
+
 
 .. image:: https://travis-ci.org/hootnot/oanda-api-v20.svg?branch=master
    :target: https://travis-ci.org/hootnot/oanda-api-v20

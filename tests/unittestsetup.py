@@ -25,6 +25,24 @@ def fetchTestData(responses, k):
     return (resp, data)
 
 
+class TestData(object):
+
+    def __init__(self, responses, tid):
+        self._responses = responses[tid]
+
+    @property
+    def resp(self):
+        return self._responses['response']
+
+    @property
+    def body(self):
+        return self._responses['body']
+
+    @property
+    def params(self):
+        return self._responses['params']
+
+
 def auth():
     access_token = None
     account = None

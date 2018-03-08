@@ -74,6 +74,7 @@ class HistoricalPositionRatios(ForexLabs):
         params : dict (required)
             query params to send, check developer.oanda.com for details.
 
+
         >>> import oandapyV20
         >>> import oandapyV20.endpoints.forexlabs as labs
         >>> accountID = ...
@@ -107,6 +108,7 @@ class Spreads(ForexLabs):
         ----------
         params : dict (required)
             query params to send, check developer.oanda.com for details.
+
 
         >>> import oandapyV20
         >>> import oandapyV20.endpoints.forexlabs as labs

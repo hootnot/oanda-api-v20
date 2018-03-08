@@ -37,9 +37,6 @@ class Calendar(ForexLabs):
             query params to send, check developer.oanda.com for details.
 
 
-        Query Params example::
-
-
         >>> import oandapyV20
         >>> import oandapyV20.endpoints.forexlabs as labs
         >>> accountID = ...
@@ -67,7 +64,7 @@ class HistoricalPositionRatios(ForexLabs):
 
     @dyndoc_insert(responses)
     def __init__(self, params):
-        """Instantiate a HistoricalPositionRatio request.
+        """Instantiate a HistoricalPositionRatios request.
 
         Parameters
         ----------
@@ -102,7 +99,7 @@ class Spreads(ForexLabs):
 
     @dyndoc_insert(responses)
     def __init__(self, params):
-        """Instantiate a Spread request.
+        """Instantiate a Spreads request.
 
         Parameters
         ----------
@@ -137,7 +134,7 @@ class CommitmentsOfTraders(ForexLabs):
 
     @dyndoc_insert(responses)
     def __init__(self, params):
-        """Instantiate a CommitmentOfTraders request.
+        """Instantiate a CommitmentsOfTraders request.
 
         Parameters
         ----------

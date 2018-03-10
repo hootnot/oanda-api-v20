@@ -558,71 +558,70 @@ responses = {
             "instrument": "EUR_JPY"
         },
         "response": {
-            "1520066400": {
-                "rate": 1.2318,
-                "price_points": {
-                  "1.288": {
-                    "ps": 0,
-                    "ol": 0.0105,
-                    "os": 0.0105,
-                    "pl": 0
+              "signals": [
+                {
+                  "type": "chartpattern",
+                  "meta": {
+                    "direction": 1,
+                    "probability": 72.36,
+                    "pattern": "Channel Down",
+                    "historicalstats": {
+                      "hourofday": {
+                        "total": 1909,
+                        "percent": 71.08,
+                        "correct": 1357
+                      },
+                      "pattern": {
+                        "total": 3361,
+                        "percent": 73.61,
+                        "correct": 2474
+                      },
+                      "symbol": {
+                        "total": 429,
+                        "percent": 65.5,
+                        "correct": 281
+                      }
+                    },
+                    "interval": 60,
+                    "length": 73,
+                    "scores": {
+                      "breakout": 10,
+                      "clarity": 7,
+                      "quality": 8,
+                      "initialtrend": 10,
+                      "uniformity": 6
+                    },
+                    "trendtype": "Continuation",
+                    "completed": 1
                   },
-                  "1.23": {
-                    "ps": 1.2155,
-                    "ol": 0.3871,
-                    "os": 0.2615,
-                    "pl": 0.5633
+                  "data": {
+                    "points": {
+                      "support": {
+                        "y1": 0.72456,
+                        "y0": 0.725455,
+                        "x0": 1520420400,
+                        "x1": 1520503200
+                      },
+                      "resistance": {
+                        "y1": 0.729755,
+                        "y0": 0.731095,
+                        "x0": 1520323200,
+                        "x1": 1520463600
+                      }
+                    },
+                    "patternendtime": 1520589600,
+                    "prediction": {
+                      "timefrom": 1520589600,
+                      "pricelow": 0.7316,
+                      "timeto": 1520773200,
+                      "pricehigh": 0.7349
+                    }
                   },
-                  "1.223": {
-                    "ps": 1.1266,
-                    "ol": 0.5021,
-                    "os": 0.2197,
-                    "pl": 0.3854
-                  },
-                  "1.1825": {
-                    "ps": 0.1779,
-                    "ol": 0.1465,
-                    "os": 0.0628,
-                    "pl": 0
-                  },
-                  "1.22": {
-                    "ps": 0.9191,
-                    "ol": 0.6486,
-                    "os": 0.136,
-                    "pl": 0.2965
-                  },
-                  "1.2245": {
-                    "ps": 0.5336,
-                    "ol": 0.5021,
-                    "os": 0.3975,
-                    "pl": 0.4447
-                  },
-                  "1.2085": {
-                    "ps": 0.1482,
-                    "ol": 0.2092,
-                    "os": 0.2197,
-                    "pl": 0.1482
-                  },
-                  "1.26": {
-                    "ps": 0,
-                    "ol": 0.2197,
-                    "os": 0.68,
-                    "pl": 0
-                  },
-                  "1.25": {
-                    "ps": 0.0593,
-                    "ol": 0.272,
-                    "os": 1.0566,
-                    "pl": 0.1186
-                  },
-                  "1.24": {
-                    "ps": 0.1186,
-                    "ol": 0.4289,
-                    "os": 0.8264,
-                    "pl": 0.4447
-                  }
+                  "id": 458552738,
+                  "instrument": "NZD_USD"
                 }
-            }
-        }
+              ],
+              "provider": "autochartist"
+          }
     },
 }

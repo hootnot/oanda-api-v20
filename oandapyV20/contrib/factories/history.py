@@ -58,7 +58,7 @@ def InstrumentsCandlesFactory(instrument, params=None):
     >>> _from = "2017-01-01T00:00:00Z"
     >>> params = {
     ...    "from": _from,
-    ...    "granularity": granularity
+    ...    "granularity": granularity,
     ...    "count": 2500,
     ... }
     >>> with open("/tmp/{}.{}".format(instrument, granularity), "w") as OUT:
@@ -104,10 +104,9 @@ def InstrumentsCandlesFactory(instrument, params=None):
     if 'to' in params and 'from' not in params:
         raise ValueError("'to' specified without 'from'")
 
-    yparams = dict()
     if not params or 'from' not in params:
         yield instruments.InstrumentsCandles(instrument=instrument,
-                                             params=yparams)
+                                             params=params)
 
     else:
         delta = _epoch_to - _epoch_from

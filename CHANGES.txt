@@ -1,3 +1,11 @@
+Version 0.6.1
+-------------
+
+2018/03/31
+          InstrumentsCandlesFactory fix, incorrect handling of parameters
+          in the rare case one would not specify the 'from' parameter,
+          see PR #117
+
 Version 0.6.0
 -------------
 

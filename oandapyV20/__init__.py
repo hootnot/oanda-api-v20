@@ -3,10 +3,10 @@ from .oandapyV20 import API
 from .exceptions import V20Error
 
 __title__ = "OANDA REST V20 API Wrapper"
-__version__ = "0.6.0"
+__version__ = "0.6.1"
 __author__ = "Feite Brekeveld"
 __license__ = "MIT"
-__copyright__ = "Copyright 2016 - 2017 Feite Brekeveld"
+__copyright__ = "Copyright 2016 - 2018 Feite Brekeveld"
 
 # Version synonym
 VERSION = __version__

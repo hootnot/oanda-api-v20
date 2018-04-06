@@ -26,6 +26,8 @@ class TestContribGeneric(unittest.TestCase):
        (gen.granularity_to_time, "H4", 4*3600),
        (gen.granularity_to_time, "D", 86400),
        (gen.granularity_to_time, "D1", 86400),
+       (gen.granularity_to_time, "W", 604800),
+       (gen.granularity_to_time, "W1", 604800),
        (gen.granularity_to_time, "K1", 86400, ValueError),
     ])
     def test__granularity_to_time(self, meth, granularity, refval, exc=None):

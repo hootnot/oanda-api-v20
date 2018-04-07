@@ -3,7 +3,7 @@ Version 0.6.2
 
 2018/04/07
           granularity_to_time now also handles weekly 'W' as parameter,
-          see PR #119
+          see PR #119. Tests added.
 
 Version 0.6.1
 -------------

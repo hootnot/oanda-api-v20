@@ -9,7 +9,8 @@ definitions = {
         "MARKET_IF_TOUCHED": "A Market-if-touched Order",
         "TAKE_PROFIT": "A Take Profit Order",
         "STOP_LOSS": "A Stop Loss Order",
-        "TRAILING_STOP_LOSS": "A Trailing Stop Loss Order"
+        "TRAILING_STOP_LOSS": "A Trailing Stop Loss Order",
+        "FIXED_PRICE": "A Fixed Price Order"
     },
     "CancellableOrderType": {
         "LIMIT": "A Limit Order",

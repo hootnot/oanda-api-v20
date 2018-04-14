@@ -2,6 +2,14 @@
 """Account Definitions."""
 
 definitions = {
+    "GuaranteedStopLossOrderMode": {
+        "DISABLED": "The account is not permitted to create guaranteed "
+                    "Stop Loss Orders.",
+        "ALLOWED": "The account is able, but not required to have guaranteed "
+                    "Stop Loss Orders for open Trades.",
+        "REQUIRED": "The account is required to have guaranteed "
+                    "Stop Loss Orders for open Trades.",
+    },
     "AccountFinancingMode": {
         "NO_FINANCING": "No financing is paid/charged for open Trades "
                         "in the Account",

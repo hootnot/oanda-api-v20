@@ -235,20 +235,19 @@ class TrailingStopLossDetails(OnFill):
             >>> accountID = "..."
             >>> client = API(access_token=...)
             >>> # at time of writing EUR_USD = 1.0740
-            >>> # let us take profit at 1.10, GoodTillCancel (default)
-            >>> trailingStopLossOnFill = TrailingStopLossDetails(price=1.06)
+            >>> # add a trailing stoploss, at 50 pips GoodTillCancel (default)
+            >>> sld = 1.0740 - 1.0690
+            >>> trailingStopLossOnFill = TrailingStopLossDetails(distance=sld)
             >>> print(trailingStopLossOnFill)
             {
                 "timeInForce": "GTC",
-                "price": "1.10000"
+                "distance": "0.00500"
             }
             >>> ordr = MarketOrderRequest(
             >>>     instrument="EUR_USD",
             >>>     units=10000,
             >>>     trailingStopLossOnFill=trailingStopLossOnFill.data
             >>> )
-            >>> # or as shortcut ...
-            >>> #   ...OnFill=trailingStopLossDetails(price=1.06).data
             >>> print(json.dumps(ordr.data, indent=4))
             >>> r = orders.OrderCreate(accountID, data=ordr.data)
             >>> rv = client.request(r)

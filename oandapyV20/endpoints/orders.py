@@ -176,7 +176,7 @@ class OrderReplace(Orders):
     """OrderReplace.
 
     Replace an Order in an Account by simultaneously cancelling it and
-    createing a replacement Order.
+    creating a replacement Order.
     """
 
     HEADERS = {"Content-Type": "application/json"}

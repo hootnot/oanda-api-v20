@@ -99,7 +99,7 @@ class MITOrderRequest(BaseRequest):
         self._data.update({"clientExtensions": clientExtensions})
         self._data.update({"takeProfitOnFill": takeProfitOnFill})
         self._data.update({"stopLossOnFill": stopLossOnFill})
-        self._data.update({"tralingStopLossOnFill": trailingStopLossOnFill})
+        self._data.update({"trailingStopLossOnFill": trailingStopLossOnFill})
         self._data.update({"tradeClientExtensions": tradeClientExtensions})
 
     @property

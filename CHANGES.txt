@@ -1,5 +1,8 @@
-Version 0.6.3
+Version 0.7.0
 -------------
+
+2020/03/27
+          fix typo in mitorder.py
 
 2018/04/12
           update of definitions according v20-openapi release 3.0.22

@@ -210,6 +210,12 @@ class API(object):
             self.client.headers.update(headers)
             logger.info("applying headers %s", ",".join(headers.keys()))
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.client.close()
+
     @property
     def request_params(self):
         """request_params property."""

@@ -214,8 +214,15 @@ class API(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.client.close()
+        self.close()
 
+    def close(self):
+        """close.
+        
+        explicit close of the session.
+        """
+        self.client.close()
+        
     @property
     def request_params(self):
         """request_params property."""

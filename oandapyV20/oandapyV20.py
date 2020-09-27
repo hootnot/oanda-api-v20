@@ -218,7 +218,7 @@ class API(object):
 
     def close(self):
         """close.
-        
+
         explicit close of the session.
         """
         self.client.close()

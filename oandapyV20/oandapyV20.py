@@ -222,7 +222,7 @@ class API(object):
         explicit close of the session.
         """
         self.client.close()
-        
+
     @property
     def request_params(self):
         """request_params property."""

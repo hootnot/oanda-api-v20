@@ -184,10 +184,10 @@ class PriceValue(OAType):
 
 
 class Units(OAType):
-    """representation Units, string value of an integer."""
+    """representation Units, string value of a float."""
 
     def __init__(self, units):
-        self._v = "{:d}".format(int(units))
+        self._v = "{:f}".format(float(units))
 
 
 class ClientID(OAType):

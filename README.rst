@@ -29,17 +29,13 @@ REST interface, see: http://developer.oanda.com/rest-live-v20/forexlabs-ep/.
    :target: https://badge.fury.io/py/oandapyV20
    :alt: Pypi
 
+.. image:: https://img.shields.io/pypi/pyversions/oandapyV20.svg
+   :target: https://pypi.org/project/oandapyV20
+   :alt: Python versions
+
 .. image:: https://api.codacy.com/project/badge/Grade/5946514e3a7c407291f76e630ce3553b 
    :target: https://www.codacy.com/app/hootnot/oandaapiv20utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hootnot/oanda-api-v20&amp;utm_campaign=Badge_Grade
    :alt: Codacy
-
-Supported Python versions:
-
-    +-------------------+-----+-----+-----+-----+------+
-    | Python            | 2.7 | 3.4 | 3.5 | 3.6 | Pypy |
-    +===================+=====+=====+=====+=====+======+
-    | **oanda-api-v20** | YES | YES | YES | YES | YES  |
-    +-------------------+-----+-----+-----+-----+------+
 
 
 Interactive

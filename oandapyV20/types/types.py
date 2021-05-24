@@ -184,10 +184,20 @@ class PriceValue(OAType):
 
 
 class Units(OAType):
-    """representation Units, string value of an integer."""
+    """representation Units, string value of an integer or float up to 1 decimal."""
 
     def __init__(self, units):
-        self._v = "{:d}".format(int(units))
+        _units = str(units)
+
+        # validate the number
+        if re.fullmatch(r'[+-]{0,1}(\d+)', _units):
+            self._v = "{:d}".format(int(_units))
+
+        elif re.fullmatch(r'[+-]{0,1}\d+(\.\d{0,1})', _units):
+            self._v = "{:.1f}".format(float(_units))
+
+        else:
+            raise ValueError("incorrect units: {}".format(_units))
 
 
 class ClientID(OAType):

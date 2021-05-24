@@ -49,8 +49,9 @@ class TestOrders(unittest.TestCase):
             orders.Orders(accountID)
 
         bcErr = bcErr.exception
+        print("FOUTJE: ", str(bcErr))
         self.assertTrue("Can't instantiate abstract class Orders "
-                        "with abstract methods" in "{}".format(bcErr))
+                        "with abstract method" in "{}".format(bcErr))
 
     @requests_mock.Mocker()
     def test__order_create(self, mock_post):

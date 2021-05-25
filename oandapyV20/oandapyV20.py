@@ -98,6 +98,23 @@ class API(object):
         rv = api.request(r)
         print("RESPONSE\n{}".format(json.dumps(rv, indent=2)))
 
+    or by using it in a *with context*:
+
+    ::
+
+        with API(access_token="...") as api:
+
+            accountID = "101-305-3091856-001"
+            tradeID = "1030"
+            cfg = {"units": 5}
+            r = trades.TradeClose(accountID, tradeID=tradeID, data=cfg)
+            # show the endpoint as it is constructed for this call
+            print("REQUEST:{}".format(r))
+            rv = api.request(r)
+            print("RESPONSE\n{}".format(json.dumps(rv, indent=2)))
+
+    in this case the API-client instance *api* will close connections
+    explicitely.
 
     Output::
 
@@ -190,9 +207,11 @@ class API(object):
         logger.info("setting up API-client for environment %s", environment)
         try:
             TRADING_ENVIRONMENTS[environment]
-        except:
+
+        except KeyError as err:  # noqa F841
             logger.error("unkown environment %s", environment)
             raise KeyError("Unknown environment: {}".format(environment))
+
         else:
             self.environment = environment
 

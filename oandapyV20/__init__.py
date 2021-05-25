@@ -3,7 +3,7 @@ from .oandapyV20 import API
 from .exceptions import V20Error
 
 __title__ = "OANDA REST V20 API Wrapper"
-__version__ = "0.6.3"
+__version__ = "0.7.0"
 __author__ = "Feite Brekeveld"
 __license__ = "MIT"
 __copyright__ = "Copyright 2016 - 2018 Feite Brekeveld"

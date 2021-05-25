@@ -1,3 +1,31 @@
+Changelog
+=========
+
+[Unreleased]
+------------
+
+v0.7.0 (2021-05-25)
+-------------------
+
+Bug Fixes
+~~~~~~~~~
+
+-  [test] test_orders: fix fail python 3.9
+
+-  [types] make Units handle up to 1 decimal
+
+Documentation Changes
+~~~~~~~~~~~~~~~~~~~~~
+
+-  using the with context
+
+Administration and Chores
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-  rename CHANGES.txt -> CHANGELOG.rst
+
+-  [versions] support Python 3.5 - 3.9
+
 Version 0.6.3
 -------------
 

@@ -4,6 +4,14 @@ Changelog
 [Unreleased]
 ------------
 
+v0.7.1 (2021-08-15)
+-------------------
+
+Bug Fixes
+~~~~~~~~~
+
+-  [types] make Units handle up to 2 decimals (was 1)
+
 v0.7.0 (2021-05-25)
 -------------------
 

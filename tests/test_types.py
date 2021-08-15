@@ -99,6 +99,10 @@ class TestTypes(unittest.TestCase):
        (tp.Units,
            {"units": -10.55},
            "-10.55",
+        ),
+       (tp.Units,
+           {"units": -12.655},
+           "-10.55",
            ValueError
         ),
        # ClientID

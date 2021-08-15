@@ -196,6 +196,9 @@ class Units(OAType):
         elif re.fullmatch(r'[+-]{0,1}\d+(\.\d{0,1})', _units):
             self._v = "{:.1f}".format(float(_units))
 
+        elif re.fullmatch(r'[+-]{0,1}\d+(\.\d{0,2})', _units):
+            self._v = "{:.2f}".format(float(_units))
+
         else:
             raise ValueError("incorrect units: {}".format(_units))
 

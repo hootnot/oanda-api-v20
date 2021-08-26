@@ -4,6 +4,14 @@ Changelog
 [Unreleased]
 ------------
 
+v0.7.2 (2021-08-26)
+-------------------
+
+Documentation Changes
+~~~~~~~~~~~~~~~~~~~~~
+
+-  [endpoints] fix -> trades.TradeDetails
+
 v0.7.1 (2021-08-15)
 -------------------
 

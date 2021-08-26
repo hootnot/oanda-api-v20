@@ -119,7 +119,7 @@ class TradeDetails(Trades):
         >>> import oandapyV20
         >>> import oandapyV20.endpoints.trades as trades
         >>> client = oandapyV20.API(access_token=...)
-        >>> r = accounts.TradeDetails(accountID=..., tradeID=...)
+        >>> r = trades.TradeDetails(accountID=..., tradeID=...)
         >>> client.request(r)
         >>> print r.response
 

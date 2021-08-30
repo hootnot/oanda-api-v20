@@ -1,2 +1,3 @@
 requests>=2.10
+iso8601
 six>=1.10

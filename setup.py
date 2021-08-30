@@ -57,8 +57,5 @@ setup(name='oandapyV20',
       test_suite="tests",
       include_package_data=True,
       zip_safe=False,
-      install_requires=requirements,
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
+      install_requires=requirements
       )

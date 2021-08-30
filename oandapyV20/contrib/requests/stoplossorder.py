@@ -14,7 +14,8 @@ class StopLossOrderRequest(BaseRequest):
 
     def __init__(self,
                  tradeID,
-                 price,
+                 price=None,
+                 distance=None,
                  clientTradeID=None,
                  timeInForce=TimeInForce.GTC,
                  gtdTime=None,
@@ -71,7 +72,18 @@ class StopLossOrderRequest(BaseRequest):
 
         # required
         self._data.update({"tradeID": TradeID(tradeID).value})
-        self._data.update({"price": PriceValue(price).value})
+
+        if price is not None and distance is not None:
+            raise ValueError("price or distance is required")
+
+        if price is not None:
+            self._data.update({"price": PriceValue(price).value})
+
+        elif distance is not None:
+            self._data.update({"distance": str(distance)})
+
+        else:
+            raise ValueError("price or distance is required")
 
         # optional
         self._data.update({"clientExtensions": clientExtensions})

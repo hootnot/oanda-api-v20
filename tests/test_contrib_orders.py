@@ -170,6 +170,33 @@ class TestContribRequests(unittest.TestCase):
             'type': 'STOP_LOSS'},
            ValueError
         ),
+       # SLO: distance instead of price
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234",
+            "timeInForce": "GTC",
+            "distance": 50},
+           {'timeInForce': 'GTC',
+            'type': 'STOP_LOSS',
+            'distance': '50'},
+        ),
+       # ... no price and no distance, should raise a ValueError
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234"},
+           {'timeInForce': 'GTC',
+            'type': 'STOP_LOSS'},
+           ValueError
+        ),
+       # ... price and distance, should raise a ValueError
+       (req.StopLossOrderRequest,
+           {"tradeID": "1234",
+            "price": 1.10,
+            "distance": 40},
+           {'timeInForce': 'GTC',
+            'price': 1.10,
+            'distance': 40,
+            'type': 'STOP_LOSS'},
+           ValueError
+        ),
        # ... FOK, should raise a ValueError
        (req.StopLossOrderRequest,
            {"tradeID": "1234",
@@ -239,6 +266,9 @@ class TestContribRequests(unittest.TestCase):
 
         if not exc:
             r = cls(**inpar)
+            print("*************")
+            print(r.data)
+            print(refpar)
             self.assertTrue(r.data == reference)
         else:
             with self.assertRaises(exc):
@@ -318,6 +348,27 @@ class TestContribRequests(unittest.TestCase):
            {'timeInForce': 'GTC',
             'price': '1.10000'}
         ),
+       # ... distance instead of price
+       (req.StopLossDetails,
+           {"distance": 40},
+           {'timeInForce': 'GTC',
+            'distance': '40.00000'}
+        ),
+       # .. raises ValueError because price and distance
+       (req.StopLossDetails,
+           {"distance": 40,
+            "price": 1.10},
+           {'timeInForce': 'GTC',
+            'price': '1.10000',
+            'distance': '40.00000'},
+           ValueError
+        ),
+       # .. raises ValueError because no price and no distance
+       (req.StopLossDetails,
+           {"timeInForce": OD.TimeInForce.GTC},
+           {'timeInForce': 'GTC'},
+           ValueError
+        ),
        # .. raises ValueError because GTD required gtdTime
        (req.StopLossDetails,
            {"price": 1.10,
@@ -380,6 +431,9 @@ class TestContribRequests(unittest.TestCase):
 
         if not exc:
             r = cls(**inpar) if inpar else cls()
+            print("*************")
+            print(r.data)
+            print(refpar)
             self.assertTrue(r.data == refpar)
         else:
             with self.assertRaises(exc):

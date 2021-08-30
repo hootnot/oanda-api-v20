@@ -129,7 +129,8 @@ class StopLossDetails(OnFill):
     """
 
     def __init__(self,
-                 price,
+                 price=None,
+                 distance=None,
                  timeInForce=OD.TimeInForce.GTC,
                  gtdTime=None,
                  clientExtensions=None):
@@ -138,8 +139,11 @@ class StopLossDetails(OnFill):
         Parameters
         ----------
 
-        price : float or string (required)
+        price : float or string (either price or distance is required)
             the price to trigger take profit order
+
+        distance : float or string (either price or distance is required)
+            the distance to trigger take profit order
 
         timeInForce : TimeInForce (required), default TimeInForce.GTC
             the time in force
@@ -185,7 +189,18 @@ class StopLossDetails(OnFill):
             timeInForce=timeInForce,
             gtdTime=gtdTime,
             clientExtensions=clientExtensions)
-        self._data.update({"price": PriceValue(price).value})
+
+        if price is not None and distance is not None:
+            raise ValueError("price or distance is required")
+
+        if price is not None:
+            self._data.update({"price": PriceValue(price).value})
+
+        elif distance is not None:
+            self._data.update({"distance": PriceValue(distance).value})
+
+        else:
+            raise ValueError("price or distance is required")
 
 
 class TrailingStopLossDetails(OnFill):

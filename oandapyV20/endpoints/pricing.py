@@ -28,6 +28,51 @@ class Pricing(APIRequest):
         super(Pricing, self).__init__(endpoint, method=self.METHOD)
 
 
+@endpoint("v3/accounts/{accountID}/candles/latest")
+class CandlesLatest(Pricing):
+    """CandlesLatest.
+
+    Get dancing bears and most recently completed candles within an Account
+    for specified combinations of instruments, granularity and price
+    component.
+    """
+
+    # @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a CandlesLatest APIRequest instance.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            the accountID of the account.
+
+        params : dict (required)
+            parameters for the request, check developer.oanda.com for details.
+
+        Example
+        -------
+
+        >>> import oandapyV20
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.pricing as pricing
+        >>> accountID = "..."
+        >>> api = API(access_token="...")
+        >>> params = {_v3_accounts_accountID_candleslatest_params}
+        >>> r = pricing.CandlesLatest(accountID=accountID, params=params)
+        >>> rv = api.request(r)
+        >>> print(r.response)
+
+        Output::
+
+
+           {_v3_accounts_accountID_candleslatest_resp}
+
+
+        """
+        super().__init__(accountID)
+        self.params = params
+
+
 @endpoint("v3/accounts/{accountID}/pricing")
 class PricingInfo(Pricing):
     """Pricing.

@@ -174,3 +174,49 @@ class PricingStream(Pricing):
             raise ValueError("request does not contain a stream response")
 
         self.response.throw(StreamTerminated(message))
+
+
+@endpoint("v3/accounts/{accountID}/instruments/{instrument}/candles")
+class InstrumentsCandles(Pricing):
+    """InstrumentsCandles.
+
+    Fetch candlestick data for an instrument.
+    """
+
+    # @dyndoc_insert(responses)
+    def __init__(self, accountID, params=None):
+        """Instantiate a InstrumentsCandles. APIRequest instance.
+
+        Parameters
+        ----------
+        accountID : string (required)
+            the accountID of the account.
+
+        instrument : string (required)
+            the instrument to fetch candles for
+
+        params : dict (optional)
+            parameters for the request, check developer.oanda.com for details.
+
+        Example
+        -------
+
+        >>> import oandapyV20
+        >>> from oandapyV20 import API
+        >>> import oandapyV20.endpoints.pricing as pricing
+        >>> accountID = "..."
+        >>> api = API(access_token="...")
+        >>> params = {_v3_accounts_accountID_instrumentcandles_params}
+        >>> r = pricing.InstrumentsCandles(accountID=accountID, params=params)
+        >>> rv = api.request(r)
+        >>> print(r.response)
+
+        Output::
+
+
+           {_v3_accounts_accountID_instrumentscandles_resp}
+
+
+        """
+        super().__init__(accountID)
+        self.params = params
